@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,7 +47,12 @@ namespace WindowsFormsApplication1
             {
                 moveLift(floor_queue[0]);
                 if (Lift.Location.Y == floor_height[floor_queue[0]])
+                {
+                    current_floor = floor_queue[0];
                     floor_queue.RemoveAt(0);
+                }
+
+
             }
         }
     }
