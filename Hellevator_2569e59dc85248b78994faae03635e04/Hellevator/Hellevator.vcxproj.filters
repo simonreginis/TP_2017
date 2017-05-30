@@ -28,8 +28,5 @@
     <EmbeddedResource Include="MyForm.resx">
       <Filter>Pliki zasobów</Filter>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ludzik.resx">
-      <Filter>Pliki zasobów</Filter>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
