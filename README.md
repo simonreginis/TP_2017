@@ -1,20 +1,20 @@
-# TP_2017
+# Hellevator Programming Techniques Project 2017
 
-## Tworzymy własny projekt
+## Simulator of a elevator
 
-* Zaczynamy od zrobienia forka głównego projektu
-* Każdy projekt powinien zostać umieszczony w osobnym folderze nazwaFolderu_ID (ID zostanie przydzielone do kazdej grupy projektowej)
-* Po zakończeniu projektu robimy Pull Request do brancha develop
+* Simulator of a evelator
+* Uses Windows Forms for Graphical Interface
 
-## Co folder projektowy musi posiadać
+## How to Build
 
-* Źródła programu (C, C++)
-* Dokumentację (README.md) - kilka zdań na temat samego projektu + opis jak zbudować kod
+* Run Hellevator.sln with Visual Studio
+* Go to Properties->Linker->System and change the Sub System option to Windows
+* Go to Properties->Linker->Advanced and edit the Entry Point to Main (must be uppercase)
 
-## Uwaga 
-* Nie umieszczamy w repozyterium plikow binarnych! 
+## Enviorment Information
+* I use Visual Studio 2017 Enteriprise
+* Windows 10 SDK
+* VS tools v141
 
-## Linki
 
-* Kurs dotyczący GIT - https://www.atlassian.com/git/tutorials 
 
