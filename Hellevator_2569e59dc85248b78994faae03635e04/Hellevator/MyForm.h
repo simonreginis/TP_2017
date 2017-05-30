@@ -14,18 +14,18 @@ namespace Hellevator {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-		static int timer = 0;
-		int x=0;
+			 static int timer = 0;
+			 static int positionController = 0;
 
-		static int tick = 0;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
 	private: System::Windows::Forms::PictureBox^  pictureBox4;
 	private: System::Windows::Forms::PictureBox^  pictureBox5;
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
 	private: System::Windows::Forms::PictureBox^  pictureBox7;
-	private: System::Windows::Forms::Timer^  timer2;
-			 static int licznik = 0; //////////////// ZMIENIæ XD
+
+	private: System::Windows::Forms::PictureBox^  pictureBox3;
+		static int licznik = 0; //////////////// ZMIENIæ XD
 	public:
 		MyForm(void)
 		{
@@ -49,7 +49,7 @@ namespace Hellevator {
 
 	protected:
 
-	private: System::Windows::Forms::PictureBox^  pictureBox3;
+
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::ComponentModel::IContainer^  components;
@@ -77,7 +77,6 @@ namespace Hellevator {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
@@ -86,25 +85,15 @@ namespace Hellevator {
 			this->pictureBox5 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
-			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->BackColor = System::Drawing::Color::Transparent;
-			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(200, 789);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(90, 90);
-			this->pictureBox3->TabIndex = 2;
-			this->pictureBox3->TabStop = false;
 			// 
 			// button1
 			// 
@@ -181,9 +170,15 @@ namespace Hellevator {
 			this->pictureBox7->TabIndex = 9;
 			this->pictureBox7->TabStop = false;
 			// 
-			// timer2
+			// pictureBox3
 			// 
-			this->timer2->Interval = 15;
+			this->pictureBox3->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
+			this->pictureBox3->Location = System::Drawing::Point(225, 798);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(90, 90);
+			this->pictureBox3->TabIndex = 10;
+			this->pictureBox3->TabStop = false;
 			// 
 			// MyForm
 			// 
@@ -191,6 +186,7 @@ namespace Hellevator {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1700, 900);
+			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox7);
 			this->Controls->Add(this->pictureBox6);
 			this->Controls->Add(this->pictureBox5);
@@ -198,58 +194,59 @@ namespace Hellevator {
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button1);
-			this->Controls->Add(this->pictureBox3);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
+		}
+		private: void moveUp(PictureBox^ picture)
+		{
+			picture->Top -= 1;
+		}
+		private: void moveDown(PictureBox^ picture)
+		{
+			picture->Top += 1;
+		}
+		private: void moveRight(PictureBox^ picture)
+		{
+			picture->Left += 3;
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->timer1->Start();
-		this->timer2->Start();
 	}
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	this->pictureBox3->Left += 3;
-	timer++;
-	if (timer == 720)
+	if (timer != 175)
 	{
-		timer = 0;
-		this->timer1->Stop();
-		this->timer2->Stop();
-	}
-}
-/*private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
-	
-	
-	if (x == 0)
-	{
-		licznik++;
-		this->pictureBox3->Top += -1;
-		if (licznik == 5)
+		moveRight(pictureBox3);
+		switch (positionController)
 		{
-			licznik = 0;
-			x = 1;
+		case 0: case 1: case 2:
+			moveUp(pictureBox3);
+			positionController++;
+			break;
+		case 3: case 4: case 5:
+			moveDown(pictureBox3);
+			positionController++;
+			break;
+		case 6:
+			positionController = 0;
+			break;
+		default:
+			positionController = 0;
+			break;
 		}
 	}
 	else
-	{
-		licznik++;
-		this->pictureBox3->Top += 1;
-		if (licznik == 5)
-		{
-			licznik = 0;
-			x = 0;
-		}
-
-	}
-}*/
+		this->timer1->Stop();
+	timer++;
+}
 };
 }
