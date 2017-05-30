@@ -1,5 +1,5 @@
 #pragma once
-
+//test
 namespace Hellevator {
 
 	using namespace System;
@@ -18,7 +18,7 @@ namespace Hellevator {
 		int x=0;
 	private: System::Windows::Forms::Timer^  timer2;
 		static int tick = 0;
-		static int licznik = 0; //////////////// ZMIENIÄ‡ XD
+		static int licznik = 0; //////////////// ZMIENIæ XD
 	public:
 		MyForm(void)
 		{
@@ -30,7 +30,7 @@ namespace Hellevator {
 
 	protected:
 		/// <summary>
-		/// WyczyÅ›Ä‡ wszystkie uÅ¼ywane zasoby.
+		/// Wyczyœæ wszystkie u¿ywane zasoby.
 		/// </summary>
 		~MyForm()
 		{
@@ -63,8 +63,8 @@ namespace Hellevator {
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Wymagana metoda obsÅ‚ugi projektanta â€” nie naleÅ¼y modyfikowaÄ‡ 
-		/// zawartoÅ›Ä‡ tej metody z edytorem kodu.
+		/// Wymagana metoda obs³ugi projektanta — nie nale¿y modyfikowaæ 
+		/// zawartoœæ tej metody z edytorem kodu.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -114,7 +114,7 @@ namespace Hellevator {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 3;
-			this->button1->Text = L"WejdÅº do Windy";
+			this->button1->Text = L"WejdŸ do Windy";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
