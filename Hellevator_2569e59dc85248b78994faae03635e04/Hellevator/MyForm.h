@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 namespace Hellevator {
 
@@ -8,7 +11,9 @@ namespace Hellevator {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace std;
 
+	
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
 	/// </summary>
@@ -23,9 +28,10 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox5;
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
 	private: System::Windows::Forms::PictureBox^  pictureBox7;
+	private: System::Windows::Forms::Button^  button2;
+
 
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
-		static int licznik = 0; //////////////// ZMIENIæ XD
 	public:
 		MyForm(void)
 		{
@@ -33,6 +39,7 @@ namespace Hellevator {
 			//
 			//TODO: W tym miejscu dodaj kod konstruktora
 			//
+			srand(time(NULL));
 		}
 
 	protected:
@@ -86,6 +93,7 @@ namespace Hellevator {
 			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
@@ -180,12 +188,23 @@ namespace Hellevator {
 			this->pictureBox3->TabIndex = 10;
 			this->pictureBox3->TabStop = false;
 			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(1600, 506);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(75, 23);
+			this->button2->TabIndex = 11;
+			this->button2->Text = L"button2";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1700, 900);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox7);
 			this->Controls->Add(this->pictureBox6);
@@ -218,10 +237,20 @@ namespace Hellevator {
 		{
 			picture->Left += 3;
 		}
+		private: PictureBox^ generatePassenger(int posX, int posY)
+		{
+			PictureBox^ pic = gcnew PictureBox();
+			pic->Location = Point(posX, posY);
+			pic->Size = System::Drawing::Size(90, 90);
+			pic->Load("Resources/deadpool.png");
+			pic->BackColor = System::Drawing::Color::Transparent;
+			this->Controls->Add(pic);
+			return pic;
+		}
 #pragma endregion
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		this->timer1->Start();
-	}
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	this->timer1->Start();
+}
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 	if (timer != 175)
 	{
@@ -245,8 +274,16 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 		}
 	}
 	else
+	{
 		this->timer1->Stop();
+		timer = 0;
+	}
+		
 	timer++;
+}
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+	vector<PictureBox^> picVector;
+
 }
 };
 }
