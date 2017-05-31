@@ -12,7 +12,7 @@ namespace Hellevator {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
-
+	static vector<PictureBox^*> picVector;
 	
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
@@ -237,7 +237,11 @@ namespace Hellevator {
 		{
 			picture->Left += 3;
 		}
-		private: PictureBox^ generatePassenger(int posX, int posY)
+		private: void moveLeft(PictureBox^ picture)
+		{
+			picture->Left -= 3;
+		}
+		private: PictureBox^ *generatePassenger(int posX, int posY)
 		{
 			PictureBox^ pic = gcnew PictureBox();
 			pic->Location = Point(posX, posY);
@@ -245,7 +249,8 @@ namespace Hellevator {
 			pic->Load("Resources/deadpool.png");
 			pic->BackColor = System::Drawing::Color::Transparent;
 			this->Controls->Add(pic);
-			return pic;
+			PictureBox^ * result = &pic;
+			return result;
 		}
 #pragma endregion
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -282,8 +287,10 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	timer++;
 }
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	vector<PictureBox^> picVector;
-
+	for (size_t i = 0; i < 5; i++)
+	{
+		picVector.push_back(generatePassenger(rand()%1000+100, rand()%1000+100));
+	}
 }
 };
 }
