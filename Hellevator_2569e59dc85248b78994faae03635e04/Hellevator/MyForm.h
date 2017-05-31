@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "Passenger.h"
 
 namespace Hellevator {
 
@@ -12,7 +13,7 @@ namespace Hellevator {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
-	static vector<PictureBox^*> picVector;
+	static vector<Passenger^*> picVector;
 	
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
@@ -29,9 +30,10 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
 	private: System::Windows::Forms::PictureBox^  pictureBox7;
 	private: System::Windows::Forms::Button^  button2;
-
+	private: System::Windows::Forms::Button^  button3;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
+
 	public:
 		MyForm(void)
 		{
@@ -61,14 +63,6 @@ namespace Hellevator {
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::ComponentModel::IContainer^  components;
 
-	protected:
-
-	protected:
-
-	protected:
-
-	protected:
-
 	private:
 		/// <summary>
 		/// Wymagana zmienna projektanta.
@@ -94,6 +88,7 @@ namespace Hellevator {
 			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
@@ -194,9 +189,19 @@ namespace Hellevator {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 11;
-			this->button2->Text = L"button2";
+			this->button2->Text = L"Twórz";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(1600, 430);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(75, 23);
+			this->button3->TabIndex = 12;
+			this->button3->Text = L"button3";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
 			// MyForm
 			// 
@@ -204,6 +209,7 @@ namespace Hellevator {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1700, 900);
+			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox7);
@@ -225,39 +231,12 @@ namespace Hellevator {
 			this->ResumeLayout(false);
 
 		}
-		private: void moveUp(PictureBox^ picture)
-		{
-			picture->Top -= 1;
-		}
-		private: void moveDown(PictureBox^ picture)
-		{
-			picture->Top += 1;
-		}
-		private: void moveRight(PictureBox^ picture)
-		{
-			picture->Left += 3;
-		}
-		private: void moveLeft(PictureBox^ picture)
-		{
-			picture->Left -= 3;
-		}
-		private: PictureBox^ *generatePassenger(int posX, int posY)
-		{
-			PictureBox^ pic = gcnew PictureBox();
-			pic->Location = Point(posX, posY);
-			pic->Size = System::Drawing::Size(90, 90);
-			pic->Load("Resources/deadpool.png");
-			pic->BackColor = System::Drawing::Color::Transparent;
-			this->Controls->Add(pic);
-			PictureBox^ * result = &pic;
-			return result;
-		}
 #pragma endregion
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->timer1->Start();
 }
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	if (timer != 175)
+	/*if (timer != 175)
 	{
 		moveRight(pictureBox3);
 		switch (positionController)
@@ -284,13 +263,25 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 		timer = 0;
 	}
 		
-	timer++;
+	timer++;*/
 }
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	for (size_t i = 0; i < 5; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		picVector.push_back(generatePassenger(rand()%1000+100, rand()%1000+100));
+		Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
+		this->Controls->Add(passenger);
+		Passenger^ * pointer = &passenger;
+		picVector.push_back(pointer);
 	}
+}
+private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	PictureBox^ pic = gcnew PictureBox();
+	pic->Load("Resources/deadpool.png");
+	pic->Location = Point(250, 250);
+	pic->Size = System::Drawing::Size(90, 90);
+	pic->BackColor = System::Drawing::Color::Transparent;
+	pic->BringToFront();
+	this->Controls->Add(pic);
 }
 };
 }

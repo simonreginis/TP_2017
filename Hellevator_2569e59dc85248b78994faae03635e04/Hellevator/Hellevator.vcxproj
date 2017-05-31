@@ -136,10 +136,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="Passenger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Passenger.h">
+      <FileType>CppControl</FileType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

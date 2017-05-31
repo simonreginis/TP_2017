@@ -18,9 +18,15 @@
     <ClCompile Include="MyForm.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Passenger.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
+      <Filter>Pliki źródłowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Passenger.h">
       <Filter>Pliki źródłowe</Filter>
     </ClInclude>
   </ItemGroup>
