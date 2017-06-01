@@ -14,6 +14,7 @@ namespace Project4 {
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
+
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 
@@ -305,6 +306,7 @@ namespace Project4 {
 			this->label5->TabIndex = 9;
 			this->label5->Text = L"Piêtro 5";
 			this->label5->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->label5->Click += gcnew System::EventHandler(this, &MyForm::label5_Click);
 			// 
 			// button3
 			// 
@@ -656,5 +658,7 @@ namespace Project4 {
 		Pietro_5();
 	}
 
+private: System::Void label5_Click(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
