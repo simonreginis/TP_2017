@@ -46,7 +46,7 @@ namespace Hellevator {
 
 	protected:
 		/// <summary>
-		/// Wyczyœæ wszystkie u¿ywane zasoby.
+		/// WyczyÅ“Ã¦ wszystkie uÂ¿ywane zasoby.
 		/// </summary>
 		~MyForm()
 		{
@@ -71,8 +71,8 @@ namespace Hellevator {
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Wymagana metoda obs³ugi projektanta — nie nale¿y modyfikowaæ 
-		/// zawartoœæ tej metody z edytorem kodu.
+		/// Wymagana metoda obsÂ³ugi projektanta â€” nie naleÂ¿y modyfikowaÃ¦ 
+		/// zawartoÅ“Ã¦ tej metody z edytorem kodu.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -104,7 +104,7 @@ namespace Hellevator {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 3;
-			this->button1->Text = L"WejdŸ do Windy";
+			this->button1->Text = L"WejdÅ¸ do Windy";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
@@ -189,7 +189,7 @@ namespace Hellevator {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 11;
-			this->button2->Text = L"Twórz";
+			this->button2->Text = L"TwÃ³rz";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
@@ -268,11 +268,14 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	for (int i = 0; i < 5; i++)
 	{
+		// Generowanie ludzikÃ³w po naciÅ›niÄ™ciu buttona
 		Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
 		this->Controls->Add(passenger);
 		Passenger^ * pointer = &passenger;
-		picVector.push_back(pointer);
+		picVector.push_back(pointer); // Wrzucam do vectora wskaÅºniki na obiekty Passenger(DziedziczÄ… z PictureBox)
 	}
+	//Operacje na tych obirktach tutaj dziaÅ‚ajÄ…
+	
 }
 private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
 	PictureBox^ pic = gcnew PictureBox();
@@ -282,6 +285,7 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 	pic->BackColor = System::Drawing::Color::Transparent;
 	pic->BringToFront();
 	this->Controls->Add(pic);
+	// (*picVector[0])->Left += 3; Nie zadziaÅ‚a
 }
 };
 }
