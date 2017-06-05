@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <cstdlib>
 #include <ctime>
@@ -14,14 +14,14 @@ namespace Hellevator {
 	using namespace System::Drawing;
 	using namespace std;
 	static vector<Passenger^*> picVector;
-	
+
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-			 static int timer = 0;
-			 static int positionController = 0;
+		static int timer = 0;
+		static int positionController = 0;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -46,7 +46,7 @@ namespace Hellevator {
 
 	protected:
 		/// <summary>
-		/// Wyczy�� wszystkie u�ywane zasoby.
+		/// Wyczyœæ wszystkie u¿ywane zasoby.
 		/// </summary>
 		~MyForm()
 		{
@@ -71,8 +71,8 @@ namespace Hellevator {
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Wymagana metoda obs�ugi projektanta � nie nale�y modyfikowa� 
-		/// zawarto�� tej metody z edytorem kodu.
+		/// Wymagana metoda obs³ugi projektanta — nie nale¿y modyfikowaæ 
+		/// zawartoœæ tej metody z edytorem kodu.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -104,7 +104,7 @@ namespace Hellevator {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 3;
-			this->button1->Text = L"Wejd� do Windy";
+			this->button1->Text = L"WejdŸ do Windy";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
@@ -189,7 +189,7 @@ namespace Hellevator {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 11;
-			this->button2->Text = L"Tw�rz";
+			this->button2->Text = L"Twórz";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
@@ -232,56 +232,59 @@ namespace Hellevator {
 
 		}
 #pragma endregion
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	this->timer1->Start();
-}
-private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	/*if (timer != 175)
-	{
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		this->timer1->Start();
+	}
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		/*if (timer != 175)
+		{
 		moveRight(pictureBox3);
 		switch (positionController)
 		{
 		case 0: case 1: case 2:
-			moveUp(pictureBox3);
-			positionController++;
-			break;
+		moveUp(pictureBox3);
+		positionController++;
+		break;
 		case 3: case 4: case 5:
-			moveDown(pictureBox3);
-			positionController++;
-			break;
+		moveDown(pictureBox3);
+		positionController++;
+		break;
 		case 6:
-			positionController = 0;
-			break;
+		positionController = 0;
+		break;
 		default:
-			positionController = 0;
-			break;
+		positionController = 0;
+		break;
 		}
-	}
-	else
-	{
+		}
+		else
+		{
 		this->timer1->Stop();
 		timer = 0;
+		}
+
+		timer++;*/
 	}
-		
-	timer++;*/
-}
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	for (int i = 0; i < 5; i++)
-	{
-		Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
-		this->Controls->Add(passenger);
-		Passenger^ * pointer = &passenger;
-		picVector.push_back(pointer);
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+		for (int i = 0; i < 5; i++)
+		{
+			// Generowanie ludzików po naciśnięciu buttona
+			Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
+			this->Controls->Add(passenger);
+			Passenger^ * pointer = &passenger;
+			picVector.push_back(pointer); // Wrzucam do vectora wskaźniki na obiekty Passenger(Dziedziczą z PictureBox)
+		}
+		//Operacje na tych obiektach tutaj działają
+
 	}
-}
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	PictureBox^ pic = gcnew PictureBox();
-	pic->Load("Resources/deadpool.png");
-	pic->Location = Point(250, 250);
-	pic->Size = System::Drawing::Size(90, 90);
-	pic->BackColor = System::Drawing::Color::Transparent;
-	pic->BringToFront();
-	this->Controls->Add(pic);
-}
-};
+	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+		(*picVector[0])->moveDown();
+		(*picVector[0])->moveUp();
+		(*picVector[0])->moveRight();
+		(*picVector[0])->moveLeft();	
+		(*picVector[0])->Left += 3;
+		// Tu występują błędy
+
+	}
+	};
 }
