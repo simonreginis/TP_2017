@@ -14,14 +14,14 @@ namespace Hellevator {
 	using namespace System::Drawing;
 	using namespace std;
 	static vector<Passenger^*> picVector;
-	
+
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-			 static int timer = 0;
-			 static int positionController = 0;
+		static int timer = 0;
+		static int positionController = 0;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -232,60 +232,59 @@ namespace Hellevator {
 
 		}
 #pragma endregion
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	this->timer1->Start();
-}
-private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	/*if (timer != 175)
-	{
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		this->timer1->Start();
+	}
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		/*if (timer != 175)
+		{
 		moveRight(pictureBox3);
 		switch (positionController)
 		{
 		case 0: case 1: case 2:
-			moveUp(pictureBox3);
-			positionController++;
-			break;
+		moveUp(pictureBox3);
+		positionController++;
+		break;
 		case 3: case 4: case 5:
-			moveDown(pictureBox3);
-			positionController++;
-			break;
+		moveDown(pictureBox3);
+		positionController++;
+		break;
 		case 6:
-			positionController = 0;
-			break;
+		positionController = 0;
+		break;
 		default:
-			positionController = 0;
-			break;
+		positionController = 0;
+		break;
 		}
-	}
-	else
-	{
+		}
+		else
+		{
 		this->timer1->Stop();
 		timer = 0;
+		}
+
+		timer++;*/
 	}
-		
-	timer++;*/
-}
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	for (int i = 0; i < 5; i++)
-	{
-		// Generowanie ludzików po naciśnięciu buttona
-		Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
-		this->Controls->Add(passenger);
-		Passenger^ * pointer = &passenger;
-		picVector.push_back(pointer); // Wrzucam do vectora wskaźniki na obiekty Passenger(Dziedziczą z PictureBox)
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+		for (int i = 0; i < 5; i++)
+		{
+			// Generowanie ludzików po naciśnięciu buttona
+			Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
+			this->Controls->Add(passenger);
+			Passenger^ * pointer = &passenger;
+			picVector.push_back(pointer); // Wrzucam do vectora wskaźniki na obiekty Passenger(Dziedziczą z PictureBox)
+		}
+		//Operacje na tych obiektach tutaj działają
+
 	}
-	//Operacje na tych obirktach tutaj działają
-	
-}
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	PictureBox^ pic = gcnew PictureBox();
-	pic->Load("Resources/deadpool.png");
-	pic->Location = Point(250, 250);
-	pic->Size = System::Drawing::Size(90, 90);
-	pic->BackColor = System::Drawing::Color::Transparent;
-	pic->BringToFront();
-	this->Controls->Add(pic);
-	// (*picVector[0])->Left += 3; Nie zadziała
-}
-};
+	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+		(*picVector[0])->moveDown();
+		(*picVector[0])->moveUp();
+		(*picVector[0])->moveRight();
+		(*picVector[0])->moveLeft();	
+		(*picVector[0])->Left += 3;
+		// Tu występują błędy
+
+	}
+	};
 }
