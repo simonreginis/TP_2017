@@ -13,7 +13,6 @@ namespace Hellevator {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
-	static vector<Passenger^*> picVector;
 
 	/// <summary>
 	/// Podsumowanie informacji o MyForm
@@ -22,6 +21,7 @@ namespace Hellevator {
 	{
 		static int timer = 0;
 		static int positionController = 0;
+	private: ArrayList^ picList = gcnew ArrayList();
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -270,21 +270,14 @@ namespace Hellevator {
 		{
 			// Generowanie ludzików po naciśnięciu buttona
 			Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
+			picList->Add(passenger);
 			this->Controls->Add(passenger);
-			Passenger^ * pointer = &passenger;
-			picVector.push_back(pointer); // Wrzucam do vectora wskaźniki na obiekty Passenger(Dziedziczą z PictureBox)
 		}
 		//Operacje na tych obiektach tutaj działają
 
 	}
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		(*picVector[0])->moveDown();
-		(*picVector[0])->moveUp();
-		(*picVector[0])->moveRight();
-		(*picVector[0])->moveLeft();	
-		(*picVector[0])->Left += 3;
-		// Tu występują błędy
-
+		((Passenger^)picList[0])->moveDown();
 	}
 	};
 }
