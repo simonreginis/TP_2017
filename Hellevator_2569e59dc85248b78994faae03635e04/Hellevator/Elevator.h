@@ -15,6 +15,10 @@ namespace Hellevator {
 	/// </summary>
 	public ref class Elevator : public System::Windows::Forms::UserControl
 	{
+	public: int cabinHeight = 200;
+
+	private: int cabinPosition = 0;
+
 	public:
 		Elevator(void)
 		{
@@ -36,11 +40,29 @@ namespace Hellevator {
 	protected: virtual void OnPaint(PaintEventArgs^ e) override
 	{
 		UserControl::OnPaint(e);
-		
 		Graphics^ g = e->Graphics;
-		Pen^ pen = gcnew Pen(Color::BurlyWood);
 
-		g->DrawLine(pen, Point(this->Location), Point(this->Location.X, this->Location.Y + this->Height));
+		// draw frame
+		Pen^ framePen = gcnew Pen(Color::Black);
+		framePen->Width = 3.0f;
+
+		int offset_x = 2;
+		int offset_y = 2;
+		g->DrawLine(framePen, offset_x, offset_y, offset_x, this->Height - offset_y);
+		g->DrawLine(framePen, offset_x, offset_y, this->Width - offset_x, offset_y);
+		g->DrawLine(framePen, this->Width + offset_x, this->Height - offset_y, offset_x, this->Height - offset_y);
+		g->DrawLine(framePen, this->Width - offset_x, this->Height - offset_y, this->Width - offset_x, offset_y);
+
+		// draw cabin
+		Pen^ cabinPen = gcnew Pen(Color::SaddleBrown);
+		cabinPen->Width = 3.0f;
+
+		int coffset_x = 0;
+		int coffset_y = 0;
+		g->DrawLine(cabinPen, offset_x + coffset_x, cabinPosition + offset_y + coffset_y, offset_x + coffset_x, cabinPosition + cabinHeight - offset_y - coffset_y);
+		g->DrawLine(cabinPen, offset_x + coffset_x, cabinPosition + offset_y + coffset_y, this->Width - offset_x - coffset_x, cabinPosition + offset_y + coffset_y);
+		g->DrawLine(cabinPen, this->Width - offset_x - coffset_x, cabinPosition + cabinHeight - offset_y - coffset_y, offset_x, cabinPosition + cabinHeight - offset_y - coffset_y);
+		g->DrawLine(cabinPen, this->Width - offset_x - coffset_x, cabinPosition + cabinHeight - offset_y - coffset_y, this->Width - offset_x - coffset_x, cabinPosition + offset_y + coffset_y);
 	}
 
 	private:

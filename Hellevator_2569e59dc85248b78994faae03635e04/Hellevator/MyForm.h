@@ -57,6 +57,7 @@ namespace Hellevator {
 			//
 			srand(time(NULL));
 			this->timer1->Start();
+			this->elevator->Size = System::Drawing::Size(294, this->Height - 40);
 		}
 
 	protected:
@@ -269,10 +270,10 @@ namespace Hellevator {
 			//
 			// elevator
 			//
-			this->elevator->BackColor = System::Drawing::ColorTranslator::FromHtml("#7776FF");
-			this->elevator->Location = System::Drawing::Point(705, 715);
+			this->elevator->BackColor = System::Drawing::Color::DarkGray;
+			this->elevator->Location = System::Drawing::Point(705, 0);
 			this->elevator->Name = L"elevator";
-			this->elevator->Size = System::Drawing::Size(294, 180);
+			this->elevator->Size = System::Drawing::Size(294, this->Height);
 			this->elevator->TabIndex = 9;
 			this->elevator->TabStop = false;
 			// 
