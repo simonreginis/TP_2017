@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="FloorEventArgs.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Passenger.cpp" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="Floor.h">
       <FileType>CppControl</FileType>
     </ClInclude>
+    <ClInclude Include="FloorEventArgs.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

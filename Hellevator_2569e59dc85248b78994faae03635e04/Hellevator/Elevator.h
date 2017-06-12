@@ -1,5 +1,6 @@
 #pragma once
 #include "Floor.h"
+#include "FloorEventArgs.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -23,6 +24,8 @@ namespace Hellevator {
 	private: int cabinPosition = 0;
 	private: int waitLeft = 0;
 	private: ArrayList^ floorsWaiting = gcnew ArrayList();
+
+	public: event EventHandler^ FloorReached;
 
 	public:
 		Elevator(void)
@@ -95,6 +98,10 @@ namespace Hellevator {
 		}
 #pragma endregion
 
+	public: virtual void OnFloorReached(EventArgs^ e) {
+		FloorReached(this, e);
+	}
+
 	public: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 		if (waitLeft > -300)
 			waitLeft--;
@@ -112,7 +119,9 @@ namespace Hellevator {
 				waitLeft = 0;
 			}
 			else {
-				// TODO event firing
+				int tag = Convert::ToInt32(((Floor^)floorsWaiting[0])->Tag);
+				FloorEventArgs^ fe = gcnew FloorEventArgs(tag);
+				OnFloorReached(fe);
 				waitLeft = 200;
 				floorsWaiting->RemoveAt(0);
 			}

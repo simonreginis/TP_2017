@@ -5,6 +5,7 @@
 #include "Passenger.h"
 #include "Elevator.h"
 #include "Floor.h"
+#include "FloorEventArgs.h"
 
 #define FLOOR_1_HEIGHT 715
 #define FLOOR_2_HEIGHT 545
@@ -329,6 +330,7 @@ namespace Hellevator {
 			this->elevator->Size = System::Drawing::Size(294, this->Height);
 			this->elevator->TabIndex = 9;
 			this->elevator->TabStop = false;
+			this->elevator->FloorReached += gcnew System::EventHandler(this, &Hellevator::MyForm::OnFloorReached);
 			// 
 			// MyForm
 			// 
@@ -465,5 +467,12 @@ namespace Hellevator {
 		}
 		b->BackColor = SystemColors::ButtonFace;
 	}
+			 void OnFloorReached(System::Object ^sender, System::EventArgs ^e);
 };
+}
+
+
+void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArgs ^e)
+{
+	SetWaitingButtonInactiveColor( ((FloorEventArgs^)e)->FloorTag );
 }
