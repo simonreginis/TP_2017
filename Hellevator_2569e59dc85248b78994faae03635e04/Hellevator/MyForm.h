@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Passenger.h"
+#include "Elevator.h"
 
 #define FLOOR_1_HEIGHT 715
 #define FLOOR_2_HEIGHT 545
@@ -36,7 +37,6 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox4;
 	private: System::Windows::Forms::PictureBox^  pictureBox5;
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
-	private: System::Windows::Forms::PictureBox^  pictureBox7;
 	private: System::Windows::Forms::Button^  button2;
 	private: System::Windows::Forms::Button^  button3;
 	private: System::Windows::Forms::Button^  floor1_button;
@@ -46,6 +46,7 @@ namespace Hellevator {
 	private: System::Windows::Forms::Button^  floor5_button;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
+	private: Elevator^ elevator;
 
 	public:
 		MyForm(void)
@@ -99,7 +100,6 @@ namespace Hellevator {
 			this->pictureBox4 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox5 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
@@ -108,12 +108,12 @@ namespace Hellevator {
 			this->floor3_button = (gcnew System::Windows::Forms::Button());
 			this->floor4_button = (gcnew System::Windows::Forms::Button());
 			this->floor5_button = (gcnew System::Windows::Forms::Button());
+			this->elevator = (gcnew Elevator());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox7))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -181,16 +181,6 @@ namespace Hellevator {
 			this->pictureBox6->Size = System::Drawing::Size(100, 100);
 			this->pictureBox6->TabIndex = 8;
 			this->pictureBox6->TabStop = false;
-			// 
-			// pictureBox7
-			// 
-			this->pictureBox7->BackColor = System::Drawing::Color::Transparent;
-			this->pictureBox7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox7.Image")));
-			this->pictureBox7->Location = System::Drawing::Point(705, 715);
-			this->pictureBox7->Name = L"pictureBox7";
-			this->pictureBox7->Size = System::Drawing::Size(294, 180);
-			this->pictureBox7->TabIndex = 9;
-			this->pictureBox7->TabStop = false;
 			// 
 			// pictureBox3
 			// 
@@ -276,6 +266,15 @@ namespace Hellevator {
 			this->floor4_button->Text = L"O";
 			this->floor4_button->UseVisualStyleBackColor = true;
 			this->floor4_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			//
+			// elevator
+			//
+			//this->elevator->BackColor = System::Drawing::Color::Transparent;
+			this->elevator->Location = System::Drawing::Point(705, 715);
+			this->elevator->Name = L"elevator";
+			this->elevator->Size = System::Drawing::Size(294, 180);
+			this->elevator->TabIndex = 9;
+			this->elevator->TabStop = false;
 			// 
 			// MyForm
 			// 
@@ -291,13 +290,13 @@ namespace Hellevator {
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->pictureBox3);
-			this->Controls->Add(this->pictureBox7);
 			this->Controls->Add(this->pictureBox6);
 			this->Controls->Add(this->pictureBox5);
 			this->Controls->Add(this->pictureBox4);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button1);
+			this->Controls->Add(this->elevator);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -305,7 +304,6 @@ namespace Hellevator {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox7))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
@@ -376,14 +374,14 @@ namespace Hellevator {
 			floorsWaiting->Add(1);
 
 		if (elevatorWaitLeft <= 0 && floorsWaiting->Count > 0) {
-			int elevatorLocation = pictureBox7->Location.Y;
+			int elevatorLocation = elevator->Location.Y;
 
 			if (elevatorLocation < GetFloorHeight((int)floorsWaiting[0])) {
-				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y + 1);
+				elevator->Location = Point(elevator->Location.X, elevator->Location.Y + 1);
 				elevatorWaitLeft = 0;
 			}
 			else if (elevatorLocation > GetFloorHeight((int)floorsWaiting[0])) {
-				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y - 1);
+				elevator->Location = Point(elevator->Location.X, elevator->Location.Y - 1);
 				elevatorWaitLeft = 0;
 			}
 			else {
