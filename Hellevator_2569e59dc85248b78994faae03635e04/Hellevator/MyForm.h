@@ -269,7 +269,7 @@ namespace Hellevator {
 			//
 			// elevator
 			//
-			//this->elevator->BackColor = System::Drawing::Color::Transparent;
+			this->elevator->BackColor = System::Drawing::ColorTranslator::FromHtml("#7776FF");
 			this->elevator->Location = System::Drawing::Point(705, 715);
 			this->elevator->Name = L"elevator";
 			this->elevator->Size = System::Drawing::Size(294, 180);
@@ -278,9 +278,9 @@ namespace Hellevator {
 			// 
 			// MyForm
 			// 
+			this->BackColor = System::Drawing::Color::LightCyan;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1700, 900);
 			this->Controls->Add(this->floor1_button);
 			this->Controls->Add(this->floor2_button);
