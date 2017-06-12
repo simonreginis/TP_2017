@@ -4,6 +4,12 @@
 #include <ctime>
 #include "Passenger.h"
 
+#define FLOOR_1_HEIGHT 715
+#define FLOOR_2_HEIGHT 545
+#define FLOOR_3_HEIGHT 365
+#define FLOOR_4_HEIGHT 184
+#define FLOOR_5_HEIGHT 3
+
 namespace Hellevator {
 
 	using namespace System;
@@ -23,6 +29,7 @@ namespace Hellevator {
 		static int positionController = 0;
 	private: ArrayList^ picList = gcnew ArrayList();
 	private: ArrayList^ floorsWaiting = gcnew ArrayList();
+	private: int elevatorWaitLeft = 0;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -48,6 +55,7 @@ namespace Hellevator {
 			//TODO: W tym miejscu dodaj kod konstruktora
 			//
 			srand(time(NULL));
+			this->timer1->Start();
 		}
 
 	protected:
@@ -307,6 +315,8 @@ namespace Hellevator {
 		this->timer1->Start();
 	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		timer1_Tick_MoveElevator();
+
 		/*if (timer != 175)
 		{
 		moveRight(pictureBox3);
@@ -356,6 +366,43 @@ namespace Hellevator {
 
 		if (!floorsWaiting->Contains(floorTag))
 			floorsWaiting->Add(floorTag);
+	}
+
+	private: void timer1_Tick_MoveElevator() {
+		if (elevatorWaitLeft > 0)
+			elevatorWaitLeft--;
+
+		if (elevatorWaitLeft <= 0 && floorsWaiting->Count > 0) {
+			int elevatorLocation = pictureBox7->Location.Y;
+
+			if (elevatorLocation < GetFloorHeight((int)floorsWaiting[0])) {
+				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y + 1);
+			}
+			else if (elevatorLocation > GetFloorHeight((int)floorsWaiting[0])) {
+				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y - 1);
+			}
+			else {
+				elevatorWaitLeft = 200;
+				floorsWaiting->RemoveAt(0);
+			}
+		}
+	}
+
+	private: int GetFloorHeight(int floorNumber) {
+		switch (floorNumber) {
+		case 1:
+			return FLOOR_1_HEIGHT;
+		case 2:
+			return FLOOR_2_HEIGHT;
+		case 3:
+			return FLOOR_3_HEIGHT;
+		case 4:
+			return FLOOR_4_HEIGHT;
+		case 5:
+			return FLOOR_5_HEIGHT;
+		default:
+			return NULL;
+		}
 	}
 };
 }
