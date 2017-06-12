@@ -1,4 +1,5 @@
 #pragma once
+#include "Floor.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -19,6 +20,8 @@ namespace Hellevator {
 	public: ArrayList^ floors = gcnew ArrayList();
 
 	private: int cabinPosition = 0;
+	private: int waitLeft = 0;
+	private: ArrayList^ floorsWaiting = gcnew ArrayList();
 
 	public:
 		Elevator(void)
@@ -82,5 +85,37 @@ namespace Hellevator {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		}
 #pragma endregion
+
+	public: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		if (waitLeft > -300)
+			waitLeft--;
+		//else
+		//	floorsWaiting->Add(1);	// TODO add floor1
+
+		if (waitLeft <= 0 && floorsWaiting->Count > 0) {
+			int floorY = ((Floor^)floorsWaiting[0])->Location.Y;
+			if (cabinPosition + cabinHeight < floorY) {
+				cabinPosition++;
+				waitLeft = 0;
+			}
+			else if (cabinPosition + cabinHeight > floorY) {
+				cabinPosition--;
+				waitLeft = 0;
+			}
+			else {
+				// TODO event firing
+				waitLeft = 200;
+				floorsWaiting->RemoveAt(0);
+			}
+		}
+
+		Invalidate(true);
+	}
+
+	public: void AddWaitingFloor(Floor^ floor) {
+		if (!floorsWaiting->Contains(floor)) {
+			floorsWaiting->Add(floor);
+		}
+	}
 	};
 }

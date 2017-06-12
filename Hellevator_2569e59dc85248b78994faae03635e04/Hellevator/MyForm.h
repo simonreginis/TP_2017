@@ -149,6 +149,7 @@ namespace Hellevator {
 			// 
 			this->timer1->Interval = 15;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
+			this->timer1->Tick += gcnew System::EventHandler(elevator, &Elevator::timer1_Tick);
 			// 
 			// pictureBox1
 			// 
@@ -371,7 +372,6 @@ namespace Hellevator {
 		this->timer1->Start();
 	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		timer1_Tick_MoveElevator();
 
 		/*if (timer != 175)
 		{
@@ -419,51 +419,25 @@ namespace Hellevator {
 	private: System::Void floor_button_Click(System::Object^  sender, System::EventArgs^  e) {
 		Button^ b = ((Button^)sender);
 		b->BackColor = Color::GreenYellow;
+
 		int floorTag = Convert::ToInt32(b->Tag);
-
-		if (!floorsWaiting->Contains(floorTag))
-			floorsWaiting->Add(floorTag);
+		elevator->AddWaitingFloor(getFloorByTag(floorTag));
 	}
 
-	private: void timer1_Tick_MoveElevator() {
-		if (elevatorWaitLeft > -300)
-			elevatorWaitLeft--;
-		else
-			floorsWaiting->Add(1);
-
-		if (elevatorWaitLeft <= 0 && floorsWaiting->Count > 0) {
-			int elevatorLocation = elevator->Location.Y;
-
-			if (elevatorLocation < GetFloorHeight((int)floorsWaiting[0])) {
-				elevator->Location = Point(elevator->Location.X, elevator->Location.Y + 1);
-				elevatorWaitLeft = 0;
-			}
-			else if (elevatorLocation > GetFloorHeight((int)floorsWaiting[0])) {
-				elevator->Location = Point(elevator->Location.X, elevator->Location.Y - 1);
-				elevatorWaitLeft = 0;
-			}
-			else {
-				SetWaitingButtonInactiveColor((int)floorsWaiting[0]);
-				elevatorWaitLeft = 200;
-				floorsWaiting->RemoveAt(0);
-			}
-		}
-	}
-
-	private: int GetFloorHeight(int floorNumber) {
-		switch (floorNumber) {
+	private: Floor^ getFloorByTag(int tag) {
+		switch (tag) {
 		case 1:
-			return FLOOR_1_HEIGHT;
+			return floor1;
 		case 2:
-			return FLOOR_2_HEIGHT;
+			return floor2;
 		case 3:
-			return FLOOR_3_HEIGHT;
+			return floor3;
 		case 4:
-			return FLOOR_4_HEIGHT;
+			return floor4;
 		case 5:
-			return FLOOR_5_HEIGHT;
+			return floor5;
 		default:
-			return NULL;
+			return nullptr;
 		}
 	}
 
