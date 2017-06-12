@@ -4,6 +4,12 @@
 #include <ctime>
 #include "Passenger.h"
 
+#define FLOOR_1_HEIGHT 715
+#define FLOOR_2_HEIGHT 545
+#define FLOOR_3_HEIGHT 365
+#define FLOOR_4_HEIGHT 184
+#define FLOOR_5_HEIGHT 3
+
 namespace Hellevator {
 
 	using namespace System;
@@ -22,6 +28,8 @@ namespace Hellevator {
 		static int timer = 0;
 		static int positionController = 0;
 	private: ArrayList^ picList = gcnew ArrayList();
+	private: ArrayList^ floorsWaiting = gcnew ArrayList();
+	private: int elevatorWaitLeft = 0;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -31,6 +39,11 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox7;
 	private: System::Windows::Forms::Button^  button2;
 	private: System::Windows::Forms::Button^  button3;
+	private: System::Windows::Forms::Button^  floor1_button;
+	private: System::Windows::Forms::Button^  floor2_button;
+	private: System::Windows::Forms::Button^  floor3_button;
+	private: System::Windows::Forms::Button^  floor4_button;
+	private: System::Windows::Forms::Button^  floor5_button;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
 
@@ -42,6 +55,7 @@ namespace Hellevator {
 			//TODO: W tym miejscu dodaj kod konstruktora
 			//
 			srand(time(NULL));
+			this->timer1->Start();
 		}
 
 	protected:
@@ -89,6 +103,11 @@ namespace Hellevator {
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->floor1_button = (gcnew System::Windows::Forms::Button());
+			this->floor2_button = (gcnew System::Windows::Forms::Button());
+			this->floor3_button = (gcnew System::Windows::Forms::Button());
+			this->floor4_button = (gcnew System::Windows::Forms::Button());
+			this->floor5_button = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
@@ -203,12 +222,72 @@ namespace Hellevator {
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
+			// floor1_button
+			// 
+			this->floor1_button->Location = System::Drawing::Point(620, 800);
+			this->floor1_button->Name = L"floor1_button";
+			this->floor1_button->Size = System::Drawing::Size(60, 60);
+			this->floor1_button->TabIndex = 13;
+			this->floor1_button->Tag = L"1";
+			this->floor1_button->Text = L"O";
+			this->floor1_button->UseVisualStyleBackColor = true;
+			this->floor1_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
+			// floor3_button
+			// 
+			this->floor3_button->Location = System::Drawing::Point(620, 400);
+			this->floor3_button->Name = L"floor3_button";
+			this->floor3_button->Size = System::Drawing::Size(60, 60);
+			this->floor3_button->TabIndex = 14;
+			this->floor3_button->Tag = L"3";
+			this->floor3_button->Text = L"O";
+			this->floor3_button->UseVisualStyleBackColor = true;
+			this->floor3_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
+			// floor5_button
+			// 
+			this->floor5_button->Location = System::Drawing::Point(620, 80);
+			this->floor5_button->Name = L"floor5_button";
+			this->floor5_button->Size = System::Drawing::Size(60, 60);
+			this->floor5_button->TabIndex = 15;
+			this->floor5_button->Tag = L"5";
+			this->floor5_button->Text = L"O";
+			this->floor5_button->UseVisualStyleBackColor = true;
+			this->floor5_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
+			// floor2_button
+			// 
+			this->floor2_button->Location = System::Drawing::Point(1010, 600);
+			this->floor2_button->Name = L"floor2_button";
+			this->floor2_button->Size = System::Drawing::Size(60, 60);
+			this->floor2_button->TabIndex = 16;
+			this->floor2_button->Tag = L"2";
+			this->floor2_button->Text = L"O";
+			this->floor2_button->UseVisualStyleBackColor = true;
+			this->floor2_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
+			// floor4_button
+			// 
+			this->floor4_button->Location = System::Drawing::Point(1010, 240);
+			this->floor4_button->Name = L"floor4_button";
+			this->floor4_button->Size = System::Drawing::Size(60, 60);
+			this->floor4_button->TabIndex = 17;
+			this->floor4_button->Tag = L"4";
+			this->floor4_button->Text = L"O";
+			this->floor4_button->UseVisualStyleBackColor = true;
+			this->floor4_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1700, 900);
+			this->Controls->Add(this->floor1_button);
+			this->Controls->Add(this->floor2_button);
+			this->Controls->Add(this->floor3_button);
+			this->Controls->Add(this->floor4_button);
+			this->Controls->Add(this->floor5_button);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->pictureBox3);
@@ -236,6 +315,8 @@ namespace Hellevator {
 		this->timer1->Start();
 	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		timer1_Tick_MoveElevator();
+
 		/*if (timer != 175)
 		{
 		moveRight(pictureBox3);
@@ -279,5 +360,76 @@ namespace Hellevator {
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
 		((Passenger^)picList[0])->moveDown();
 	}
-	};
+	private: System::Void floor_button_Click(System::Object^  sender, System::EventArgs^  e) {
+		Button^ b = ((Button^)sender);
+		b->BackColor = Color::GreenYellow;
+		int floorTag = Convert::ToInt32(b->Tag);
+
+		if (!floorsWaiting->Contains(floorTag))
+			floorsWaiting->Add(floorTag);
+	}
+
+	private: void timer1_Tick_MoveElevator() {
+		if (elevatorWaitLeft > 0)
+			elevatorWaitLeft--;
+
+		if (elevatorWaitLeft <= 0 && floorsWaiting->Count > 0) {
+			int elevatorLocation = pictureBox7->Location.Y;
+
+			if (elevatorLocation < GetFloorHeight((int)floorsWaiting[0])) {
+				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y + 1);
+			}
+			else if (elevatorLocation > GetFloorHeight((int)floorsWaiting[0])) {
+				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y - 1);
+			}
+			else {
+				SetWaitingButtonInactiveColor((int)floorsWaiting[0]);
+				elevatorWaitLeft = 200;
+				floorsWaiting->RemoveAt(0);
+			}
+		}
+	}
+
+	private: int GetFloorHeight(int floorNumber) {
+		switch (floorNumber) {
+		case 1:
+			return FLOOR_1_HEIGHT;
+		case 2:
+			return FLOOR_2_HEIGHT;
+		case 3:
+			return FLOOR_3_HEIGHT;
+		case 4:
+			return FLOOR_4_HEIGHT;
+		case 5:
+			return FLOOR_5_HEIGHT;
+		default:
+			return NULL;
+		}
+	}
+
+	private: void SetWaitingButtonInactiveColor(int floorNumber) {
+		Button^ b;
+		switch (floorNumber) {
+		case 1:
+			b = floor1_button;
+			break;
+		case 2:
+			b = floor2_button;
+			break;
+		case 3:
+			b = floor3_button;
+			break;
+		case 4:
+			b = floor4_button;
+			break;
+		case 5:
+			b = floor5_button;
+			break;
+		default:
+			return;
+			break;
+		}
+		b->BackColor = SystemColors::ButtonFace;
+	}
+};
 }
