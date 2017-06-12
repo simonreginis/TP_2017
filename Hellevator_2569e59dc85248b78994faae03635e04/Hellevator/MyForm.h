@@ -370,17 +370,21 @@ namespace Hellevator {
 	}
 
 	private: void timer1_Tick_MoveElevator() {
-		if (elevatorWaitLeft > 0)
+		if (elevatorWaitLeft > -300)
 			elevatorWaitLeft--;
+		else
+			floorsWaiting->Add(1);
 
 		if (elevatorWaitLeft <= 0 && floorsWaiting->Count > 0) {
 			int elevatorLocation = pictureBox7->Location.Y;
 
 			if (elevatorLocation < GetFloorHeight((int)floorsWaiting[0])) {
 				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y + 1);
+				elevatorWaitLeft = 0;
 			}
 			else if (elevatorLocation > GetFloorHeight((int)floorsWaiting[0])) {
 				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y - 1);
+				elevatorWaitLeft = 0;
 			}
 			else {
 				SetWaitingButtonInactiveColor((int)floorsWaiting[0]);
