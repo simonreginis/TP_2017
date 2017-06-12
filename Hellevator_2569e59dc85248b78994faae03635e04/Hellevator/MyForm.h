@@ -6,6 +6,7 @@
 #include "Elevator.h"
 #include "Floor.h"
 #include "FloorEventArgs.h"
+#include "ElevatorCallButton.h"
 
 #define FLOOR_1_HEIGHT 715
 #define FLOOR_2_HEIGHT 545
@@ -41,11 +42,11 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
 	private: System::Windows::Forms::Button^  button2;
 	private: System::Windows::Forms::Button^  button3;
-	private: System::Windows::Forms::Button^  floor1_button;
-	private: System::Windows::Forms::Button^  floor2_button;
-	private: System::Windows::Forms::Button^  floor3_button;
-	private: System::Windows::Forms::Button^  floor4_button;
-	private: System::Windows::Forms::Button^  floor5_button;
+	private: ElevatorCallButton^  floor1_button;
+	private: ElevatorCallButton^  floor2_button;
+	private: ElevatorCallButton^  floor3_button;
+	private: ElevatorCallButton^  floor4_button;
+	private: ElevatorCallButton^  floor5_button;
 	private: Floor^ floor1;
 	private: Floor^ floor2;
 	private: Floor^ floor3;
@@ -117,11 +118,11 @@ namespace Hellevator {
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
-			this->floor1_button = (gcnew System::Windows::Forms::Button());
-			this->floor2_button = (gcnew System::Windows::Forms::Button());
-			this->floor3_button = (gcnew System::Windows::Forms::Button());
-			this->floor4_button = (gcnew System::Windows::Forms::Button());
-			this->floor5_button = (gcnew System::Windows::Forms::Button());
+			this->floor1_button = (gcnew ElevatorCallButton());
+			this->floor2_button = (gcnew ElevatorCallButton());
+			this->floor3_button = (gcnew ElevatorCallButton());
+			this->floor4_button = (gcnew ElevatorCallButton());
+			this->floor5_button = (gcnew ElevatorCallButton());
 			this->floor1 = (gcnew Floor());
 			this->floor2 = (gcnew Floor());
 			this->floor3 = (gcnew Floor());
@@ -419,8 +420,8 @@ namespace Hellevator {
 		((Passenger^)picList[0])->moveDown();
 	}
 	private: System::Void floor_button_Click(System::Object^  sender, System::EventArgs^  e) {
-		Button^ b = ((Button^)sender);
-		b->BackColor = Color::GreenYellow;
+		ElevatorCallButton^ b = ((ElevatorCallButton^)sender);
+		b->SetActive(true);
 
 		int floorTag = Convert::ToInt32(b->Tag);
 		elevator->AddWaitingFloor(getFloorByTag(floorTag));
@@ -444,7 +445,7 @@ namespace Hellevator {
 	}
 
 	private: void SetWaitingButtonInactiveColor(int floorNumber) {
-		Button^ b;
+		ElevatorCallButton^ b;
 		switch (floorNumber) {
 		case 1:
 			b = floor1_button;
@@ -465,7 +466,7 @@ namespace Hellevator {
 			return;
 			break;
 		}
-		b->BackColor = SystemColors::ButtonFace;
+		b->SetActive(false);
 	}
 			 void OnFloorReached(System::Object ^sender, System::EventArgs ^e);
 };

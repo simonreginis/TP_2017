@@ -30,6 +30,9 @@
     <ClCompile Include="FloorEventArgs.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="ElevatorCallButton.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
@@ -46,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="FloorEventArgs.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="ElevatorCallButton.h">
+      <Filter>Pliki źródłowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

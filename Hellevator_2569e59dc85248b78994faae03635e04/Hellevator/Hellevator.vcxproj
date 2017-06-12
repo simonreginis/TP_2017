@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Elevator.cpp" />
+    <ClCompile Include="ElevatorCallButton.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="FloorEventArgs.cpp" />
     <ClCompile Include="MyForm.cpp" />
@@ -143,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Elevator.h">
+      <FileType>CppControl</FileType>
+    </ClInclude>
+    <ClInclude Include="ElevatorCallButton.h">
       <FileType>CppControl</FileType>
     </ClInclude>
     <ClInclude Include="Floor.h">
