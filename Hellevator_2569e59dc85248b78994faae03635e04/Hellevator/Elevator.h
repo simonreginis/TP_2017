@@ -91,6 +91,7 @@ namespace Hellevator {
 		void InitializeComponent(void)
 		{
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			DoubleBuffered = true;
 		}
 #pragma endregion
 
