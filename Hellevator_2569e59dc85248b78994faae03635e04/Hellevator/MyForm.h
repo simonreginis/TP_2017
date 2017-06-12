@@ -362,6 +362,7 @@ namespace Hellevator {
 	}
 	private: System::Void floor_button_Click(System::Object^  sender, System::EventArgs^  e) {
 		Button^ b = ((Button^)sender);
+		b->BackColor = Color::GreenYellow;
 		int floorTag = Convert::ToInt32(b->Tag);
 
 		if (!floorsWaiting->Contains(floorTag))
@@ -382,6 +383,7 @@ namespace Hellevator {
 				pictureBox7->Location = Point(pictureBox7->Location.X, pictureBox7->Location.Y - 1);
 			}
 			else {
+				SetWaitingButtonInactiveColor((int)floorsWaiting[0]);
 				elevatorWaitLeft = 200;
 				floorsWaiting->RemoveAt(0);
 			}
@@ -403,6 +405,31 @@ namespace Hellevator {
 		default:
 			return NULL;
 		}
+	}
+
+	private: void SetWaitingButtonInactiveColor(int floorNumber) {
+		Button^ b;
+		switch (floorNumber) {
+		case 1:
+			b = floor1_button;
+			break;
+		case 2:
+			b = floor2_button;
+			break;
+		case 3:
+			b = floor3_button;
+			break;
+		case 4:
+			b = floor4_button;
+			break;
+		case 5:
+			b = floor5_button;
+			break;
+		default:
+			return;
+			break;
+		}
+		b->BackColor = SystemColors::ButtonFace;
 	}
 };
 }
