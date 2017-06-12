@@ -126,7 +126,7 @@ namespace Hellevator {
 			this->floor3 = (gcnew Floor());
 			this->floor4 = (gcnew Floor());
 			this->floor5 = (gcnew Floor());
-			this->elevator = (gcnew Elevator());
+			this->elevator = (gcnew Elevator(floor1));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();

@@ -19,6 +19,7 @@ namespace Hellevator {
 	public: int cabinHeight = 200;
 	public: ArrayList^ floors = gcnew ArrayList();
 
+	private: Floor^ defaultFloor;
 	private: int cabinPosition = 0;
 	private: int waitLeft = 0;
 	private: ArrayList^ floorsWaiting = gcnew ArrayList();
@@ -27,6 +28,13 @@ namespace Hellevator {
 		Elevator(void)
 		{
 			InitializeComponent();
+		}
+
+	public:
+		Elevator(Floor^ defaultFloor)
+		{
+			InitializeComponent();
+			this->defaultFloor = defaultFloor;
 		}
 
 	protected:
@@ -89,8 +97,8 @@ namespace Hellevator {
 	public: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 		if (waitLeft > -300)
 			waitLeft--;
-		//else
-		//	floorsWaiting->Add(1);	// TODO add floor1
+		else if(defaultFloor != nullptr)
+			floorsWaiting->Add(defaultFloor);
 
 		if (waitLeft <= 0 && floorsWaiting->Count > 0) {
 			int floorY = ((Floor^)floorsWaiting[0])->Location.Y;
