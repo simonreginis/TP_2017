@@ -16,6 +16,7 @@ namespace Hellevator {
 	public ref class Elevator : public System::Windows::Forms::UserControl
 	{
 	public: int cabinHeight = 200;
+	public: ArrayList^ floors = gcnew ArrayList();
 
 	private: int cabinPosition = 0;
 

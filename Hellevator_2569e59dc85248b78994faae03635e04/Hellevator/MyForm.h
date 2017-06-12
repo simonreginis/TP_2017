@@ -64,6 +64,12 @@ namespace Hellevator {
 			srand(time(NULL));
 			this->timer1->Start();
 			this->elevator->Size = System::Drawing::Size(294, this->Height - 40);
+
+			this->elevator->floors->Add(floor1);
+			this->elevator->floors->Add(floor2);
+			this->elevator->floors->Add(floor3);
+			this->elevator->floors->Add(floor4);
+			this->elevator->floors->Add(floor5);
 		}
 
 	protected:
