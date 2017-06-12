@@ -4,6 +4,7 @@
 #include <ctime>
 #include "Passenger.h"
 #include "Elevator.h"
+#include "Floor.h"
 
 #define FLOOR_1_HEIGHT 715
 #define FLOOR_2_HEIGHT 545
@@ -44,6 +45,11 @@ namespace Hellevator {
 	private: System::Windows::Forms::Button^  floor3_button;
 	private: System::Windows::Forms::Button^  floor4_button;
 	private: System::Windows::Forms::Button^  floor5_button;
+	private: Floor^ floor1;
+	private: Floor^ floor2;
+	private: Floor^ floor3;
+	private: Floor^ floor4;
+	private: Floor^ floor5;
 
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
 	private: Elevator^ elevator;
@@ -109,6 +115,11 @@ namespace Hellevator {
 			this->floor3_button = (gcnew System::Windows::Forms::Button());
 			this->floor4_button = (gcnew System::Windows::Forms::Button());
 			this->floor5_button = (gcnew System::Windows::Forms::Button());
+			this->floor1 = (gcnew Floor());
+			this->floor2 = (gcnew Floor());
+			this->floor3 = (gcnew Floor());
+			this->floor4 = (gcnew Floor());
+			this->floor5 = (gcnew Floor());
 			this->elevator = (gcnew Elevator());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
@@ -267,6 +278,41 @@ namespace Hellevator {
 			this->floor4_button->Text = L"O";
 			this->floor4_button->UseVisualStyleBackColor = true;
 			this->floor4_button->Click += gcnew System::EventHandler(this, &MyForm::floor_button_Click);
+			// 
+			// floor1
+			// 
+			this->floor1->Location = System::Drawing::Point(70, 850);
+			this->floor1->Name = L"floor1";
+			this->floor1->Size = System::Drawing::Size(600, 10);
+			this->floor1->Tag = L"1";
+			// 
+			// floor2
+			// 
+			this->floor2->Location = System::Drawing::Point(1000, 700);
+			this->floor2->Name = L"floor2";
+			this->floor2->Size = System::Drawing::Size(600, 10);
+			this->floor2->Tag = L"2";
+			// 
+			// floor3
+			// 
+			this->floor3->Location = System::Drawing::Point(70, 550);
+			this->floor3->Name = L"floor3";
+			this->floor3->Size = System::Drawing::Size(600, 10);
+			this->floor3->Tag = L"3";
+			// 
+			// floor4
+			// 
+			this->floor4->Location = System::Drawing::Point(1000, 380);
+			this->floor4->Name = L"floor4";
+			this->floor4->Size = System::Drawing::Size(600, 10);
+			this->floor4->Tag = L"4";
+			// 
+			// floor5
+			// 
+			this->floor5->Location = System::Drawing::Point(70, 200);
+			this->floor5->Name = L"floor5";
+			this->floor5->Size = System::Drawing::Size(600, 10);
+			this->floor5->Tag = L"5";
 			//
 			// elevator
 			//
@@ -297,6 +343,11 @@ namespace Hellevator {
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button1);
+			this->Controls->Add(this->floor1);
+			this->Controls->Add(this->floor2);
+			this->Controls->Add(this->floor3);
+			this->Controls->Add(this->floor4);
+			this->Controls->Add(this->floor5);
 			this->Controls->Add(this->elevator);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
