@@ -1,6 +1,6 @@
 # Hellevator Programming Techniques Project 2017
 
-## Simulator of a elevator
+## Simulator of an elevator
 
 * Simulator of a evelator
 * Uses Windows Forms for Graphical Interface
