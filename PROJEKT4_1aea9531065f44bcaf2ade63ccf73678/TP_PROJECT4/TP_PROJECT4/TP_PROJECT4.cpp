@@ -208,10 +208,13 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 			controllerBlock = TRUE;
 			KillTimer(hWnd, TMR_1);
 		}
-		else if ((abc()) || (abc2()))
+		else if ((peopleC.size() != 8) && (abc2()))
 		{
 			TIMER1 = FALSE;
 			SetTimer(hWnd, TMR_2, 500, 0);
+		}
+		else if (abc())
+		{
 			TIMER1 = FALSE;
 			SetTimer(hWnd, TMR_3, 500, 0);
 		}
