@@ -25,7 +25,7 @@ public:
 	int positionY;
 	int destination;
 	int source;
-	int weight;
+	int weight = 70;
 	int number;
 	void drawhuman(HDC hdc, int destination)
 	{
@@ -150,6 +150,50 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 	drawpeople(peopleF2);
 	drawpeople(peopleF1);
 	drawpeople(peopleC);
+}
+
+
+bool xyz(int a)
+{
+	for (int i = 0; i < peopleC.size(); i++)
+		if (peopleC[i].destination == a)
+			return FALSE;
+	return TRUE;
+}
+
+
+void xyz2(int a)
+{
+	for (;;)
+	{
+		bool W = TRUE;
+		for (int i = 0; i < peopleC.size(); i++)
+		{
+			if (peopleC[i].destination == a)
+			{
+				peopleC.erase(peopleC.begin() + i);
+				W = FALSE;
+				break;
+			}
+		}
+		if (W)
+			break;
+	}
+}
+
+
+void remove()
+{
+	if ((peopleF1.empty()) && (xyz(552)))
+		xyz2(552);
+	if ((peopleF2.empty()) && (xyz(444)))
+		xyz2(444);
+	if ((peopleF3.empty()) && (xyz(336)))
+		xyz2(336);
+	if ((peopleF4.empty()) && (xyz(228)))
+		xyz2(228);
+	if ((peopleF5.empty()) && (xyz(120)))
+		xyz2(120);
 }
 
 
