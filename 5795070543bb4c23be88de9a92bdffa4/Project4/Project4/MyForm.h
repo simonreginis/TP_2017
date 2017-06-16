@@ -1,8 +1,9 @@
-#pragma once
-
-
+﻿#pragma once
+#include <vector>
 
 namespace Project4 {
+
+	std::vector <int> kolejnosc;
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -17,40 +18,89 @@ namespace Project4 {
 
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-
 		static int licznik_odleglosci = 0;
 		static int pozycja_windy = 510;
 		static int cel_windy = 510;
+		static int kierunek = 1;
+		static int postoj = 0;
+		static int bezczynnosc = 0;
+		//i1na2 - int, znaczy ilość ludzi czekająch na piętrze 1 i chcących jechać na piętro 2
+		//s1na2 - string, odwzorowanie i1na2
+		//w_na1 - int, pokazuje ile osób w windzie chce jechać na 1 piętro
+		//sw_na1 = string, odworowanie w_na1
+		static int i1na2 = 0, i1na3 = 0, i1na4 = 0, i1na5 = 0;
+		String^ s1na2; String^ s1na3; String^ s1na4; String^ s1na5;
+		static int i2na3 = 0, i2na4 = 0, i2na5 = 0, i2na1 = 0;
+		String^ s2na3; String^ s2na4; String^ s2na5; String^ s2na1;
+		static int i3na4 = 0, i3na5 = 0, i3na1 = 0, i3na2 = 0;
+		String^ s3na4; String^ s3na5; String^ s3na1; String^ s3na2;
+		static int i4na5 = 0, i4na1 = 0, i4na2 = 0, i4na3 = 0;
+		String^ s4na5; String^ s4na1; String^ s4na2; String^ s4na3;
+		static int i5na1 = 0, i5na2 = 0, i5na3 = 0, i5na4 = 0;
+		String^ s5na1; String^ s5na2; String^ s5na3; String^ s5na4;
+		static int w_na1 = 0, w_na2 = 0, w_na3 = 0, w_na4 = 0, w_na5 = 0;
+		String^ sw_na1; String^ sw_na2; String^ sw_na3; String^ sw_na4; String^ sw_na5;
+		static int i_obciazenie = 0;
+		String^ s_obciazenie;
 
+	//b1na2 - guzik który po wciśnięciu tworzy na 1 piętrze osobę która chce jechać na 2 piętro
+    //l1na2 - label pokazujacy ile razy dany guzik został wciśnięty, w tym przypadku guzik b1na2
+	//l_w_na1 - label pokazujący wartość inta w_na1 (w_na1 opisany wyżej)
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Button^  button3;
-	private: System::Windows::Forms::Button^  button4;
-	private: System::Windows::Forms::Button^  button5;
-	private: System::Windows::Forms::Button^  button6;
-	private: System::Windows::Forms::Button^  button7;
-	private: System::Windows::Forms::Button^  button8;
-	private: System::Windows::Forms::Button^  button9;
-	private: System::Windows::Forms::Button^  button10;
-	private: System::Windows::Forms::Button^  button11;
-	private: System::Windows::Forms::Button^  button12;
-	private: System::Windows::Forms::Button^  button13;
-	private: System::Windows::Forms::Button^  button14;
-	private: System::Windows::Forms::Button^  button15;
-	private: System::Windows::Forms::Button^  button16;
-	private: System::Windows::Forms::Button^  button17;
-	private: System::Windows::Forms::Button^  button18;
-	private: System::Windows::Forms::Button^  button19;
-	private: System::Windows::Forms::Button^  button20;
-	private: System::Windows::Forms::Button^  button21;
-	private: System::Windows::Forms::Button^  button22;
+	private: System::Windows::Forms::Button^  b1na2;
+	private: System::Windows::Forms::Button^  b2na3;
+	private: System::Windows::Forms::Button^  b3na2;
+	private: System::Windows::Forms::Button^  b4na2;
+	private: System::Windows::Forms::Button^  b5na2;
+	private: System::Windows::Forms::Button^  b1na3;
+	private: System::Windows::Forms::Button^  b4na3;
+	private: System::Windows::Forms::Button^  b5na3;
+	private: System::Windows::Forms::Button^  b2na1;
+	private: System::Windows::Forms::Button^  b3na1;
+	private: System::Windows::Forms::Button^  b4na1;
+	private: System::Windows::Forms::Button^  b5na1;
+	private: System::Windows::Forms::Button^  b5na4;
+	private: System::Windows::Forms::Button^  b3na4;
+	private: System::Windows::Forms::Button^  b2na4;
+	private: System::Windows::Forms::Button^  b1na4;
+	private: System::Windows::Forms::Button^  b4na5;
+	private: System::Windows::Forms::Button^  b3na5;
+	private: System::Windows::Forms::Button^  b2na5;
+	private: System::Windows::Forms::Button^  b1na5;
+	private: System::Windows::Forms::Label^  l1na2;
+	private: System::Windows::Forms::Label^  l1na3;
+	private: System::Windows::Forms::Label^  l1na4;
+	private: System::Windows::Forms::Label^  l1na5;
+	private: System::Windows::Forms::Label^  l2na1;
+	private: System::Windows::Forms::Label^  l2na3;
+	private: System::Windows::Forms::Label^  l2na4;
+	private: System::Windows::Forms::Label^  l2na5;
+	private: System::Windows::Forms::Label^  l3na1;
+	private: System::Windows::Forms::Label^  l3na2;
+	private: System::Windows::Forms::Label^  l3na4;
+	private: System::Windows::Forms::Label^  l3na5;
+	private: System::Windows::Forms::Label^  l4na1;
+	private: System::Windows::Forms::Label^  l4na2;
+	private: System::Windows::Forms::Label^  l4na3;
+	private: System::Windows::Forms::Label^  l4na5;
+	private: System::Windows::Forms::Label^  l5na1;
+	private: System::Windows::Forms::Label^  l5na2;
+	private: System::Windows::Forms::Label^  l5na3;
+	private: System::Windows::Forms::Label^  l5na4;
+	private: System::Windows::Forms::Label^  l_w_na1;
+	private: System::Windows::Forms::Label^  l_w_na2;
+	private: System::Windows::Forms::Label^  l_w_na3;
+	private: System::Windows::Forms::Label^  l_w_na4;
+	private: System::Windows::Forms::Timer^  timer2;
+	private: System::Windows::Forms::Timer^  timer3;
+	private: System::Windows::Forms::Label^  l_obciazenie;
+	private: System::Windows::Forms::Label^  l_w_na5;
 
-			 static int kierunek = 1;
 
-		
 
 	public:
 		MyForm(void)
@@ -61,80 +111,241 @@ namespace Project4 {
 			//
 		}
 
+		void Przesiadka(static int)		//Funkcja obsługująca wywołanie funkcji w której ludzie na danym piętrze wsiadają do windy i dodają do wektora "kolejnosc" kolejne piętra
+		{
+			switch (cel_windy)
+			{
+			case 510:
+				Pietro_1();
+				break;
+
+			case 410:
+				Pietro_2();
+				break;
+
+			case 310:
+				Pietro_3();
+				break;
+
+			case 210:
+				Pietro_4();
+				break;
+
+			case 110:
+				Pietro_5();
+				break;
+
+			default:
+				break;
+			}
+
+			i_obciazenie = 70*(w_na1 + w_na2 + w_na3 + w_na4 + w_na5);
+			s_obciazenie = Convert::ToString(i_obciazenie);
+			l_obciazenie->Text = "Obciążenie : " + s_obciazenie;
+
+		};
+
+		//Funkcje Piętro_x obsługują wsiadanie i wysiadanie osób: zmianę labelów, zmiennych int, dodawanie do kolejności kolejne piętra
 		void Pietro_1(void)
 		{
-			if (pozycja_windy != 510)
-			{
-				if (pozycja_windy > 510)
-					kierunek = 1;
-				if (pozycja_windy < 510)
-					kierunek = -1;
+			w_na1 = 0;
+			sw_na1 = Convert::ToString(w_na1);
+			l_w_na1->Text = "w->1 : " + sw_na1;
 
-				this->timer1->Start();
+			w_na2 += i1na2;
+			sw_na2 = Convert::ToString(w_na2);
+			l_w_na2->Text = "w->2 : " + sw_na2;
+			if (i1na2 != 0) kolejnosc.push_back(2);
+			i1na2 = 0;
+			s1na2 = Convert::ToString(i1na2);
+			l1na2->Text = "1->2 : " + s1na2;
+			
+			w_na3 += i1na3;
+			sw_na3 = Convert::ToString(w_na3);
+			l_w_na3->Text = "w->3 : " + sw_na3;
+			if (i1na3 != 0) kolejnosc.push_back(3);
+			i1na3 = 0;
+			s1na3 = Convert::ToString(i1na3);
+			l1na3->Text = "1->3 : " + s1na3;
 
-				cel_windy = 510;
-			}
+
+			w_na4 += i1na4;
+			sw_na4 = Convert::ToString(w_na4);
+			l_w_na4->Text = "w->4 : " + sw_na4;
+			if (i1na4 != 0) kolejnosc.push_back(4);
+			i1na4 = 0;
+			s1na4 = Convert::ToString(i1na4);
+			l1na4->Text = "1->4 : " + s1na4;
+
+			w_na5 += i1na5;
+			sw_na5 = Convert::ToString(w_na5);
+			l_w_na5->Text = "w->5 : " + sw_na5;
+			if (i1na5 != 0) kolejnosc.push_back(5);
+			i1na5 = 0;
+			s1na5 = Convert::ToString(i1na5);
+			l1na5->Text = "1->5 : " + s1na5;
+
 		};
 
 
 		void Pietro_2(void)
 		{
-			if (pozycja_windy != 410)
-			{
-				if(pozycja_windy > 410)
-					kierunek = 1;
-				if (pozycja_windy < 410)
-					kierunek = -1;
 
-				this->timer1->Start();
+			w_na1 += i2na1;
+			sw_na1 = Convert::ToString(w_na1);
+			l_w_na1->Text = "w->1 : " + sw_na1;
+			if (i2na1 != 0) kolejnosc.push_back(1);
+			i2na1 = 0;
+			s2na1 = Convert::ToString(i2na1);
+			l2na1->Text = "2->1 : " + s2na1;
 
-				cel_windy = 410;
-			}
+			w_na2 = 0;
+			sw_na2 = Convert::ToString(w_na2);
+			l_w_na2->Text = "w->2 : " + sw_na2;
+
+			w_na3 += i2na3;
+			sw_na3 = Convert::ToString(w_na3);
+			l_w_na3->Text = "w->3 : " + sw_na3;
+			if (i2na3 != 0) kolejnosc.push_back(3);
+			i2na3 = 0;
+			s2na3 = Convert::ToString(i2na3);
+			l2na3->Text = "2->3 : " + s2na3;
+
+			w_na4 += i2na4;
+			sw_na4 = Convert::ToString(w_na4);
+			l_w_na4->Text = "w->4 : " + sw_na4;
+			if (i2na4 != 0) kolejnosc.push_back(4);
+			i2na4 = 0;
+			s2na4 = Convert::ToString(i2na4);
+			l2na4->Text = "2->4 : " + s2na4;
+
+			w_na5 += i2na5;
+			sw_na5 = Convert::ToString(w_na5);
+			l_w_na5->Text = "w->5 : " + sw_na5;
+			if (i2na5 != 0) kolejnosc.push_back(5);
+			i2na5 = 0;
+			s2na5 = Convert::ToString(i2na5);
+			l2na5->Text = "2->5 : " + s2na5;
 		};
 
 		void Pietro_3(void)
 		{
-			if (pozycja_windy != 310)
-			{
-				if (pozycja_windy > 310)
-					kierunek = 1;
-				if (pozycja_windy < 310)
-					kierunek = -1;
 
-				this->timer1->Start();
+			w_na1 += i3na1;
+			sw_na1 = Convert::ToString(w_na1);
+			l_w_na1->Text = "w->1 : " + sw_na1;
+			if (i3na1 != 0) kolejnosc.push_back(1);
+			i3na1 = 0;
+			s3na1 = Convert::ToString(i3na1);
+			l3na1->Text = "3->1 : " + s3na1;
 
-				cel_windy = 310;
-			}
+			w_na2 += i3na2;
+			sw_na2 = Convert::ToString(w_na2);
+			l_w_na2->Text = "w->2 : " + sw_na2;
+			if (i3na2 != 0) kolejnosc.push_back(2);
+			i3na2 = 0;
+			s3na2 = Convert::ToString(i3na2);
+			l3na2->Text = "3->2 : " + s3na2;
+
+			w_na3 = 0;
+			sw_na3 = Convert::ToString(w_na3);
+			l_w_na3->Text = "w->3 : " + sw_na3;
+
+			w_na4 += i3na4;
+			sw_na4 = Convert::ToString(w_na4);
+			l_w_na4->Text = "w->4 : " + sw_na4;
+			if (i3na4 != 0) kolejnosc.push_back(4);
+			i3na4 = 0;
+			s3na4 = Convert::ToString(i3na4);
+			l3na4->Text = "3->4 : " + s3na4;
+
+			w_na5 += i3na5;
+			sw_na5 = Convert::ToString(w_na5);
+			l_w_na5->Text = "w->5 : " + sw_na5;
+			if (i3na5 != 0) kolejnosc.push_back(5);
+			i3na5 = 0;
+			s3na5 = Convert::ToString(i3na5);
+			l3na5->Text = "3->5 : " + s3na5;
 		};
 
 		void Pietro_4(void)
 		{
-			if (pozycja_windy != 210)
-			{
-				if (pozycja_windy > 210)
-					kierunek = 1;
-				if (pozycja_windy < 210)
-					kierunek = -1;
 
-				this->timer1->Start();
+			w_na1 += i4na1;
+			sw_na1 = Convert::ToString(w_na1);
+			l_w_na1->Text = "w->1 : " + sw_na1;
+			if (i4na1 != 0) kolejnosc.push_back(1);
+			i4na1 = 0;
+			s4na1 = Convert::ToString(i4na1);
+			l4na1->Text = "4->1 : " + s4na1;
 
-				cel_windy = 210;
-			}
+			w_na2 += i4na2;
+			sw_na2 = Convert::ToString(w_na2);
+			l_w_na2->Text = "w->2 : " + sw_na2;
+			if (i4na2 != 0) kolejnosc.push_back(2);
+			i4na2 = 0;
+			s4na2 = Convert::ToString(i4na2);
+			l4na2->Text = "4->2 : " + s4na2;
+
+			w_na3 += i4na3;
+			sw_na3 = Convert::ToString(w_na3);
+			l_w_na3->Text = "w->3 : " + sw_na3;
+			if (i4na3 != 0) kolejnosc.push_back(3);
+			i4na3 = 0;
+			s4na3 = Convert::ToString(i4na3);
+			l4na3->Text = "4->3 : " + s4na3;
+
+			w_na4 = 0;
+			sw_na4 = Convert::ToString(w_na4);
+			l_w_na4->Text = "w->4 : " + sw_na4;
+
+			w_na5 += i4na5;
+			sw_na5 = Convert::ToString(w_na5);
+			l_w_na5->Text = "w->5 : " + sw_na5;
+			if (i4na5 != 0) kolejnosc.push_back(5);
+			i4na5 = 0;
+			s4na5 = Convert::ToString(i4na5);
+			l4na5->Text = "4->5 : " + s4na5;
 		};
 
 		void Pietro_5(void)
 		{
-			if (pozycja_windy != 110)
-			{
-				if (pozycja_windy > 110)
-					kierunek = 1;
-				if (pozycja_windy < 110)
-					kierunek = -1;
 
-				this->timer1->Start();
+			w_na1 += i5na1;
+			sw_na1 = Convert::ToString(w_na1);
+			l_w_na1->Text = "w->1 : " + sw_na1;
+			if (i5na1 != 0) kolejnosc.push_back(1);
+			i5na1 = 0;
+			s5na1 = Convert::ToString(i5na1);
+			l5na1->Text = "5->1 : " + s5na1;
 
-				cel_windy = 110;
-			}
+			w_na2 += i5na2;
+			sw_na2 = Convert::ToString(w_na2);
+			l_w_na2->Text = "w->2 : " + sw_na2;
+			if (i5na2 != 0) kolejnosc.push_back(2);
+			i5na2 = 0;
+			s5na2 = Convert::ToString(i5na2);
+			l5na2->Text = "5->2 : " + s5na2;
+
+			w_na3 += i5na3;
+			sw_na3 = Convert::ToString(w_na3);
+			l_w_na3->Text = "w->3 : " + sw_na3;
+			if (i5na3 != 0) kolejnosc.push_back(3);
+			i5na3 = 0;
+			s5na3 = Convert::ToString(i5na3);
+			l5na3->Text = "5->3 : " + s5na3;
+
+			w_na4 += i5na4;
+			sw_na4 = Convert::ToString(sw_na4);
+			l_w_na4->Text = "w->4 : " + w_na4;
+			if (i5na4 != 0) kolejnosc.push_back(4);
+			i5na4 = 0;
+			s5na4 = Convert::ToString(i5na4);
+			l5na4->Text = "5->4 : " + s5na4;
+
+			w_na5 = 0;
+			sw_na5 = Convert::ToString(w_na5);
+			l_w_na5->Text = "w->5 : " + sw_na5;
 		};
 
 	protected:
@@ -150,8 +361,8 @@ namespace Project4 {
 		}
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
-	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Button^  button2;
+
+
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::ComponentModel::IContainer^  components;
 	protected:
@@ -175,34 +386,60 @@ namespace Project4 {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->button3 = (gcnew System::Windows::Forms::Button());
-			this->button4 = (gcnew System::Windows::Forms::Button());
-			this->button5 = (gcnew System::Windows::Forms::Button());
-			this->button6 = (gcnew System::Windows::Forms::Button());
-			this->button7 = (gcnew System::Windows::Forms::Button());
-			this->button8 = (gcnew System::Windows::Forms::Button());
-			this->button9 = (gcnew System::Windows::Forms::Button());
-			this->button10 = (gcnew System::Windows::Forms::Button());
-			this->button11 = (gcnew System::Windows::Forms::Button());
-			this->button12 = (gcnew System::Windows::Forms::Button());
-			this->button13 = (gcnew System::Windows::Forms::Button());
-			this->button14 = (gcnew System::Windows::Forms::Button());
-			this->button15 = (gcnew System::Windows::Forms::Button());
-			this->button16 = (gcnew System::Windows::Forms::Button());
-			this->button17 = (gcnew System::Windows::Forms::Button());
-			this->button18 = (gcnew System::Windows::Forms::Button());
-			this->button19 = (gcnew System::Windows::Forms::Button());
-			this->button20 = (gcnew System::Windows::Forms::Button());
-			this->button21 = (gcnew System::Windows::Forms::Button());
-			this->button22 = (gcnew System::Windows::Forms::Button());
+			this->b1na2 = (gcnew System::Windows::Forms::Button());
+			this->b2na3 = (gcnew System::Windows::Forms::Button());
+			this->b3na2 = (gcnew System::Windows::Forms::Button());
+			this->b4na2 = (gcnew System::Windows::Forms::Button());
+			this->b5na2 = (gcnew System::Windows::Forms::Button());
+			this->b1na3 = (gcnew System::Windows::Forms::Button());
+			this->b4na3 = (gcnew System::Windows::Forms::Button());
+			this->b5na3 = (gcnew System::Windows::Forms::Button());
+			this->b2na1 = (gcnew System::Windows::Forms::Button());
+			this->b3na1 = (gcnew System::Windows::Forms::Button());
+			this->b4na1 = (gcnew System::Windows::Forms::Button());
+			this->b5na1 = (gcnew System::Windows::Forms::Button());
+			this->b5na4 = (gcnew System::Windows::Forms::Button());
+			this->b3na4 = (gcnew System::Windows::Forms::Button());
+			this->b2na4 = (gcnew System::Windows::Forms::Button());
+			this->b1na4 = (gcnew System::Windows::Forms::Button());
+			this->b4na5 = (gcnew System::Windows::Forms::Button());
+			this->b3na5 = (gcnew System::Windows::Forms::Button());
+			this->b2na5 = (gcnew System::Windows::Forms::Button());
+			this->b1na5 = (gcnew System::Windows::Forms::Button());
+			this->l1na2 = (gcnew System::Windows::Forms::Label());
+			this->l1na3 = (gcnew System::Windows::Forms::Label());
+			this->l1na4 = (gcnew System::Windows::Forms::Label());
+			this->l1na5 = (gcnew System::Windows::Forms::Label());
+			this->l2na1 = (gcnew System::Windows::Forms::Label());
+			this->l2na3 = (gcnew System::Windows::Forms::Label());
+			this->l2na4 = (gcnew System::Windows::Forms::Label());
+			this->l2na5 = (gcnew System::Windows::Forms::Label());
+			this->l3na1 = (gcnew System::Windows::Forms::Label());
+			this->l3na2 = (gcnew System::Windows::Forms::Label());
+			this->l3na4 = (gcnew System::Windows::Forms::Label());
+			this->l3na5 = (gcnew System::Windows::Forms::Label());
+			this->l4na1 = (gcnew System::Windows::Forms::Label());
+			this->l4na2 = (gcnew System::Windows::Forms::Label());
+			this->l4na3 = (gcnew System::Windows::Forms::Label());
+			this->l4na5 = (gcnew System::Windows::Forms::Label());
+			this->l5na1 = (gcnew System::Windows::Forms::Label());
+			this->l5na2 = (gcnew System::Windows::Forms::Label());
+			this->l5na3 = (gcnew System::Windows::Forms::Label());
+			this->l5na4 = (gcnew System::Windows::Forms::Label());
+			this->l_w_na1 = (gcnew System::Windows::Forms::Label());
+			this->l_w_na2 = (gcnew System::Windows::Forms::Label());
+			this->l_w_na3 = (gcnew System::Windows::Forms::Label());
+			this->l_w_na4 = (gcnew System::Windows::Forms::Label());
+			this->l_w_na5 = (gcnew System::Windows::Forms::Label());
+			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->timer3 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->l_obciazenie = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -227,28 +464,9 @@ namespace Project4 {
 			this->pictureBox2->TabIndex = 1;
 			this->pictureBox2->TabStop = false;
 			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(933, 389);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(153, 61);
-			this->button1->TabIndex = 2;
-			this->button1->Text = L"Wjedz ";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
-			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(932, 476);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(153, 57);
-			this->button2->TabIndex = 3;
-			this->button2->Text = L"Zjedz na dol";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
-			// 
 			// timer1
 			// 
+			this->timer1->Enabled = true;
 			this->timer1->Interval = 20;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
 			// 
@@ -260,7 +478,7 @@ namespace Project4 {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(79, 20);
 			this->label1->TabIndex = 5;
-			this->label1->Text = L"Pi�tro 1";
+			this->label1->Text = L"Piętro 1";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label2
@@ -271,7 +489,7 @@ namespace Project4 {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(79, 20);
 			this->label2->TabIndex = 6;
-			this->label2->Text = L"Pi�tro 2";
+			this->label2->Text = L"Piętro 2";
 			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label3
@@ -282,7 +500,7 @@ namespace Project4 {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(79, 20);
 			this->label3->TabIndex = 7;
-			this->label3->Text = L"Pi�tro 3";
+			this->label3->Text = L"Piętro 3";
 			this->label3->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label4
@@ -293,7 +511,7 @@ namespace Project4 {
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(79, 20);
 			this->label4->TabIndex = 8;
-			this->label4->Text = L"Pi�tro 4";
+			this->label4->Text = L"Piętro 4";
 			this->label4->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label5
@@ -304,242 +522,514 @@ namespace Project4 {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(79, 20);
 			this->label5->TabIndex = 9;
-			this->label5->Text = L"Pi�tro 5";
+			this->label5->Text = L"Piętro 5";
 			this->label5->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			this->label5->Click += gcnew System::EventHandler(this, &MyForm::label5_Click);
 			// 
-			// button3
+			// b1na2
 			// 
-			this->button3->Location = System::Drawing::Point(36, 444);
-			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(21, 26);
-			this->button3->TabIndex = 10;
-			this->button3->Text = L"2";
-			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
+			this->b1na2->Location = System::Drawing::Point(36, 415);
+			this->b1na2->Name = L"b1na2";
+			this->b1na2->Size = System::Drawing::Size(21, 26);
+			this->b1na2->TabIndex = 10;
+			this->b1na2->Text = L"2";
+			this->b1na2->UseVisualStyleBackColor = true;
+			this->b1na2->Click += gcnew System::EventHandler(this, &MyForm::b1na2_Click);
 			// 
-			// button4
+			// b2na3
 			// 
-			this->button4->Location = System::Drawing::Point(786, 363);
-			this->button4->Name = L"button4";
-			this->button4->Size = System::Drawing::Size(21, 26);
-			this->button4->TabIndex = 11;
-			this->button4->Text = L"3";
-			this->button4->UseVisualStyleBackColor = true;
-			this->button4->Click += gcnew System::EventHandler(this, &MyForm::button4_Click);
+			this->b2na3->Location = System::Drawing::Point(786, 338);
+			this->b2na3->Name = L"b2na3";
+			this->b2na3->Size = System::Drawing::Size(21, 26);
+			this->b2na3->TabIndex = 11;
+			this->b2na3->Text = L"3";
+			this->b2na3->UseVisualStyleBackColor = true;
+			this->b2na3->Click += gcnew System::EventHandler(this, &MyForm::b2na3_Click);
 			// 
-			// button5
+			// b3na2
 			// 
-			this->button5->Location = System::Drawing::Point(35, 244);
-			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(21, 26);
-			this->button5->TabIndex = 12;
-			this->button5->Text = L"2";
-			this->button5->UseVisualStyleBackColor = true;
-			this->button5->Click += gcnew System::EventHandler(this, &MyForm::button5_Click);
+			this->b3na2->Location = System::Drawing::Point(36, 234);
+			this->b3na2->Name = L"b3na2";
+			this->b3na2->Size = System::Drawing::Size(21, 26);
+			this->b3na2->TabIndex = 12;
+			this->b3na2->Text = L"2";
+			this->b3na2->UseVisualStyleBackColor = true;
+			this->b3na2->Click += gcnew System::EventHandler(this, &MyForm::b3na2_Click);
 			// 
-			// button6
+			// b4na2
 			// 
-			this->button6->Location = System::Drawing::Point(785, 120);
-			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(21, 26);
-			this->button6->TabIndex = 13;
-			this->button6->Text = L"2";
-			this->button6->UseVisualStyleBackColor = true;
-			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
+			this->b4na2->Location = System::Drawing::Point(786, 109);
+			this->b4na2->Name = L"b4na2";
+			this->b4na2->Size = System::Drawing::Size(21, 26);
+			this->b4na2->TabIndex = 13;
+			this->b4na2->Text = L"2";
+			this->b4na2->UseVisualStyleBackColor = true;
+			this->b4na2->Click += gcnew System::EventHandler(this, &MyForm::b4na2_Click);
 			// 
-			// button7
+			// b5na2
 			// 
-			this->button7->Location = System::Drawing::Point(35, 47);
-			this->button7->Name = L"button7";
-			this->button7->Size = System::Drawing::Size(21, 26);
-			this->button7->TabIndex = 14;
-			this->button7->Text = L"2";
-			this->button7->UseVisualStyleBackColor = true;
-			this->button7->Click += gcnew System::EventHandler(this, &MyForm::button7_Click);
+			this->b5na2->Location = System::Drawing::Point(34, 45);
+			this->b5na2->Name = L"b5na2";
+			this->b5na2->Size = System::Drawing::Size(21, 26);
+			this->b5na2->TabIndex = 14;
+			this->b5na2->Text = L"2";
+			this->b5na2->UseVisualStyleBackColor = true;
+			this->b5na2->Click += gcnew System::EventHandler(this, &MyForm::b5na2_Click);
 			// 
-			// button8
+			// b1na3
 			// 
-			this->button8->Location = System::Drawing::Point(36, 467);
-			this->button8->Name = L"button8";
-			this->button8->Size = System::Drawing::Size(21, 26);
-			this->button8->TabIndex = 15;
-			this->button8->Text = L"3";
-			this->button8->UseVisualStyleBackColor = true;
-			this->button8->Click += gcnew System::EventHandler(this, &MyForm::button8_Click);
+			this->b1na3->Location = System::Drawing::Point(36, 447);
+			this->b1na3->Name = L"b1na3";
+			this->b1na3->Size = System::Drawing::Size(21, 26);
+			this->b1na3->TabIndex = 15;
+			this->b1na3->Text = L"3";
+			this->b1na3->UseVisualStyleBackColor = true;
+			this->b1na3->Click += gcnew System::EventHandler(this, &MyForm::b1na3_Click);
 			// 
-			// button9
+			// b4na3
 			// 
-			this->button9->Location = System::Drawing::Point(785, 140);
-			this->button9->Name = L"button9";
-			this->button9->Size = System::Drawing::Size(21, 26);
-			this->button9->TabIndex = 16;
-			this->button9->Text = L"3";
-			this->button9->UseVisualStyleBackColor = true;
-			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
+			this->b4na3->Location = System::Drawing::Point(786, 141);
+			this->b4na3->Name = L"b4na3";
+			this->b4na3->Size = System::Drawing::Size(21, 26);
+			this->b4na3->TabIndex = 16;
+			this->b4na3->Text = L"3";
+			this->b4na3->UseVisualStyleBackColor = true;
+			this->b4na3->Click += gcnew System::EventHandler(this, &MyForm::b4na3_Click);
 			// 
-			// button10
+			// b5na3
 			// 
-			this->button10->Location = System::Drawing::Point(34, 66);
-			this->button10->Name = L"button10";
-			this->button10->Size = System::Drawing::Size(21, 26);
-			this->button10->TabIndex = 17;
-			this->button10->Text = L"3";
-			this->button10->UseVisualStyleBackColor = true;
-			this->button10->Click += gcnew System::EventHandler(this, &MyForm::button10_Click);
+			this->b5na3->Location = System::Drawing::Point(34, 77);
+			this->b5na3->Name = L"b5na3";
+			this->b5na3->Size = System::Drawing::Size(21, 26);
+			this->b5na3->TabIndex = 17;
+			this->b5na3->Text = L"3";
+			this->b5na3->UseVisualStyleBackColor = true;
+			this->b5na3->Click += gcnew System::EventHandler(this, &MyForm::b5na3_Click);
 			// 
-			// button11
+			// b2na1
 			// 
-			this->button11->Location = System::Drawing::Point(787, 345);
-			this->button11->Name = L"button11";
-			this->button11->Size = System::Drawing::Size(20, 23);
-			this->button11->TabIndex = 18;
-			this->button11->Text = L"1";
-			this->button11->UseVisualStyleBackColor = true;
-			this->button11->Click += gcnew System::EventHandler(this, &MyForm::button11_Click);
+			this->b2na1->Location = System::Drawing::Point(786, 309);
+			this->b2na1->Name = L"b2na1";
+			this->b2na1->Size = System::Drawing::Size(20, 23);
+			this->b2na1->TabIndex = 18;
+			this->b2na1->Text = L"1";
+			this->b2na1->UseVisualStyleBackColor = true;
+			this->b2na1->Click += gcnew System::EventHandler(this, &MyForm::b2na1_Click);
 			// 
-			// button12
+			// b3na1
 			// 
-			this->button12->Location = System::Drawing::Point(36, 225);
-			this->button12->Name = L"button12";
-			this->button12->Size = System::Drawing::Size(20, 23);
-			this->button12->TabIndex = 19;
-			this->button12->Text = L"1";
-			this->button12->UseVisualStyleBackColor = true;
-			this->button12->Click += gcnew System::EventHandler(this, &MyForm::button12_Click);
+			this->b3na1->Location = System::Drawing::Point(37, 206);
+			this->b3na1->Name = L"b3na1";
+			this->b3na1->Size = System::Drawing::Size(20, 23);
+			this->b3na1->TabIndex = 19;
+			this->b3na1->Text = L"1";
+			this->b3na1->UseVisualStyleBackColor = true;
+			this->b3na1->Click += gcnew System::EventHandler(this, &MyForm::b3na1_Click);
 			// 
-			// button13
+			// b4na1
 			// 
-			this->button13->Location = System::Drawing::Point(787, 100);
-			this->button13->Name = L"button13";
-			this->button13->Size = System::Drawing::Size(20, 23);
-			this->button13->TabIndex = 20;
-			this->button13->Text = L"1";
-			this->button13->UseVisualStyleBackColor = true;
-			this->button13->Click += gcnew System::EventHandler(this, &MyForm::button13_Click);
+			this->b4na1->Location = System::Drawing::Point(785, 80);
+			this->b4na1->Name = L"b4na1";
+			this->b4na1->Size = System::Drawing::Size(20, 23);
+			this->b4na1->TabIndex = 20;
+			this->b4na1->Text = L"1";
+			this->b4na1->UseVisualStyleBackColor = true;
+			this->b4na1->Click += gcnew System::EventHandler(this, &MyForm::b4na1_Click);
 			// 
-			// button14
+			// b5na1
 			// 
-			this->button14->Location = System::Drawing::Point(36, 24);
-			this->button14->Name = L"button14";
-			this->button14->Size = System::Drawing::Size(20, 23);
-			this->button14->TabIndex = 21;
-			this->button14->Text = L"1";
-			this->button14->UseVisualStyleBackColor = true;
-			this->button14->Click += gcnew System::EventHandler(this, &MyForm::button14_Click);
+			this->b5na1->Location = System::Drawing::Point(35, 16);
+			this->b5na1->Name = L"b5na1";
+			this->b5na1->Size = System::Drawing::Size(20, 23);
+			this->b5na1->TabIndex = 21;
+			this->b5na1->Text = L"1";
+			this->b5na1->UseVisualStyleBackColor = true;
+			this->b5na1->Click += gcnew System::EventHandler(this, &MyForm::b5na1_Click);
 			// 
-			// button15
+			// b5na4
 			// 
-			this->button15->Location = System::Drawing::Point(36, 89);
-			this->button15->Name = L"button15";
-			this->button15->Size = System::Drawing::Size(20, 23);
-			this->button15->TabIndex = 22;
-			this->button15->Text = L"4";
-			this->button15->UseVisualStyleBackColor = true;
-			this->button15->Click += gcnew System::EventHandler(this, &MyForm::button15_Click);
+			this->b5na4->Location = System::Drawing::Point(35, 109);
+			this->b5na4->Name = L"b5na4";
+			this->b5na4->Size = System::Drawing::Size(20, 23);
+			this->b5na4->TabIndex = 22;
+			this->b5na4->Text = L"4";
+			this->b5na4->UseVisualStyleBackColor = true;
+			this->b5na4->Click += gcnew System::EventHandler(this, &MyForm::b5na4_Click);
 			// 
-			// button16
+			// b3na4
 			// 
-			this->button16->Location = System::Drawing::Point(35, 266);
-			this->button16->Name = L"button16";
-			this->button16->Size = System::Drawing::Size(20, 23);
-			this->button16->TabIndex = 23;
-			this->button16->Text = L"4";
-			this->button16->UseVisualStyleBackColor = true;
-			this->button16->Click += gcnew System::EventHandler(this, &MyForm::button16_Click);
+			this->b3na4->Location = System::Drawing::Point(37, 266);
+			this->b3na4->Name = L"b3na4";
+			this->b3na4->Size = System::Drawing::Size(20, 23);
+			this->b3na4->TabIndex = 23;
+			this->b3na4->Text = L"4";
+			this->b3na4->UseVisualStyleBackColor = true;
+			this->b3na4->Click += gcnew System::EventHandler(this, &MyForm::b3na4_Click);
 			// 
-			// button17
+			// b2na4
 			// 
-			this->button17->Location = System::Drawing::Point(786, 389);
-			this->button17->Name = L"button17";
-			this->button17->Size = System::Drawing::Size(20, 23);
-			this->button17->TabIndex = 24;
-			this->button17->Text = L"4";
-			this->button17->UseVisualStyleBackColor = true;
-			this->button17->Click += gcnew System::EventHandler(this, &MyForm::button17_Click);
+			this->b2na4->Location = System::Drawing::Point(786, 370);
+			this->b2na4->Name = L"b2na4";
+			this->b2na4->Size = System::Drawing::Size(20, 23);
+			this->b2na4->TabIndex = 24;
+			this->b2na4->Text = L"4";
+			this->b2na4->UseVisualStyleBackColor = true;
+			this->b2na4->Click += gcnew System::EventHandler(this, &MyForm::b2na4_Click);
 			// 
-			// button18
+			// b1na4
 			// 
-			this->button18->Location = System::Drawing::Point(36, 493);
-			this->button18->Name = L"button18";
-			this->button18->Size = System::Drawing::Size(20, 23);
-			this->button18->TabIndex = 25;
-			this->button18->Text = L"4";
-			this->button18->UseVisualStyleBackColor = true;
-			this->button18->Click += gcnew System::EventHandler(this, &MyForm::button18_Click);
+			this->b1na4->Location = System::Drawing::Point(37, 479);
+			this->b1na4->Name = L"b1na4";
+			this->b1na4->Size = System::Drawing::Size(20, 23);
+			this->b1na4->TabIndex = 25;
+			this->b1na4->Text = L"4";
+			this->b1na4->UseVisualStyleBackColor = true;
+			this->b1na4->Click += gcnew System::EventHandler(this, &MyForm::b1na4_Click);
 			// 
-			// button19
+			// b4na5
 			// 
-			this->button19->Location = System::Drawing::Point(785, 162);
-			this->button19->Name = L"button19";
-			this->button19->Size = System::Drawing::Size(21, 26);
-			this->button19->TabIndex = 26;
-			this->button19->Text = L"5";
-			this->button19->UseVisualStyleBackColor = true;
-			this->button19->Click += gcnew System::EventHandler(this, &MyForm::button19_Click);
+			this->b4na5->Location = System::Drawing::Point(786, 173);
+			this->b4na5->Name = L"b4na5";
+			this->b4na5->Size = System::Drawing::Size(21, 26);
+			this->b4na5->TabIndex = 26;
+			this->b4na5->Text = L"5";
+			this->b4na5->UseVisualStyleBackColor = true;
+			this->b4na5->Click += gcnew System::EventHandler(this, &MyForm::b4na5_Click);
 			// 
-			// button20
+			// b3na5
 			// 
-			this->button20->Location = System::Drawing::Point(34, 286);
-			this->button20->Name = L"button20";
-			this->button20->Size = System::Drawing::Size(21, 26);
-			this->button20->TabIndex = 27;
-			this->button20->Text = L"5";
-			this->button20->UseVisualStyleBackColor = true;
-			this->button20->Click += gcnew System::EventHandler(this, &MyForm::button20_Click);
+			this->b3na5->Location = System::Drawing::Point(36, 295);
+			this->b3na5->Name = L"b3na5";
+			this->b3na5->Size = System::Drawing::Size(21, 26);
+			this->b3na5->TabIndex = 27;
+			this->b3na5->Text = L"5";
+			this->b3na5->UseVisualStyleBackColor = true;
+			this->b3na5->Click += gcnew System::EventHandler(this, &MyForm::b3na5_Click);
 			// 
-			// button21
+			// b2na5
 			// 
-			this->button21->Location = System::Drawing::Point(787, 418);
-			this->button21->Name = L"button21";
-			this->button21->Size = System::Drawing::Size(21, 26);
-			this->button21->TabIndex = 28;
-			this->button21->Text = L"5";
-			this->button21->UseVisualStyleBackColor = true;
-			this->button21->Click += gcnew System::EventHandler(this, &MyForm::button21_Click);
+			this->b2na5->Location = System::Drawing::Point(786, 399);
+			this->b2na5->Name = L"b2na5";
+			this->b2na5->Size = System::Drawing::Size(21, 26);
+			this->b2na5->TabIndex = 28;
+			this->b2na5->Text = L"5";
+			this->b2na5->UseVisualStyleBackColor = true;
+			this->b2na5->Click += gcnew System::EventHandler(this, &MyForm::b2na5_Click);
 			// 
-			// button22
+			// b1na5
 			// 
-			this->button22->Location = System::Drawing::Point(34, 522);
-			this->button22->Name = L"button22";
-			this->button22->Size = System::Drawing::Size(21, 26);
-			this->button22->TabIndex = 29;
-			this->button22->Text = L"5";
-			this->button22->UseVisualStyleBackColor = true;
-			this->button22->Click += gcnew System::EventHandler(this, &MyForm::button22_Click);
+			this->b1na5->Location = System::Drawing::Point(36, 507);
+			this->b1na5->Name = L"b1na5";
+			this->b1na5->Size = System::Drawing::Size(21, 26);
+			this->b1na5->TabIndex = 29;
+			this->b1na5->Text = L"5";
+			this->b1na5->UseVisualStyleBackColor = true;
+			this->b1na5->Click += gcnew System::EventHandler(this, &MyForm::b1na5_Click);
+			// 
+			// l1na2
+			// 
+			this->l1na2->AutoSize = true;
+			this->l1na2->Location = System::Drawing::Point(202, 462);
+			this->l1na2->Name = L"l1na2";
+			this->l1na2->Size = System::Drawing::Size(43, 13);
+			this->l1na2->TabIndex = 30;
+			this->l1na2->Text = L"1->2 : 0";
+			// 
+			// l1na3
+			// 
+			this->l1na3->AutoSize = true;
+			this->l1na3->Location = System::Drawing::Point(202, 484);
+			this->l1na3->Name = L"l1na3";
+			this->l1na3->Size = System::Drawing::Size(43, 13);
+			this->l1na3->TabIndex = 31;
+			this->l1na3->Text = L"1->3 : 0";
+			// 
+			// l1na4
+			// 
+			this->l1na4->AutoSize = true;
+			this->l1na4->Location = System::Drawing::Point(202, 507);
+			this->l1na4->Name = L"l1na4";
+			this->l1na4->Size = System::Drawing::Size(43, 13);
+			this->l1na4->TabIndex = 32;
+			this->l1na4->Text = L"1->4 : 0";
+			// 
+			// l1na5
+			// 
+			this->l1na5->AutoSize = true;
+			this->l1na5->Location = System::Drawing::Point(202, 529);
+			this->l1na5->Name = L"l1na5";
+			this->l1na5->Size = System::Drawing::Size(43, 13);
+			this->l1na5->TabIndex = 33;
+			this->l1na5->Text = L"1->5 : 0";
+			// 
+			// l2na1
+			// 
+			this->l2na1->AutoSize = true;
+			this->l2na1->Location = System::Drawing::Point(569, 370);
+			this->l2na1->Name = L"l2na1";
+			this->l2na1->Size = System::Drawing::Size(43, 13);
+			this->l2na1->TabIndex = 34;
+			this->l2na1->Text = L"2->1 : 0";
+			// 
+			// l2na3
+			// 
+			this->l2na3->AutoSize = true;
+			this->l2na3->Location = System::Drawing::Point(569, 390);
+			this->l2na3->Name = L"l2na3";
+			this->l2na3->Size = System::Drawing::Size(43, 13);
+			this->l2na3->TabIndex = 35;
+			this->l2na3->Text = L"2->3 : 0";
+			// 
+			// l2na4
+			// 
+			this->l2na4->AutoSize = true;
+			this->l2na4->Location = System::Drawing::Point(569, 412);
+			this->l2na4->Name = L"l2na4";
+			this->l2na4->Size = System::Drawing::Size(43, 13);
+			this->l2na4->TabIndex = 36;
+			this->l2na4->Text = L"2->4 : 0";
+			// 
+			// l2na5
+			// 
+			this->l2na5->AutoSize = true;
+			this->l2na5->Location = System::Drawing::Point(569, 428);
+			this->l2na5->Name = L"l2na5";
+			this->l2na5->Size = System::Drawing::Size(43, 13);
+			this->l2na5->TabIndex = 37;
+			this->l2na5->Text = L"2->5 : 0";
+			// 
+			// l3na1
+			// 
+			this->l3na1->AutoSize = true;
+			this->l3na1->Location = System::Drawing::Point(204, 251);
+			this->l3na1->Name = L"l3na1";
+			this->l3na1->Size = System::Drawing::Size(43, 13);
+			this->l3na1->TabIndex = 38;
+			this->l3na1->Text = L"3->1 : 0";
+			// 
+			// l3na2
+			// 
+			this->l3na2->AutoSize = true;
+			this->l3na2->Location = System::Drawing::Point(204, 271);
+			this->l3na2->Name = L"l3na2";
+			this->l3na2->Size = System::Drawing::Size(43, 13);
+			this->l3na2->TabIndex = 39;
+			this->l3na2->Text = L"3->2 : 0";
+			// 
+			// l3na4
+			// 
+			this->l3na4->AutoSize = true;
+			this->l3na4->Location = System::Drawing::Point(204, 295);
+			this->l3na4->Name = L"l3na4";
+			this->l3na4->Size = System::Drawing::Size(43, 13);
+			this->l3na4->TabIndex = 40;
+			this->l3na4->Text = L"3->4 : 0";
+			// 
+			// l3na5
+			// 
+			this->l3na5->AutoSize = true;
+			this->l3na5->Location = System::Drawing::Point(204, 314);
+			this->l3na5->Name = L"l3na5";
+			this->l3na5->Size = System::Drawing::Size(43, 13);
+			this->l3na5->TabIndex = 41;
+			this->l3na5->Text = L"3->5 : 0";
+			// 
+			// l4na1
+			// 
+			this->l4na1->AutoSize = true;
+			this->l4na1->Location = System::Drawing::Point(563, 136);
+			this->l4na1->Name = L"l4na1";
+			this->l4na1->Size = System::Drawing::Size(43, 13);
+			this->l4na1->TabIndex = 42;
+			this->l4na1->Text = L"4->1 : 0";
+			// 
+			// l4na2
+			// 
+			this->l4na2->AutoSize = true;
+			this->l4na2->Location = System::Drawing::Point(563, 154);
+			this->l4na2->Name = L"l4na2";
+			this->l4na2->Size = System::Drawing::Size(43, 13);
+			this->l4na2->TabIndex = 43;
+			this->l4na2->Text = L"4->2 : 0";
+			// 
+			// l4na3
+			// 
+			this->l4na3->AutoSize = true;
+			this->l4na3->Location = System::Drawing::Point(563, 173);
+			this->l4na3->Name = L"l4na3";
+			this->l4na3->Size = System::Drawing::Size(43, 13);
+			this->l4na3->TabIndex = 44;
+			this->l4na3->Text = L"4->3 : 0";
+			// 
+			// l4na5
+			// 
+			this->l4na5->AutoSize = true;
+			this->l4na5->Location = System::Drawing::Point(563, 195);
+			this->l4na5->Name = L"l4na5";
+			this->l4na5->Size = System::Drawing::Size(43, 13);
+			this->l4na5->TabIndex = 45;
+			this->l4na5->Text = L"4->5 : 0";
+			// 
+			// l5na1
+			// 
+			this->l5na1->AutoSize = true;
+			this->l5na1->Location = System::Drawing::Point(202, 77);
+			this->l5na1->Name = L"l5na1";
+			this->l5na1->Size = System::Drawing::Size(43, 13);
+			this->l5na1->TabIndex = 46;
+			this->l5na1->Text = L"5->1 : 0";
+			// 
+			// l5na2
+			// 
+			this->l5na2->AutoSize = true;
+			this->l5na2->Location = System::Drawing::Point(202, 99);
+			this->l5na2->Name = L"l5na2";
+			this->l5na2->Size = System::Drawing::Size(43, 13);
+			this->l5na2->TabIndex = 47;
+			this->l5na2->Text = L"5->2 : 0";
+			// 
+			// l5na3
+			// 
+			this->l5na3->AutoSize = true;
+			this->l5na3->Location = System::Drawing::Point(202, 122);
+			this->l5na3->Name = L"l5na3";
+			this->l5na3->Size = System::Drawing::Size(43, 13);
+			this->l5na3->TabIndex = 48;
+			this->l5na3->Text = L"5->3 : 0";
+			// 
+			// l5na4
+			// 
+			this->l5na4->AutoSize = true;
+			this->l5na4->Location = System::Drawing::Point(202, 141);
+			this->l5na4->Name = L"l5na4";
+			this->l5na4->Size = System::Drawing::Size(43, 13);
+			this->l5na4->TabIndex = 49;
+			this->l5na4->Text = L"5->4 : 0";
+			// 
+			// l_w_na1
+			// 
+			this->l_w_na1->AutoSize = true;
+			this->l_w_na1->Location = System::Drawing::Point(285, 26);
+			this->l_w_na1->Name = L"l_w_na1";
+			this->l_w_na1->Size = System::Drawing::Size(45, 13);
+			this->l_w_na1->TabIndex = 50;
+			this->l_w_na1->Text = L"w->1 : 0";
+			// 
+			// l_w_na2
+			// 
+			this->l_w_na2->AutoSize = true;
+			this->l_w_na2->Location = System::Drawing::Point(336, 26);
+			this->l_w_na2->Name = L"l_w_na2";
+			this->l_w_na2->Size = System::Drawing::Size(45, 13);
+			this->l_w_na2->TabIndex = 51;
+			this->l_w_na2->Text = L"w->2 : 0";
+			// 
+			// l_w_na3
+			// 
+			this->l_w_na3->AutoSize = true;
+			this->l_w_na3->Location = System::Drawing::Point(387, 26);
+			this->l_w_na3->Name = L"l_w_na3";
+			this->l_w_na3->Size = System::Drawing::Size(45, 13);
+			this->l_w_na3->TabIndex = 52;
+			this->l_w_na3->Text = L"w->3 : 0";
+			// 
+			// l_w_na4
+			// 
+			this->l_w_na4->AutoSize = true;
+			this->l_w_na4->Location = System::Drawing::Point(438, 26);
+			this->l_w_na4->Name = L"l_w_na4";
+			this->l_w_na4->Size = System::Drawing::Size(45, 13);
+			this->l_w_na4->TabIndex = 53;
+			this->l_w_na4->Text = L"w->4 : 0";
+			// 
+			// l_w_na5
+			// 
+			this->l_w_na5->AutoSize = true;
+			this->l_w_na5->Location = System::Drawing::Point(489, 26);
+			this->l_w_na5->Name = L"l_w_na5";
+			this->l_w_na5->Size = System::Drawing::Size(45, 13);
+			this->l_w_na5->TabIndex = 54;
+			this->l_w_na5->Text = L"w->5 : 0";
+			// 
+			// timer2
+			// 
+			this->timer2->Enabled = true;
+			this->timer2->Tick += gcnew System::EventHandler(this, &MyForm::timer2_Tick);
+			// 
+			// timer3
+			// 
+			this->timer3->Enabled = true;
+			this->timer3->Interval = 1000;
+			this->timer3->Tick += gcnew System::EventHandler(this, &MyForm::timer3_Tick);
+			// 
+			// l_obciazenie
+			// 
+			this->l_obciazenie->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->l_obciazenie->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->l_obciazenie->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->l_obciazenie->Location = System::Drawing::Point(588, 26);
+			this->l_obciazenie->Name = L"l_obciazenie";
+			this->l_obciazenie->Size = System::Drawing::Size(141, 45);
+			this->l_obciazenie->TabIndex = 55;
+			this->l_obciazenie->Text = L"Obciążenie : 0 ";
+			this->l_obciazenie->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1308, 620);
-			this->Controls->Add(this->button22);
-			this->Controls->Add(this->button21);
-			this->Controls->Add(this->button20);
-			this->Controls->Add(this->button19);
-			this->Controls->Add(this->button18);
-			this->Controls->Add(this->button17);
-			this->Controls->Add(this->button16);
-			this->Controls->Add(this->button15);
-			this->Controls->Add(this->button14);
-			this->Controls->Add(this->button13);
-			this->Controls->Add(this->button12);
-			this->Controls->Add(this->button11);
-			this->Controls->Add(this->button10);
-			this->Controls->Add(this->button9);
-			this->Controls->Add(this->button8);
-			this->Controls->Add(this->button7);
-			this->Controls->Add(this->button6);
-			this->Controls->Add(this->button5);
-			this->Controls->Add(this->button4);
-			this->Controls->Add(this->button3);
+			this->Controls->Add(this->l_obciazenie);
+			this->Controls->Add(this->l_w_na5);
+			this->Controls->Add(this->l_w_na4);
+			this->Controls->Add(this->l_w_na3);
+			this->Controls->Add(this->l_w_na2);
+			this->Controls->Add(this->l_w_na1);
+			this->Controls->Add(this->l5na4);
+			this->Controls->Add(this->l5na3);
+			this->Controls->Add(this->l5na2);
+			this->Controls->Add(this->l5na1);
+			this->Controls->Add(this->l4na5);
+			this->Controls->Add(this->l4na3);
+			this->Controls->Add(this->l4na2);
+			this->Controls->Add(this->l4na1);
+			this->Controls->Add(this->l3na5);
+			this->Controls->Add(this->l3na4);
+			this->Controls->Add(this->l3na2);
+			this->Controls->Add(this->l3na1);
+			this->Controls->Add(this->l2na5);
+			this->Controls->Add(this->l2na4);
+			this->Controls->Add(this->l2na3);
+			this->Controls->Add(this->l2na1);
+			this->Controls->Add(this->l1na5);
+			this->Controls->Add(this->l1na4);
+			this->Controls->Add(this->l1na3);
+			this->Controls->Add(this->l1na2);
+			this->Controls->Add(this->b1na5);
+			this->Controls->Add(this->b2na5);
+			this->Controls->Add(this->b3na5);
+			this->Controls->Add(this->b4na5);
+			this->Controls->Add(this->b1na4);
+			this->Controls->Add(this->b2na4);
+			this->Controls->Add(this->b3na4);
+			this->Controls->Add(this->b5na4);
+			this->Controls->Add(this->b5na1);
+			this->Controls->Add(this->b4na1);
+			this->Controls->Add(this->b3na1);
+			this->Controls->Add(this->b2na1);
+			this->Controls->Add(this->b5na3);
+			this->Controls->Add(this->b4na3);
+			this->Controls->Add(this->b1na3);
+			this->Controls->Add(this->b5na2);
+			this->Controls->Add(this->b4na2);
+			this->Controls->Add(this->b3na2);
+			this->Controls->Add(this->b2na3);
+			this->Controls->Add(this->b1na2);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Name = L"MyForm";
@@ -547,118 +1037,213 @@ namespace Project4 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
-	
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
+
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e)		//zegar działa cały czas i na każdy tick aktualizuje wekor kolejnosci jazdy dla windy i cel jazdy windy, a także obsługuje same poruszeni się windy. Zatrzymuje się tylko na symboliczny czas kiedy ludzie "wsiadają" do windy, potem jest ponownie odpalany przez timer2
 	{
-		kierunek = 1;
-		this->timer1->Start();
+
+		if (kolejnosc.size() != 0)		//wytyczenie celu windy na podstawie pierwszego elementu kolejnosci
+			cel_windy = 610 - 100 * kolejnosc[0];
+
+		if(pozycja_windy != cel_windy)	//wyznaczenie kierunku jazdy windy
+		{ 
+			if(pozycja_windy > cel_windy)
+					kierunek = 1;
+			if (pozycja_windy < cel_windy)
+				kierunek = -1;
+
+			pozycja_windy -= 2 * kierunek;
+			this->pictureBox2->Location = System::Drawing::Point(288, pozycja_windy);
+		}
+		if (pozycja_windy == cel_windy && kolejnosc.size()!=0)		//kiedy winda dojeżdża i w wektorze dalej coś jest
+		{
+			timer3->Stop();
+			bezczynnosc = 0;
+			//tutaj (dokladnie tutaj, przed wywołaniem funkcji Przesiadka) !!! wstawić usuwanie powtarzających się pięter w wektorze kolejności, w sensie że po dojechaniu na 4 pietro wszystkie 4 powinny zniknąć w tym miejscu z wektora
+			//kolejka tworzy sie tak że na wciśnięcie guzika dane piętro gdzie został wciśnięty guzik zostaje dodane do kolejki i potem jak winda dojeżdża na dane piętro to w funkcji Przesiadka wsiadajacy ludzie dodaja swoje pietra do kolejki
+			kolejnosc.erase(kolejnosc.begin());
+			timer1->Stop();
+			timer2->Start();		//timer2 który ponownie uruchamia windę po symbolicznym czasie na wsiadanie ludzi
+			Przesiadka(cel_windy);	//Wsiadanie ludzi: zmienianie danych na labelach i dodawanie wybranych przez ludzi pięter do wektora
+		}
+		//timer odmierzający 5 sec bezczynności po których winda ma zjechać na parter
+		if (pozycja_windy == cel_windy && kolejnosc.size() == 0)
+		{
+			timer3->Start();
+		}
 
 	}
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) 
-	{
-		pozycja_windy -= 2*kierunek;
-		this->pictureBox2->Location = System::Drawing::Point(288, pozycja_windy);
 
-		if (pozycja_windy == cel_windy)
-			this->timer1->Stop();
-
-	}
-	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b1na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		kierunek = -1;
-		this->timer1->Start();
-
-	}
-	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_2();
+		i1na2++;
+		s1na2 = Convert::ToString(i1na2);
+		l1na2->Text = "1->2 : " + s1na2;
+		kolejnosc.push_back(1);
 	}
 
-	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b2na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_3();
+		i2na3++;
+		s2na3 = Convert::ToString(i2na3);
+		l2na3->Text = "2->3 : " + s2na3;
+		kolejnosc.push_back(2);
 	}
-	private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e)
+	private: System::Void b3na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_2();
+		i3na2++;
+		s3na2 = Convert::ToString(i3na2);
+		l3na2->Text = "3->2 : " + s3na2;
+		kolejnosc.push_back(3);
 	}
-	private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b4na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_2();
+		i4na2++;
+		s4na2 = Convert::ToString(i4na2);
+		l4na2->Text = "4->2 : " + s4na2;
+		kolejnosc.push_back(4);
 	}
-	private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b5na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_2();
-	}
-
-	private: System::Void button8_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_3();
-	}
-	private: System::Void button9_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_3();
-	}
-	private: System::Void button10_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_3();
-	}
-
-	private: System::Void button11_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_1();
-	}
-	private: System::Void button12_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_1();
-	}
-	private: System::Void button13_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_1();
-	}
-	private: System::Void button14_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_1();
+		i5na2++;
+		s5na2 = Convert::ToString(i5na2);
+		l5na2->Text = "5->2 : " + s5na2;
+		kolejnosc.push_back(5);
 	}
 
-	private: System::Void button15_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b1na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_4();
+		i1na3++;
+		s1na3 = Convert::ToString(i1na3);
+		l1na3->Text = "1->3 : " + s1na3;
+		kolejnosc.push_back(1);
 	}
-	private: System::Void button16_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b4na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_4();
+		i4na3++;
+		s4na3 = Convert::ToString(i4na3);
+		l4na3->Text = "4->3 : " + s4na3;
+		kolejnosc.push_back(4);
 	}
-	private: System::Void button17_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void b5na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Pietro_4();
-	}
-	private: System::Void button18_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_4();
-	}
-
-	private: System::Void button19_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_5();
-	}
-	private: System::Void button20_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_5();
-	}
-	private: System::Void button21_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_5();
-	}
-	private: System::Void button22_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		Pietro_5();
+		i5na3++;
+		s5na3 = Convert::ToString(i5na3);
+		l5na3->Text = "5->3 : " + s5na3;
+		kolejnosc.push_back(5);
 	}
 
-private: System::Void label5_Click(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void b2na1_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i2na1++;
+		s2na1 = Convert::ToString(i2na1);
+		l2na1->Text = "2->1 : " + s2na1;
+		kolejnosc.push_back(2);
+	}
+	private: System::Void b3na1_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i3na1++;
+		s3na1 = Convert::ToString(i3na1);
+		l3na1->Text = "3->1 : " + s3na1;
+		kolejnosc.push_back(3);
+	}
+	private: System::Void b4na1_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i4na1++;
+		s4na1 = Convert::ToString(i4na1);
+		l4na1->Text = "4->1 : " + s4na1;
+		kolejnosc.push_back(4);
+	}
+	private: System::Void b5na1_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i5na1++;
+		s5na1 = Convert::ToString(i5na1);
+		l5na1->Text = "5->1 : " + s5na1;
+		kolejnosc.push_back(5);
+	}
+
+	private: System::Void b5na4_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i5na4++;
+		s5na4 = Convert::ToString(i5na4);
+		l5na4->Text = "5->4 : " + s5na4;
+		kolejnosc.push_back(5);
+	}
+	private: System::Void b3na4_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i3na4++;
+		s3na4 = Convert::ToString(i3na4);
+		l3na4->Text = "3->4 : " + s3na4;
+		kolejnosc.push_back(3);
+	}
+	private: System::Void b2na4_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i2na4++;
+		s2na4 = Convert::ToString(i2na4);
+		l2na4->Text = "2->4 : " + s2na4;
+		kolejnosc.push_back(2);
+	}
+	private: System::Void b1na4_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i1na4++;
+		s1na4 = Convert::ToString(i1na4);
+		l1na4->Text = "1->4 : " + s1na4;
+		kolejnosc.push_back(1);
+	}
+
+	private: System::Void b4na5_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i4na5++;
+		s4na5 = Convert::ToString(i4na5);
+		l4na5->Text = "4->5 : " + s4na5;
+		kolejnosc.push_back(4);
+	}
+	private: System::Void b3na5_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i3na5++;
+		s3na5 = Convert::ToString(i3na5);
+		l3na5->Text = "3->5 : " + s3na5;
+		kolejnosc.push_back(3);
+	}
+	private: System::Void b2na5_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i2na5++;
+		s2na5 = Convert::ToString(i2na5);
+		l2na5->Text = "2->5 : " + s2na5;
+		kolejnosc.push_back(2);
+	}
+	private: System::Void b1na5_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		i1na5++;
+		s1na5 = Convert::ToString(i1na5);
+		l1na5->Text = "1->5 : " + s1na5;
+		kolejnosc.push_back(1);
+	}
+
+	//ten timer zapewanie postój windy przez 2 sec na symboliczne wsiadanie ludzi, ma tyknięcia co 0.1 sec
+	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e)	
+	{
+		postoj++;
+		if (postoj == 20)
+		{
+			postoj = 0;
+			timer2->Stop();
+			timer1->Start();
+		}
+	}
+private: System::Void timer3_Tick(System::Object^  sender, System::EventArgs^  e) 
+{
+	bezczynnosc++;
+
+	if (bezczynnosc == 5)
+	{
+		cel_windy = 510;
+		timer3->Stop();
+	}
 }
+
 };
 }
