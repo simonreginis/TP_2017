@@ -22,7 +22,7 @@ void Cargo::initialize(int x, int y, int type)
 		case 1:
 			this->type = type; break;		//triangle
 		case 2:
-			this->type = type; break;	//wheel
+			this->type = type; break;	//circle
 		default: break;
 	}
 	this->x = x;
