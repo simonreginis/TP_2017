@@ -137,6 +137,118 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 		SetTimer(hWnd, TMR_1, speed, 0);
 }
 
+void timer(HWND hWnd, PAINTSTRUCT &ps)
+{
+	if (memorycontroller)
+	{
+		memory2 = memory1;
+		memorycontroller = FALSE;
+	}
+	if (currentPosition == valueTimer1)
+		controllerBlock_2 = TRUE;
+	if ((memory2 != memory1) || ((controllerBlock_2) && (currentPosition != valueTimer1)))// || (floors.empty()))
+	{
+		controllerBlock = TRUE;
+		controllerBlock_2 = FALSE;
+	}
+	if (TIMER1)
+	{
+		controller = FALSE;
+		repaintWindow(hWnd, hdc, ps);
+		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty()))
+			floors.clear();
+		if (floors.empty())
+		{
+			controllerBlock = TRUE;
+			KillTimer(hWnd, TMR_1);
+		}
+		else if ((abc()) || (abc2()))
+		{
+			TIMER1 = FALSE;
+			SetTimer(hWnd, TMR_2, 500, 0);
+			TIMER1 = FALSE;
+			SetTimer(hWnd, TMR_3, 500, 0);
+		}
+		else if ((((peopleC.empty()) && (floors.front() < currentPosition))) || ((!peopleC.empty()) && (peopleC.front().destination < currentPosition)))
+		{
+			for (int i = 0; i < peopleC.size(); i++)
+				peopleC[i].positionY = peopleC[i].positionY - 3;
+			currentPosition = currentPosition - 3;
+		}
+		else if ((((peopleC.empty()) && (floors.front() > currentPosition))) || ((!peopleC.empty()) && (peopleC.front().destination > currentPosition)))
+		{
+			for (int i = 0; i < peopleC.size(); i++)
+				peopleC[i].positionY = peopleC[i].positionY + 3;
+			currentPosition = currentPosition + 3;
+		}
+		else if (floors.front() == currentPosition)
+		{
+			floors.erase(floors.begin());
+			if ((currentPosition == 120) && (!peopleF5.empty()) || (currentPosition == 228) && (!peopleF4.empty()) || (currentPosition == 336) && (!peopleF3.empty()) ||
+				(currentPosition == 444) && (!peopleF2.empty()) || (currentPosition == 552) && (!peopleF1.empty()))
+			{
+				TIMER1 = FALSE;
+				SetTimer(hWnd, TMR_2, 500, 0);
+			}
+			TIMER1 = FALSE;
+			SetTimer(hWnd, TMR_3, 500, 0);
+		}
+		memory2 = memory1;
+	}
+}
+
+
+void timer2(HWND hWnd, PAINTSTRUCT &ps, std::vector<HUMAN> &peopleF, int P_M, int position)	//wchodzenie ludzi do windy
+{
+	TIMER1 = FALSE;
+	if (peopleC.size() != 8)
+	{
+		peopleF.front().positionX = middle + 142 - (peopleC.size() * 37);
+		//peopleF.front().number = peopleC.size();
+		peopleC.push_back(peopleF.front());
+		peopleF.erase(peopleF.begin());
+		for (int i = 0; i < peopleF.size(); i++)
+			peopleF[i].positionX = position + (P_M * i * 40);
+		controller = TRUE;
+		repaintWindow(hWnd, hdc, ps);
+	}
+	if (((peopleF.empty()) && (peopleC.size() <= 8)) || ((!peopleF.empty()) && (peopleC.size() == 8)))
+	{
+		timerblock = TRUE;
+		controller = FALSE;
+		TIMER1 = TRUE;
+		KillTimer(hWnd, TMR_2);
+	}
+}
+
+
+void timer3(HWND hWnd, PAINTSTRUCT &ps)		//wychodzenie ludzi z windy
+{
+	TIMER1 = FALSE;
+	for (;;)
+	{
+		bool W = TRUE;
+		for (int i = 0; i < peopleC.size(); i++)
+			if (peopleC[i].destination == currentPosition)
+			{
+				peopleC.erase(peopleC.begin() + i);
+				repaintWindow(hWnd, hdc, ps);
+				for (int j = 0; j < peopleC.size(); j++)
+				{
+					peopleC[j].positionX = middle + 142 - (j * 37);
+					repaintWindow(hWnd, hdc, ps);
+				}
+				W = FALSE;
+				break;
+			}
+		if (W)
+			break;
+	}
+	TIMER1 = TRUE;
+	KillTimer(hWnd, TMR_3);
+}
+
+
 void createhuman(std::vector<HUMAN> &people, int positionX, int positionY, int source, int destination, int P_M)
 {
 	person.positionX = positionX + (P_M * people.size() * 40);
@@ -410,6 +522,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_TIMER:
+		switch (wParam)
+		{
+		case TMR_1:
+			timer(hWnd, ps);
+			break;
+		case TMR_2:
+			if ((currentPosition == 120) && (!peopleF5.empty()))
+				timer2(hWnd, ps, peopleF5, -1, 507);
+			else if ((currentPosition == 228) && (!peopleF4.empty()))
+				timer2(hWnd, ps, peopleF4, 1, 869);
+			else if ((currentPosition == 336) && (!peopleF3.empty()))
+				timer2(hWnd, ps, peopleF3, -1, 507);
+			else if ((currentPosition == 444) && (!peopleF2.empty()))
+				timer2(hWnd, ps, peopleF2, 1, 869);
+			else if ((currentPosition == 552) && (!peopleF1.empty()))
+				timer2(hWnd, ps, peopleF1, -1, 507);
+			break;
+		case TMR_3:
+			timer3(hWnd, ps);
+			break;
+		case TMR_4:
+			move(hWnd, ps, 552, 552);
+			break;
+		}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
