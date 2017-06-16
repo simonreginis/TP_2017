@@ -137,6 +137,14 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 		SetTimer(hWnd, TMR_1, speed, 0);
 }
 
+void createhuman(std::vector<HUMAN> &people, int positionX, int positionY, int source, int destination, int P_M)
+{
+	person.positionX = positionX + (P_M * people.size() * 40);
+	person.positionY = positionY;
+	person.source = source;
+	person.destination = destination;
+	people.push_back(person);
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
