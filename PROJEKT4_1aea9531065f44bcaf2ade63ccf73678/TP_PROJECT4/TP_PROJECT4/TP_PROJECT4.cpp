@@ -245,6 +245,7 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 	{
 		controller = FALSE;
 		repaintWindow(hWnd, hdc, ps);
+		remove();
 		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty()))
 			floors.clear();
 		if (floors.empty())
