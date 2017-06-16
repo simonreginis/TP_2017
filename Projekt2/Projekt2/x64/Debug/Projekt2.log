@@ -1,0 +1,5 @@
+﻿  MyForm1.cpp
+c:\users\danie\desktop\winda-proj\projekt2\projekt2\MyForm1.h(198): error C2228: po lewej ".CheckedIndices" musi być typ struct/union
+  c:\users\danie\desktop\winda-proj\projekt2\projekt2\MyForm1.h(198): note: typ to "System::Windows::Forms::CheckedListBox ^"
+  c:\users\danie\desktop\winda-proj\projekt2\projekt2\MyForm1.h(198): note: czy zamiast tego miał być użyty "->"?
+c:\users\danie\desktop\winda-proj\projekt2\projekt2\MyForm1.h(198): error C2228: po lewej ".Count" musi być typ struct/union
