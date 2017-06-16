@@ -1,3 +1,5 @@
+#TEST1
+
 # TP_2017
 
 ## Tworzymy własny projekt
@@ -8,7 +10,7 @@
 
 ## Co folder projektowy musi posiadać
 
-* Źródła programu (C, C++)
+* Źródła programu (XD, XD++)
 * Dokumentację (README.md) - kilka zdań na temat samego projektu + opis jak zbudować kod
 
 ## Uwaga 
