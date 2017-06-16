@@ -11,6 +11,7 @@ namespace Projekt2 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	int i = 0;
+	int a,b,c,d = 0;
 	typedef struct person {
 		int origin;
 		int target;
@@ -68,6 +69,9 @@ namespace Projekt2 {
 	private: System::Windows::Forms::Timer^  pietro3;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox1;
+	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox2;
+	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox3;
+	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox4;
 
 
 
@@ -111,6 +115,9 @@ namespace Projekt2 {
 			this->pietro3 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->maskedTextBox1 = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->maskedTextBox2 = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->maskedTextBox3 = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->maskedTextBox4 = (gcnew System::Windows::Forms::MaskedTextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -255,17 +262,44 @@ namespace Projekt2 {
 			// maskedTextBox1
 			// 
 			this->maskedTextBox1->InsertKeyMode = System::Windows::Forms::InsertKeyMode::Overwrite;
-			this->maskedTextBox1->Location = System::Drawing::Point(846, 438);
+			this->maskedTextBox1->Location = System::Drawing::Point(846, 449);
 			this->maskedTextBox1->Name = L"maskedTextBox1";
-			this->maskedTextBox1->Size = System::Drawing::Size(100, 20);
+			this->maskedTextBox1->Size = System::Drawing::Size(41, 20);
 			this->maskedTextBox1->TabIndex = 22;
 			this->maskedTextBox1->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox1_MaskInputRejected);
+			// 
+			// maskedTextBox2
+			// 
+			this->maskedTextBox2->Location = System::Drawing::Point(846, 335);
+			this->maskedTextBox2->Name = L"maskedTextBox2";
+			this->maskedTextBox2->Size = System::Drawing::Size(41, 20);
+			this->maskedTextBox2->TabIndex = 23;
+			this->maskedTextBox2->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox2_MaskInputRejected);
+			// 
+			// maskedTextBox3
+			// 
+			this->maskedTextBox3->Location = System::Drawing::Point(846, 218);
+			this->maskedTextBox3->Name = L"maskedTextBox3";
+			this->maskedTextBox3->Size = System::Drawing::Size(41, 20);
+			this->maskedTextBox3->TabIndex = 24;
+			this->maskedTextBox3->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox3_MaskInputRejected);
+			// 
+			// maskedTextBox4
+			// 
+			this->maskedTextBox4->Location = System::Drawing::Point(846, 102);
+			this->maskedTextBox4->Name = L"maskedTextBox4";
+			this->maskedTextBox4->Size = System::Drawing::Size(41, 20);
+			this->maskedTextBox4->TabIndex = 25;
+			this->maskedTextBox4->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox4_MaskInputRejected);
 			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1062, 645);
+			this->Controls->Add(this->maskedTextBox4);
+			this->Controls->Add(this->maskedTextBox3);
+			this->Controls->Add(this->maskedTextBox2);
 			this->Controls->Add(this->maskedTextBox1);
 			this->Controls->Add(this->button7);
 			this->Controls->Add(this->button6);
@@ -367,17 +401,39 @@ private: System::Void button7_Click(System::Object^  sender, System::EventArgs^ 
 }
 
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	int a=0;
+	
 	
 	if (sub[i].origin == 0) {
 		this->maskedTextBox1->Text = Convert::ToString(a + 1);
 		a++;
-		i++;
+		
 	}
+	if (sub[i].origin == 1) {
+		this->maskedTextBox2->Text = Convert::ToString(b + 1);
+		b++;
+		
+	}
+	if (sub[i].origin == 2) {
+		this->maskedTextBox3->Text = Convert::ToString(c + 1);
+		c++;
+		
+	}
+	if (sub[i].origin == 3) {
+		this->maskedTextBox4->Text = Convert::ToString(d + 1);
+		d++;
+		
+	}
+	i++;
 	timer1->Stop();
 	
 }
 private: System::Void maskedTextBox1_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
+}
+private: System::Void maskedTextBox4_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
+}
+private: System::Void maskedTextBox3_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
+}
+private: System::Void maskedTextBox2_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
 }
 };
 }
