@@ -1,4 +1,7 @@
 #pragma once
+#include<string>
+#include<vector>
+#include<iostream>
 namespace Projekt2 {
 
 	using namespace System;
@@ -7,16 +10,24 @@ namespace Projekt2 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	int pietro0 = 0;
-	int pietro1 = 0;
-	int pietro2 = 0;
-	int pietro3 = 0;
 
 	/// <summary>
 	/// Podsumowanie informacji o MyForm1
 	/// </summary>
 	public ref class MyForm1 : public System::Windows::Forms::Form
 	{
+		static
+			int czas = 0;
+			int pietro = 0;
+			int czlek = 0;
+			int gdzie_jedziemy = 0;
+			int waga = 0;
+			int numer_kolejki = 0;
+
+
+
+
+			 int przesuniecie = 0;
 	public:
 		MyForm1(void)
 		{
@@ -40,15 +51,7 @@ namespace Projekt2 {
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	protected:
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
-	private: System::Windows::Forms::Timer^  timer1;
-	private: System::Windows::Forms::CheckedListBox^  checkedListBox1;
-	private: System::Windows::Forms::TextBox^  textBox1;
-	private: System::Windows::Forms::CheckedListBox^  checkedListBox2;
-	private: System::Windows::Forms::TextBox^  textBox2;
-	private: System::Windows::Forms::TextBox^  textBox3;
-	private: System::Windows::Forms::Button^  button5;
-
-
+	private: System::Windows::Forms::Timer^  gora;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -69,13 +72,7 @@ namespace Projekt2 {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm1::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->checkedListBox1 = (gcnew System::Windows::Forms::CheckedListBox());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
-			this->checkedListBox2 = (gcnew System::Windows::Forms::CheckedListBox());
-			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
-			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
-			this->button5 = (gcnew System::Windows::Forms::Button());
+			this->gora = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -99,76 +96,17 @@ namespace Projekt2 {
 			this->pictureBox2->TabStop = false;
 			this->pictureBox2->Click += gcnew System::EventHandler(this, &MyForm1::pictureBox2_Click);
 			// 
-			// timer1
+			// gora
 			// 
-			this->timer1->Interval = 1;
-			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm1::timer1_Tick);
-			// 
-			// checkedListBox1
-			// 
-			this->checkedListBox1->FormattingEnabled = true;
-			this->checkedListBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"3", L"2", L"1", L"0" });
-			this->checkedListBox1->Location = System::Drawing::Point(164, 373);
-			this->checkedListBox1->Name = L"checkedListBox1";
-			this->checkedListBox1->Size = System::Drawing::Size(36, 64);
-			this->checkedListBox1->TabIndex = 9;
-			this->checkedListBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm1::checkedListBox1_SelectedIndexChanged);
-			// 
-			// textBox1
-			// 
-			this->textBox1->Location = System::Drawing::Point(12, 312);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 20);
-			this->textBox1->TabIndex = 10;
-			this->textBox1->Text = L"Dodaj pasa¿era";
-			// 
-			// checkedListBox2
-			// 
-			this->checkedListBox2->FormattingEnabled = true;
-			this->checkedListBox2->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"3", L"2", L"1", L"0" });
-			this->checkedListBox2->Location = System::Drawing::Point(51, 373);
-			this->checkedListBox2->Name = L"checkedListBox2";
-			this->checkedListBox2->Size = System::Drawing::Size(40, 64);
-			this->checkedListBox2->TabIndex = 11;
-			this->checkedListBox2->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm1::checkedListBox2_SelectedIndexChanged);
-			// 
-			// textBox2
-			// 
-			this->textBox2->Location = System::Drawing::Point(12, 347);
-			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(44, 20);
-			this->textBox2->TabIndex = 12;
-			this->textBox2->Text = L"Z piêtra:";
-			// 
-			// textBox3
-			// 
-			this->textBox3->Location = System::Drawing::Point(117, 347);
-			this->textBox3->Name = L"textBox3";
-			this->textBox3->Size = System::Drawing::Size(52, 20);
-			this->textBox3->TabIndex = 13;
-			this->textBox3->Text = L"Na piêtro:";
-			// 
-			// button5
-			// 
-			this->button5->Location = System::Drawing::Point(125, 458);
-			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(75, 23);
-			this->button5->TabIndex = 14;
-			this->button5->Text = L"Dodaj";
-			this->button5->UseVisualStyleBackColor = true;
-			this->button5->Click += gcnew System::EventHandler(this, &MyForm1::button5_Click);
+			this->gora->Enabled = true;
+			this->gora->Interval = 1;
+			this->gora->Tick += gcnew System::EventHandler(this, &MyForm1::timer1_Tick);
 			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1062, 645);
-			this->Controls->Add(this->button5);
-			this->Controls->Add(this->textBox3);
-			this->Controls->Add(this->textBox2);
-			this->Controls->Add(this->checkedListBox2);
-			this->Controls->Add(this->textBox1);
-			this->Controls->Add(this->checkedListBox1);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Name = L"MyForm1";
@@ -176,33 +114,19 @@ namespace Projekt2 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void pictureBox2_Click(System::Object^  sender, System::EventArgs^  e) {
 
 	}
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-
+	private: System::Void gora_Tick(System::Object^  sender, System::EventArgs^  e) {
+		this->pictureBox2->Top -= 3;
+		czas++;
+		if (czas == 50) {
+			this->gora->Stop();
+			czas == 0;
+		}	
 	}
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	}
-private: System::Void checkedListBox2_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-	
-}
-
-private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-
- private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
-
- }
-		  private void button5_Click(System::Object^  sender, System::EventArgs^  e) {
-			  for (int i = 0; i < checkedListBox2.CheckedItems.Count; i++)
-			  {
-				  string selection = checkedListBox1.CheckedItems[i].ToString();
-			  }
-		  }
 };
 }
