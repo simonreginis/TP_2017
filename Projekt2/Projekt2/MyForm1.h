@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+#include <string>
+#include <iostream>
 namespace Projekt2 {
 
 	using namespace System;
@@ -7,9 +10,12 @@ namespace Projekt2 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	int origin = 0;
-	int target = 0;
-
+	int i = 0;
+	typedef struct person {
+		int origin;
+		int target;
+	}Person;
+	std::vector<person> sub;
 	/// <summary>
 	/// Podsumowanie informacji o MyForm1
 	/// </summary>
@@ -60,6 +66,9 @@ namespace Projekt2 {
 	private: System::Windows::Forms::Button^  button7;
 	private: System::Windows::Forms::Timer^  pietro2;
 	private: System::Windows::Forms::Timer^  pietro3;
+	private: System::Windows::Forms::Timer^  timer1;
+	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox1;
+
 
 
 
@@ -100,6 +109,8 @@ namespace Projekt2 {
 			this->button7 = (gcnew System::Windows::Forms::Button());
 			this->pietro2 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pietro3 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->maskedTextBox1 = (gcnew System::Windows::Forms::MaskedTextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -126,7 +137,7 @@ namespace Projekt2 {
 			// checkedListBox1
 			// 
 			this->checkedListBox1->FormattingEnabled = true;
-			this->checkedListBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"3", L"2", L"1", L"0" });
+			this->checkedListBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"0", L"1", L"2", L"3" });
 			this->checkedListBox1->Location = System::Drawing::Point(164, 373);
 			this->checkedListBox1->Name = L"checkedListBox1";
 			this->checkedListBox1->Size = System::Drawing::Size(36, 64);
@@ -144,7 +155,7 @@ namespace Projekt2 {
 			// checkedListBox2
 			// 
 			this->checkedListBox2->FormattingEnabled = true;
-			this->checkedListBox2->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"3", L"2", L"1", L"0" });
+			this->checkedListBox2->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"0", L"1", L"2", L"3" });
 			this->checkedListBox2->Location = System::Drawing::Point(51, 373);
 			this->checkedListBox2->Name = L"checkedListBox2";
 			this->checkedListBox2->Size = System::Drawing::Size(40, 64);
@@ -237,11 +248,25 @@ namespace Projekt2 {
 			this->pietro3->Interval = 1;
 			this->pietro3->Tick += gcnew System::EventHandler(this, &MyForm1::pietro3_Tick);
 			// 
+			// timer1
+			// 
+			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm1::timer1_Tick);
+			// 
+			// maskedTextBox1
+			// 
+			this->maskedTextBox1->InsertKeyMode = System::Windows::Forms::InsertKeyMode::Overwrite;
+			this->maskedTextBox1->Location = System::Drawing::Point(846, 438);
+			this->maskedTextBox1->Name = L"maskedTextBox1";
+			this->maskedTextBox1->Size = System::Drawing::Size(100, 20);
+			this->maskedTextBox1->TabIndex = 22;
+			this->maskedTextBox1->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox1_MaskInputRejected);
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1062, 645);
+			this->Controls->Add(this->maskedTextBox1);
 			this->Controls->Add(this->button7);
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->button4);
@@ -273,22 +298,29 @@ private: System::Void checkedListBox2_SelectedIndexChanged(System::Object^  send
 private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 }
 
- private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
-	 IEnumerator^ myEnum1 = checkedListBox2->CheckedIndices->GetEnumerator();
-	 while (myEnum1->MoveNext())
-	 {
-		 Int32 indexChecked = *safe_cast<Int32^>(myEnum1->Current);
+  private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
+	  
 
-		 origin = indexChecked;
-	 }
-	 IEnumerator^ myEnum2 = checkedListBox1->CheckedIndices->GetEnumerator();
-	 while (myEnum2->MoveNext())
-	 {
-		 Int32 indexChecked = *safe_cast<Int32^>(myEnum2->Current);
+	  sub.push_back(person());
+	  IEnumerator^ myEnum1 = checkedListBox2->CheckedIndices->GetEnumerator();
+	  while (myEnum1->MoveNext())
+	  {
+		  Int32 indexChecked = *safe_cast<Int32^>(myEnum1->Current);
 
-		 target = indexChecked;
-	 }
- }
+		  sub[i].origin = indexChecked;
+	  }
+	  IEnumerator^ myEnum2 = checkedListBox1->CheckedIndices->GetEnumerator();
+	  while (myEnum2->MoveNext())
+	  {
+		  Int32 indexChecked = *safe_cast<Int32^>(myEnum2->Current);
+
+		  sub[i].target = indexChecked;
+	  }
+	  timer1->Start();
+	  
+
+
+  }
 private: System::Void parter_Tick(System::Object^  sender, System::EventArgs^  e) {
 	if (pictureBox2->Top < 470)
 		this->pictureBox2->Top += 1;
@@ -332,6 +364,20 @@ private: System::Void pietro3_Tick(System::Object^  sender, System::EventArgs^  
 }
 private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) {
 	pietro3->Start();
+}
+
+private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	int a=0;
+	
+	if (sub[i].origin == 0) {
+		this->maskedTextBox1->Text = Convert::ToString(a + 1);
+		a++;
+		i++;
+	}
+	timer1->Stop();
+	
+}
+private: System::Void maskedTextBox1_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
 }
 };
 }
