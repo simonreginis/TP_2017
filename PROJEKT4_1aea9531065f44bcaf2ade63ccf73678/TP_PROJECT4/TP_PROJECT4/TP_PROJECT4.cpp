@@ -123,6 +123,7 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 	drawpeople(peopleC);
 }
 
+
 void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 {
 	valueTimer1 = a;			//żeby wpisać do windy polecenie zabrania ludzi z piętra, winda najpierw musi z niego odjechać
@@ -135,6 +136,22 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 	repaintWindow(hWnd, hdc, ps);
 	if (timerblock)
 		SetTimer(hWnd, TMR_1, speed, 0);
+}
+
+bool abc()
+{
+	for (int i = 0; i < peopleC.size(); i++)
+		if (peopleC[i].destination == currentPosition)
+			return TRUE;
+	return FALSE;
+}
+
+bool abc2()
+{
+	if((currentPosition == 120) && (!peopleF5.empty()) || (currentPosition == 228) && (!peopleF4.empty()) || (currentPosition == 336) && (!peopleF3.empty()) ||
+		(currentPosition == 444) && (!peopleF2.empty()) || (currentPosition == 552) && (!peopleF1.empty()))
+		return TRUE;
+	return FALSE;
 }
 
 void timer(HWND hWnd, PAINTSTRUCT &ps)
