@@ -67,6 +67,35 @@ public:
 	}
 };
 
+HWND hwndButton;
+HDC hdc;
+int middle = 678;
+int floorsHeight = 552;
+int currentPosition = 552;
+bool controller = TRUE;									//<----------
+int speed = 0;
+bool controllerBlock = TRUE;
+bool controllerBlock_2 = FALSE;
+bool timerblock = TRUE;
+bool memorycontroller = TRUE;
+bool controller10 = TRUE;
+bool veccontrl = TRUE;
+int memory2 = 1;
+int memory1 = 1;
+int valueTimer1 = 552;
+int valueTimer2 = 552;
+bool TIMER1 = TRUE;
+bool TIMER2 = TRUE;
+bool TIMER3 = TRUE;
+int updown = 0;
+std::vector<int> floors;
+std::vector<HUMAN> peopleF5;
+std::vector<HUMAN> peopleF4;
+std::vector<HUMAN> peopleF3;
+std::vector<HUMAN> peopleF2;
+std::vector<HUMAN> peopleF1;
+std::vector<HUMAN> peopleC;
+HUMAN person;
 // Zmienne globalne:
 HINSTANCE hInst;                                // bie¿¹ce wyst¹pienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytu³u
