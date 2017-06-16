@@ -78,6 +78,51 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+
+void elevator()
+{
+	SelectObject(hdc, Pen);
+	Rectangle(hdc, middle - 162, 10, middle + 162, 573);
+	Rectangle(hdc, middle - 152, currentPosition - 89, middle + 152, currentPosition);
+	for (int i = 0, j = 119; i < 3; i++, j = j + 216)
+	{
+		MoveToEx(hdc, middle - 164, j, NULL);
+		LineTo(hdc, middle - 564, j);
+	}
+	for (int i = 0, j = 227; i < 2; i++, j = j + 216)
+	{
+		MoveToEx(hdc, middle + 162, j, NULL);
+		LineTo(hdc, middle + 564, j);
+	}
+}
+
+
+void drawpeople(std::vector<HUMAN> &people)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		if (people.size() == i)
+			break;
+		people[i].drawhuman(hdc, people[i].destination);
+	}
+}
+
+void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
+{
+	if (controller)										//<----------
+	{
+		InvalidateRect(hWnd, NULL, TRUE); // repaint all
+		hdc = BeginPaint(hWnd, &ps);
+	}
+	elevator();
+	drawpeople(peopleF5);
+	drawpeople(peopleF4);
+	drawpeople(peopleF3);
+	drawpeople(peopleF2);
+	drawpeople(peopleF1);
+	drawpeople(peopleC);
+}
+
 void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 {
 	valueTimer1 = a;			//żeby wpisać do windy polecenie zabrania ludzi z piętra, winda najpierw musi z niego odjechać
@@ -222,41 +267,147 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Analizuj zaznaczenia menu:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: tutaj dodaj kod rysowania u¿ywaj¹cy elementu hdc...
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+	PAINTSTRUCT ps;
+
+	switch (message)
+	{
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// Analizuj zaznaczenia menu:
+		switch (wmId)
+		{
+		case IDM_ABOUT:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			break;
+		case IDM_EXIT:
+			DestroyWindow(hWnd);
+			break;
+		case ID_START:
+			repaintWindow(hWnd, hdc, ps);
+			break;
+		case ID_BUTTON_5_4:
+			createhuman(peopleF5, 507, 95, 120, 228, -1);
+			memory1 = 5;
+			move(hWnd, ps, 120, 228);
+			break;
+		case ID_BUTTON_5_3:
+			createhuman(peopleF5, 507, 95, 120, 336, -1);
+			memory1 = 5;
+			move(hWnd, ps, 120, 336);
+			break;
+		case ID_BUTTON_5_2:
+			createhuman(peopleF5, 507, 95, 120, 444, -1);
+			memory1 = 5;
+			move(hWnd, ps, 120, 444);
+			break;
+		case ID_BUTTON_5_1:
+			createhuman(peopleF5, 507, 95, 120, 552, -1);
+			memory1 = 5;
+			move(hWnd, ps, 120, 552);
+			break;
+		case ID_BUTTON_4_5:
+			createhuman(peopleF4, 869, 203, 228, 120, 1);
+			memory1 = 4;
+			move(hWnd, ps, 228, 120);
+			break;
+		case ID_BUTTON_4_3:
+			createhuman(peopleF4, 869, 203, 228, 336, 1);
+			memory1 = 4;
+			move(hWnd, ps, 228, 336);
+			break;
+		case ID_BUTTON_4_2:
+			createhuman(peopleF4, 869, 203, 228, 444, 1);
+			memory1 = 4;
+			move(hWnd, ps, 228, 444);
+			break;
+		case ID_BUTTON_4_1:
+			createhuman(peopleF4, 869, 203, 228, 552, 1);
+			memory1 = 4;
+			move(hWnd, ps, 228, 552);
+			break;
+		case ID_BUTTON_3_5:
+			createhuman(peopleF3, 507, 311, 336, 120, -1);
+			memory1 = 3;
+			move(hWnd, ps, 336, 120);
+			break;
+		case ID_BUTTON_3_4:
+			createhuman(peopleF3, 507, 311, 336, 228, -1);
+			memory1 = 3;
+			move(hWnd, ps, 336, 228);
+			break;
+		case ID_BUTTON_3_2:
+			createhuman(peopleF3, 507, 311, 336, 444, -1);
+			memory1 = 3;
+			move(hWnd, ps, 336, 444);
+			break;
+		case ID_BUTTON_3_1:
+			createhuman(peopleF3, 507, 311, 336, 552, -1);
+			memory1 = 3;
+			move(hWnd, ps, 336, 552);
+			break;
+		case ID_BUTTON_2_5:
+			createhuman(peopleF2, 869, 419, 444, 120, 1);
+			memory1 = 2;
+			move(hWnd, ps, 444, 120);
+			break;
+		case ID_BUTTON_2_4:
+			createhuman(peopleF2, 869, 419, 444, 228, 1);
+			memory1 = 2;
+			move(hWnd, ps, 444, 228);
+			break;
+		case ID_BUTTON_2_3:
+			createhuman(peopleF2, 869, 419, 444, 336, 1);
+			memory1 = 2;
+			move(hWnd, ps, 444, 336);
+			break;
+		case ID_BUTTON_2_1:
+			createhuman(peopleF2, 869, 419, 444, 552, 1);
+			memory1 = 2;
+			move(hWnd, ps, 444, 552);
+			break;
+		case ID_BUTTON_1_5:
+			createhuman(peopleF1, 507, 527, 552, 120, -1);
+			memory1 = 1;
+			move(hWnd, ps, 552, 120);
+			break;
+		case ID_BUTTON_1_4:
+			createhuman(peopleF1, 507, 527, 552, 228, -1);
+			memory1 = 1;
+			move(hWnd, ps, 552, 228);
+			break;
+		case ID_BUTTON_1_3:
+			createhuman(peopleF1, 507, 527, 552, 336, -1);
+			memory1 = 1;
+			move(hWnd, ps, 552, 336);
+			break;
+		case ID_BUTTON_1_2:
+			createhuman(peopleF1, 507, 527, 552, 444, -1);
+			memory1 = 1;
+			move(hWnd, ps, 552, 444);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+	}
+	break;
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+		// TODO: tutaj dodaj kod rysowania używający elementu hdc...
+		EndPaint(hWnd, &ps);
+	}
+	break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	return 0;
 }
+
 
 //Procedura obs³ugi wiadomoœci dla okna informacji o programie.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
