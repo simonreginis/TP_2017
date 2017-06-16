@@ -7,10 +7,6 @@ namespace Projekt2 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	int pietro0 = 0;
-	int pietro1 = 0;
-	int pietro2 = 0;
-	int pietro3 = 0;
 	int origin = 0;
 	int target = 0;
 
@@ -44,7 +40,7 @@ namespace Projekt2 {
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	protected:
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
-	private: System::Windows::Forms::Timer^  gora;
+
 
 	private: System::Windows::Forms::CheckedListBox^  checkedListBox1;
 	private: System::Windows::Forms::TextBox^  textBox1;
@@ -52,10 +48,19 @@ namespace Projekt2 {
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::TextBox^  textBox3;
 	private: System::Windows::Forms::Button^  button5;
-	private: System::Windows::Forms::Timer^  dol;
 
-	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Button^  button2;
+
+
+
+	private: System::Windows::Forms::Button^  button3;
+	private: System::Windows::Forms::Timer^  parter;
+	private: System::Windows::Forms::Button^  button4;
+	private: System::Windows::Forms::Timer^  pietro1;
+	private: System::Windows::Forms::Button^  button6;
+	private: System::Windows::Forms::Button^  button7;
+	private: System::Windows::Forms::Timer^  pietro2;
+	private: System::Windows::Forms::Timer^  pietro3;
+
 
 
 
@@ -81,16 +86,20 @@ namespace Projekt2 {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm1::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->gora = (gcnew System::Windows::Forms::Timer(this->components));
 			this->checkedListBox1 = (gcnew System::Windows::Forms::CheckedListBox());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->checkedListBox2 = (gcnew System::Windows::Forms::CheckedListBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->button5 = (gcnew System::Windows::Forms::Button());
-			this->dol = (gcnew System::Windows::Forms::Timer(this->components));
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->parter = (gcnew System::Windows::Forms::Timer(this->components));
+			this->button4 = (gcnew System::Windows::Forms::Button());
+			this->pietro1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->button6 = (gcnew System::Windows::Forms::Button());
+			this->button7 = (gcnew System::Windows::Forms::Button());
+			this->pietro2 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->pietro3 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -113,11 +122,6 @@ namespace Projekt2 {
 			this->pictureBox2->TabIndex = 1;
 			this->pictureBox2->TabStop = false;
 			this->pictureBox2->Click += gcnew System::EventHandler(this, &MyForm1::pictureBox2_Click);
-			// 
-			// gora
-			// 
-			this->gora->Interval = 1;
-			this->gora->Tick += gcnew System::EventHandler(this, &MyForm1::timer1_Tick);
 			// 
 			// checkedListBox1
 			// 
@@ -173,38 +177,75 @@ namespace Projekt2 {
 			this->button5->UseVisualStyleBackColor = true;
 			this->button5->Click += gcnew System::EventHandler(this, &MyForm1::button5_Click);
 			// 
-			// dol
+			// button3
 			// 
-			this->dol->Interval = 1;
-			this->dol->Tick += gcnew System::EventHandler(this, &MyForm1::timer2_Tick);
+			this->button3->Location = System::Drawing::Point(575, 543);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(19, 22);
+			this->button3->TabIndex = 17;
+			this->button3->Text = L"P";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm1::button3_Click);
 			// 
-			// button1
+			// parter
 			// 
-			this->button1->Location = System::Drawing::Point(26, 107);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 15;
-			this->button1->Text = L"up";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm1::button1_Click_1);
+			this->parter->Interval = 1;
+			this->parter->Tick += gcnew System::EventHandler(this, &MyForm1::parter_Tick);
 			// 
-			// button2
+			// button4
 			// 
-			this->button2->Location = System::Drawing::Point(26, 136);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
-			this->button2->TabIndex = 16;
-			this->button2->Text = L"down";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MyForm1::button2_Click);
+			this->button4->Location = System::Drawing::Point(575, 387);
+			this->button4->Name = L"button4";
+			this->button4->Size = System::Drawing::Size(19, 22);
+			this->button4->TabIndex = 18;
+			this->button4->Text = L"1";
+			this->button4->UseVisualStyleBackColor = true;
+			this->button4->Click += gcnew System::EventHandler(this, &MyForm1::button4_Click);
+			// 
+			// pietro1
+			// 
+			this->pietro1->Interval = 1;
+			this->pietro1->Tick += gcnew System::EventHandler(this, &MyForm1::pietro1_Tick);
+			// 
+			// button6
+			// 
+			this->button6->Location = System::Drawing::Point(575, 270);
+			this->button6->Name = L"button6";
+			this->button6->Size = System::Drawing::Size(19, 25);
+			this->button6->TabIndex = 19;
+			this->button6->Text = L"2";
+			this->button6->UseVisualStyleBackColor = true;
+			this->button6->Click += gcnew System::EventHandler(this, &MyForm1::button6_Click);
+			// 
+			// button7
+			// 
+			this->button7->Location = System::Drawing::Point(575, 164);
+			this->button7->Name = L"button7";
+			this->button7->Size = System::Drawing::Size(19, 22);
+			this->button7->TabIndex = 20;
+			this->button7->Text = L"3";
+			this->button7->UseVisualStyleBackColor = true;
+			this->button7->Click += gcnew System::EventHandler(this, &MyForm1::button7_Click);
+			// 
+			// pietro2
+			// 
+			this->pietro2->Interval = 1;
+			this->pietro2->Tick += gcnew System::EventHandler(this, &MyForm1::pietro2_Tick);
+			// 
+			// pietro3
+			// 
+			this->pietro3->Interval = 1;
+			this->pietro3->Tick += gcnew System::EventHandler(this, &MyForm1::pietro3_Tick);
 			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1062, 645);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
+			this->Controls->Add(this->button7);
+			this->Controls->Add(this->button6);
+			this->Controls->Add(this->button4);
+			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button5);
 			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->textBox2);
@@ -224,17 +265,6 @@ namespace Projekt2 {
 #pragma endregion
 	private: System::Void pictureBox2_Click(System::Object^  sender, System::EventArgs^  e) {
 
-	}
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		this->pictureBox2->Top -= 3;
-		czas++;
-		if (czas == 40) {
-			this->gora->Stop();
-			czas = 0;
-		}
-
-	}
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
 private: System::Void checkedListBox2_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 	
@@ -259,19 +289,49 @@ private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^  send
 		 target = indexChecked;
 	 }
  }
-private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
-	gora->Start();
+private: System::Void parter_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (pictureBox2->Top < 470)
+		this->pictureBox2->Top += 1;
+	else if (pictureBox2->Top > 470)
+		this->pictureBox2->Top -= 1;
+	else if (pictureBox2->Top == 470)
+		parter->Stop();
 }
-private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
-	this->pictureBox2->Top += 3;
-	czas++;
-	if (czas == 40) {
-		this->dol->Stop();
-		czas = 0;
-	}
+private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	parter->Start();
 }
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	dol->Start();
+private: System::Void pietro1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (pictureBox2->Top < 330)
+		this->pictureBox2->Top += 1;
+	else if (pictureBox2->Top > 330)
+		this->pictureBox2->Top -= 1;
+	else if (pictureBox2->Top == 330)
+		pietro1->Stop();
+}
+private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
+	pietro1->Start();
+}
+private: System::Void pietro2_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (pictureBox2->Top < 205)
+		this->pictureBox2->Top += 1;
+	else if (pictureBox2->Top > 205)
+		this->pictureBox2->Top -= 1;
+	else if (pictureBox2->Top == 205)
+		pietro2->Stop();
+}
+private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
+	pietro2->Start();
+}
+private: System::Void pietro3_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (pictureBox2->Top < 100)
+		this->pictureBox2->Top += 1;
+	else if (pictureBox2->Top > 100)
+		this->pictureBox2->Top -= 1;
+	else if (pictureBox2->Top == 100)
+		pietro3->Stop();
+}
+private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) {
+	pietro3->Start();
 }
 };
 }
