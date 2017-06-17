@@ -32,6 +32,20 @@ void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!
     Rectangle(hdcBufor, x1,y1,x2,y2);
 }
 
+  void draw_level(HDC hdcBufor, USI level)
+{
+    if(level%2==0)
+    {
+        MoveToEx( hdcBufor, 0,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, SHAFT_X1, (SHAFT_Y2-7 -((level)*lift.height)) );
+    }
+    else
+    {
+        MoveToEx( hdcBufor, lift.pos_x+lift.width+10,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
+    }
+}
+
 void draw_main()
 {
     HDC hdcOkno;
