@@ -138,6 +138,12 @@ void drawpeople(std::vector<HUMAN> &people)
 
 void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 {
+	int weight = 0;
+	weight = Peopleweight();
+	char intStr[4];
+	itoa(weight, intStr, 10);
+	//std::string str = std::string(intStr);
+	TextOut(hdc, 400, 20, (LPCWSTR)intStr, 4);
 	if (controller)										//<----------
 	{
 		InvalidateRect(hWnd, NULL, TRUE); // repaint all
