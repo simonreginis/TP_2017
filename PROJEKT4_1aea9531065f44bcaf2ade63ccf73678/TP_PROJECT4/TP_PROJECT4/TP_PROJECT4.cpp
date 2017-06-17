@@ -83,11 +83,9 @@ bool veccontrl = TRUE;
 int memory2 = 1;
 int memory1 = 1;
 int valueTimer1 = 552;
-int valueTimer2 = 552;
 bool TIMER1 = TRUE;
 bool TIMER2 = TRUE;
 bool TIMER3 = TRUE;
-int updown = 0;
 std::vector<int> floors;
 std::vector<HUMAN> peopleF5;
 std::vector<HUMAN> peopleF4;
@@ -461,7 +459,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hwndButton = CreateWindow(TEXT("button"), TEXT("4"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, middle - 594, 492, 20, 20, hWnd, (HMENU)ID_BUTTON_1_4, hInstance, NULL);
 	hwndButton = CreateWindow(TEXT("button"), TEXT("3"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, middle - 594, 512, 20, 20, hWnd, (HMENU)ID_BUTTON_1_3, hInstance, NULL);
 	hwndButton = CreateWindow(TEXT("button"), TEXT("2"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, middle - 594, 532, 20, 20, hWnd, (HMENU)ID_BUTTON_1_2, hInstance, NULL);
-	hwndButton = CreateWindow(TEXT("button"), TEXT("START"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 1000, 0, 50, 50, hWnd, (HMENU)ID_START, hInstance, NULL);
+	hwndButton = CreateWindow(TEXT("button"), TEXT("START"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, middle + 574, 0, 50, 50, hWnd, (HMENU)ID_START, hInstance, NULL);
   
   
    if (!hWnd)
