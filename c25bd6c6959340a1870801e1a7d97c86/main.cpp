@@ -3,11 +3,22 @@
 #include <windows.h>
 #include <vector>
 #include <sstream>
+typedef unsigned short int USI;
 
 HWND hwnd;
 POINT old_point;
 HWND button, button_1, button_2, button_3, button_4;
 HWND radio, radio_1, radio_2, radio_3, radio_4;
+
+USI human_destination=0;
+USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
+struct lift
+{
+    USI current_level=0, max_weight=600, curr_weight=0, last_place_x=SHAFT_X1+10;
+    USI height=150, width=290, pos_x=SHAFT_X1+10,pos_y=SHAFT_Y2-((current_level+1)*height)-7;
+    USI door_y=pos_y, direction=0, min_level=999, max_level=0;
+    //! ???? USI target_level=current_level; ////
+};
 
 void draw_main();
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
@@ -99,6 +110,12 @@ int WINAPI WinMain (HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgume
 }
 
 
+void spawn_human(USI level)
+{
+    /*
+    
+    */
+}
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -110,36 +127,40 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             switch( wParam )
             {
             case ID_BUTTON_1:
-                // SPAWN HUMAN
+                spawn_human(0);
                 break;
             case ID_BUTTON_2:
-                // SPAWN HUMAN;
+                spawn_human(1);
                 break;
             case ID_BUTTON_3:
-                // SPAWN HUMAN
+                spawn_human(2);
                 break;
             case ID_BUTTON_4:
-                // SPAWN HUMAN
+                spawn_human(3);
                 break;
             case ID_BUTTON_5:
-                // SPAWN HUMAN
+                spawn_human(4);
                 break;
             case ID_RADIO_1:
-                //TARGET ?? ? ?
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_1 );
+                human_destination=0;
                 break;
             case ID_RADIO_2:
-                 //TARGET ?? ? ?
+                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_2 );
+                human_destination=1;
                 break;
             case ID_RADIO_3:
-                 //TARGET ?? ? ?
+                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_3 );
+                human_destination=2;
                 break;
             case ID_RADIO_4:
-                //TARGET ?? ? ?
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_4 );
+                human_destination=3;
                 break;
             case ID_RADIO_5:
-                 //TARGET ?? ? ?
+                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_5 );
+                human_destination=4;
                 break;
-
             default:
                 break;
             }
