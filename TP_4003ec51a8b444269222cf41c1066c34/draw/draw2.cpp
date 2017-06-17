@@ -24,9 +24,10 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 // buttons
 HWND hwndButton;
 HWND hText;
+HBITMAP bkground;
 // sent data
 
-RECT drawArea1 = { 350, 20, 750, 400 };
+RECT drawArea = { 280, 0, 1100, 800 };
 
 
 // Forward declarations of functions included in this code module:
@@ -163,9 +164,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	// main window
 	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPED | WS_MINIMIZEBOX | WS_SYSMENU,
-		CW_USEDEFAULT, 0, 800, 600, NULL, NULL, hInstance, NULL);
+		CW_USEDEFAULT, 0, 1200, 800, NULL, NULL, hInstance, NULL);
 
-	
+	bkground = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP2));
 	// create button and store the handle    
 
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
@@ -191,7 +192,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
 		TEXT("Zoom OUT"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		280, 375,                                  // the left and top co-ordinates
+		1100, 700,                                  // the left and top co-ordinates
 		60, 25,                              // width and height
 		hWnd,                                 // parent window handle
 		(HMENU)ID_ZOOM_OUT,                   // the ID of your button
@@ -206,21 +207,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_ZOOM_X_IN,                   // the ID of your button
 		hInstance,                            // the instance of your application
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
-		TEXT("Zoom X OUT"),                  // the caption of the button
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		682, 420,                                  // the left and top co-ordinates
-		70, 25,                              // width and height
-		hWnd,                                 // parent window handle
-		(HMENU)ID_ZOOM_X_OUT,                   // the ID of your button
-		hInstance,                            // the instance of your application
-		NULL);
+
 	
 	if (!hWnd)
 	{
 		return FALSE;
 	}
-
+	
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
 	ShowWindow(hWnd, nCmdShow);
@@ -238,7 +231,15 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_PAINT	- Paint the main window (low priority)
 //  WM_DESTROY	- post a quit message and return
 //
-//
+// 175 h
+// 209 w
+
+void DrawElevator(HDC hdc)
+{
+	Graphics graphics(hdc);
+	Pen pen2(Color(255, 0, 255, 0),4.5f);
+	graphics.DrawRectangle(&pen2, 587, 16, 198, 169);
+}
 
 void DrawDoubleBuffer(HWND hWnd)
 {
@@ -247,19 +248,25 @@ void DrawDoubleBuffer(HWND hWnd)
 	int win_width = Client_Rect.right - Client_Rect.left;
 	int win_height = Client_Rect.bottom + Client_Rect.left;
 	PAINTSTRUCT ps;
-	HDC Memhdc;
+	HDC Memhdc, BkgMemhdc;
 	HDC hdc;
 	HBITMAP Membitmap;
 	hdc = BeginPaint(hWnd, &ps);
 	Memhdc = CreateCompatibleDC(hdc);
+	BkgMemhdc = CreateCompatibleDC(hdc);
 	Membitmap = CreateCompatibleBitmap(hdc, win_width, win_height);
-	SelectObject(Memhdc, Membitmap);
 
+	
+	SelectObject(Memhdc, Membitmap);
+	SelectObject(BkgMemhdc, bkground);
 	FillRect(Memhdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
-	//loggedData->Draw(Memhdc, drawArea1);
 
 	BitBlt(hdc, 0, 0, win_width, win_height, Memhdc, 0, 0, SRCCOPY);
+	BitBlt(hdc, 280, 0, 820, 800, BkgMemhdc, 0, 0, SRCCOPY);
+	DrawElevator(hdc);
+
 	DeleteObject(Membitmap);
+	DeleteDC(BkgMemhdc);
 	DeleteDC(Memhdc);
 	DeleteDC(hdc);
 	EndPaint(hWnd, &ps);
@@ -284,7 +291,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
-		
+		case ID_ZOOM_IN:
+			
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
@@ -297,7 +307,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
-		repaintWindow(hWnd, hdc, ps, &drawArea1);
+		repaintWindow(hWnd, hdc, ps, &drawArea);
 		EndPaint(hWnd, &ps);
 
 		break;

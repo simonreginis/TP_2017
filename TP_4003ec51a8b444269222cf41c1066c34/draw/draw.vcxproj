@@ -97,6 +97,10 @@
   <ItemGroup>
     <ResourceCompile Include="draw2.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Debug\bk.bmp" />
+    <Image Include="bitmap1.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
