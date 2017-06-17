@@ -57,5 +57,8 @@
     <Image Include="..\Debug\bk.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="bk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

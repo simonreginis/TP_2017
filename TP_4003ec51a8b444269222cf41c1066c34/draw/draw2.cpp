@@ -25,8 +25,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 HWND hwndButton;
 HWND hText;
 HBITMAP bkground;
-// sent data
-enum TFloor {ground = 416,first = 216, second = 16};
+enum TFloor {ground = 416, first = 216, second = 16};
 enum TFloor elevatorFloor = ground;
 RECT drawArea = { 280, 0, 1100, 800 };
 

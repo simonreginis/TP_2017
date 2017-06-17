@@ -100,6 +100,7 @@
   <ItemGroup>
     <Image Include="..\Debug\bk.bmp" />
     <Image Include="bitmap1.bmp" />
+    <Image Include="bk.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
