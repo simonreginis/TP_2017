@@ -16,7 +16,8 @@ namespace Projekt2 {
 		int origin;
 		int target;
 	}Person;
-	std::vector<person> sub;
+	std::vector<person> sub, pietro0, p1, p2, p3, wind;
+	
 	/// <summary>
 	/// Podsumowanie informacji o MyForm1
 	/// </summary>
@@ -72,6 +73,7 @@ namespace Projekt2 {
 	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox2;
 	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox3;
 	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox4;
+	private: System::Windows::Forms::Timer^  timer2;
 
 
 
@@ -118,6 +120,7 @@ namespace Projekt2 {
 			this->maskedTextBox2 = (gcnew System::Windows::Forms::MaskedTextBox());
 			this->maskedTextBox3 = (gcnew System::Windows::Forms::MaskedTextBox());
 			this->maskedTextBox4 = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -143,51 +146,62 @@ namespace Projekt2 {
 			// 
 			// checkedListBox1
 			// 
+			this->checkedListBox1->BackColor = System::Drawing::SystemColors::MenuHighlight;
+			this->checkedListBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->checkedListBox1->CheckOnClick = true;
 			this->checkedListBox1->FormattingEnabled = true;
 			this->checkedListBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"0", L"1", L"2", L"3" });
-			this->checkedListBox1->Location = System::Drawing::Point(164, 373);
+			this->checkedListBox1->Location = System::Drawing::Point(141, 373);
 			this->checkedListBox1->Name = L"checkedListBox1";
-			this->checkedListBox1->Size = System::Drawing::Size(36, 64);
+			this->checkedListBox1->Size = System::Drawing::Size(36, 60);
 			this->checkedListBox1->TabIndex = 9;
 			this->checkedListBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm1::checkedListBox1_SelectedIndexChanged);
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(12, 312);
+			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox1->Location = System::Drawing::Point(12, 335);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 20);
+			this->textBox1->Size = System::Drawing::Size(100, 13);
 			this->textBox1->TabIndex = 10;
 			this->textBox1->Text = L"Dodaj pasa¿era";
 			// 
 			// checkedListBox2
 			// 
+			this->checkedListBox2->BackColor = System::Drawing::SystemColors::MenuHighlight;
+			this->checkedListBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->checkedListBox2->CheckOnClick = true;
+			this->checkedListBox2->Cursor = System::Windows::Forms::Cursors::Default;
 			this->checkedListBox2->FormattingEnabled = true;
 			this->checkedListBox2->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"0", L"1", L"2", L"3" });
 			this->checkedListBox2->Location = System::Drawing::Point(51, 373);
 			this->checkedListBox2->Name = L"checkedListBox2";
-			this->checkedListBox2->Size = System::Drawing::Size(40, 64);
+			this->checkedListBox2->Size = System::Drawing::Size(40, 60);
 			this->checkedListBox2->TabIndex = 11;
+			this->checkedListBox2->ThreeDCheckBoxes = true;
 			this->checkedListBox2->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm1::checkedListBox2_SelectedIndexChanged);
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(12, 347);
+			this->textBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox2->Location = System::Drawing::Point(12, 354);
 			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(44, 20);
+			this->textBox2->Size = System::Drawing::Size(44, 13);
 			this->textBox2->TabIndex = 12;
 			this->textBox2->Text = L"Z piêtra:";
 			// 
 			// textBox3
 			// 
-			this->textBox3->Location = System::Drawing::Point(117, 347);
+			this->textBox3->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox3->Location = System::Drawing::Point(95, 354);
 			this->textBox3->Name = L"textBox3";
-			this->textBox3->Size = System::Drawing::Size(52, 20);
+			this->textBox3->Size = System::Drawing::Size(52, 13);
 			this->textBox3->TabIndex = 13;
 			this->textBox3->Text = L"Na piêtro:";
 			// 
 			// button5
 			// 
-			this->button5->Location = System::Drawing::Point(125, 458);
+			this->button5->Location = System::Drawing::Point(102, 449);
 			this->button5->Name = L"button5";
 			this->button5->Size = System::Drawing::Size(75, 23);
 			this->button5->TabIndex = 14;
@@ -292,6 +306,12 @@ namespace Projekt2 {
 			this->maskedTextBox4->TabIndex = 25;
 			this->maskedTextBox4->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &MyForm1::maskedTextBox4_MaskInputRejected);
 			// 
+			// timer2
+			// 
+			this->timer2->Enabled = true;
+			this->timer2->Interval = 1;
+			this->timer2->Tick += gcnew System::EventHandler(this, &MyForm1::timer2_Tick);
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -314,7 +334,7 @@ namespace Projekt2 {
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Name = L"MyForm1";
-			this->Text = L"MyForm1";
+			this->Text = L"Winda Simulator 2017";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
@@ -330,6 +350,7 @@ private: System::Void checkedListBox2_SelectedIndexChanged(System::Object^  send
 }
 
 private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+
 }
 
   private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -404,22 +425,30 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	
 	
 	if (sub[i].origin == 0) {
+		pietro0.push_back(person());
 		this->maskedTextBox1->Text = Convert::ToString(a + 1);
+		pietro0[a] = sub[i];
 		a++;
 		
 	}
 	if (sub[i].origin == 1) {
+		p1.push_back(person());
 		this->maskedTextBox2->Text = Convert::ToString(b + 1);
+		p1[b] = sub[i];
 		b++;
 		
 	}
 	if (sub[i].origin == 2) {
+		p2.push_back(person());
 		this->maskedTextBox3->Text = Convert::ToString(c + 1);
+		p2[c] = sub[i];
 		c++;
 		
 	}
 	if (sub[i].origin == 3) {
+		p3.push_back(person());
 		this->maskedTextBox4->Text = Convert::ToString(d + 1);
+		p3[d] = sub[i];
 		d++;
 		
 	}
@@ -427,6 +456,7 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	timer1->Stop();
 	
 }
+		
 private: System::Void maskedTextBox1_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
 }
 private: System::Void maskedTextBox4_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
@@ -434,6 +464,17 @@ private: System::Void maskedTextBox4_MaskInputRejected(System::Object^  sender, 
 private: System::Void maskedTextBox3_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
 }
 private: System::Void maskedTextBox2_MaskInputRejected(System::Object^  sender, System::Windows::Forms::MaskInputRejectedEventArgs^  e) {
+}
+private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (pictureBox2->Top == 470 || pictureBox2->Top == 330 || pictureBox2->Top == 205 || pictureBox2->Top == 100) {
+		if (a == 0 && b == 0 && c == 0 && d == 0) {
+			czas++;
+			if (czas == 300) {
+				parter->Start();
+				czas = 0;
+			}
+		}
+	}
 }
 };
 }
