@@ -123,12 +123,24 @@ int WINAPI WinMain (HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgume
     return messages.wParam;
 }
 
+void turn_on_timer()
+{
+    if(!timer_on)
+        {
+            SetTimer( hwnd, ID_TIMER, 5, NULL );
+            timer_on=true;
+        }
+}
 
 void spawn_human(USI level)
 {
-    /*
-    
-    */
+   if(level!=human_destination)
+        {
+            //change_level(level);
+            turn_on_timer();
+            //add people
+        }
+
 }
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
