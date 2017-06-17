@@ -26,7 +26,8 @@ HWND hwndButton;
 HWND hText;
 HBITMAP bkground;
 // sent data
-
+enum TFloor {ground = 416,first = 216, second = 16};
+enum TFloor elevatorFloor = ground;
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -234,11 +235,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 // 175 h
 // 209 w
 
+// 3 pietro: 587,16
+// 2 pietro: 587,216
+// 1 pietro: 587,416
 void DrawElevator(HDC hdc)
 {
 	Graphics graphics(hdc);
 	Pen pen2(Color(255, 0, 255, 0),4.5f);
-	graphics.DrawRectangle(&pen2, 587, 16, 198, 169);
+	graphics.DrawRectangle(&pen2, 587,elevatorFloor, 198, 169);
 }
 
 void DrawDoubleBuffer(HWND hWnd)
