@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 namespace Projekt2 {
+	using namespace std;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -15,7 +16,7 @@ namespace Projekt2 {
 		int origin;
 		int target;
 	}Person;
-	std::vector<person> sub, pietro0, p1, p2, p3, wind;
+	vector<person> sub, pietro0, p1, p2, p3, wind;
 	
 	/// <summary>
 	/// Podsumowanie informacji o MyForm1
@@ -76,6 +77,7 @@ namespace Projekt2 {
 	private: System::Windows::Forms::MaskedTextBox^  maskedTextBox5;
 	private: System::Windows::Forms::Timer^  masa;
 	private: System::Windows::Forms::Timer^  pakowanie;
+	private: System::Windows::Forms::Timer^  timer2;
 
 
 
@@ -127,6 +129,7 @@ namespace Projekt2 {
 			this->maskedTextBox5 = (gcnew System::Windows::Forms::MaskedTextBox());
 			this->masa = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pakowanie = (gcnew System::Windows::Forms::Timer(this->components));
+			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -338,6 +341,12 @@ namespace Projekt2 {
 			this->pakowanie->Interval = 1;
 			this->pakowanie->Tick += gcnew System::EventHandler(this, &MyForm1::pakowanie_Tick);
 			// 
+			// timer2
+			// 
+			this->timer2->Enabled = true;
+			this->timer2->Interval = 1;
+			this->timer2->Tick += gcnew System::EventHandler(this, &MyForm1::timer2_Tick_1);
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -399,6 +408,7 @@ private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^  send
 		  sub[i].target = indexChecked;
 	  }
 	  timer1->Start();
+	  i++;
 	  
 
 
@@ -449,31 +459,26 @@ private: System::Void button7_Click(System::Object^  sender, System::EventArgs^ 
 }
 
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {	
-	if (sub[i].origin == 0) {
+	if (sub[i-1].origin == 0) {
 		pietro0.push_back(person());
-		this->maskedTextBox1->Text = Convert::ToString(pietro0.size());
-		pietro0[pietro0.size()-1] = sub[i];
+		pietro0[pietro0.size()-1] = sub[i-1];
 		a++;
 	}
-	if (sub[i].origin == 1) {
+	if (sub[i-1].origin == 1) {
 		p1.push_back(person());
-		this->maskedTextBox2->Text = Convert::ToString(p1.size());
-		p1[p1.size()-1] = sub[i];
+		p1[p1.size()-1] = sub[i-1];
 		b++;
 	}
-	if (sub[i].origin == 2) {
+	if (sub[i-1].origin == 2) {
 		p2.push_back(person());
-		this->maskedTextBox3->Text = Convert::ToString(p2.size());
-		p2[p2.size()-1] = sub[i];
+		p2[p2.size()-1] = sub[i-1];
 		c++;
 	}
-	if (sub[i].origin == 3) {
+	if (sub[i-1].origin == 3) {
 		p3.push_back(person());
-		this->maskedTextBox4->Text = Convert::ToString(p3.size());
-		p3[p3.size()-1] = sub[i];
+		p3[p3.size()-1] = sub[i-1];
 		d++;	
 	}
-	i++;
 	timer1->Stop();
 }
 		
@@ -503,53 +508,76 @@ private: System::Void masa_Tick(System::Object^  sender, System::EventArgs^  e) 
 }
 	private: System::Void pakowanie_Tick(System::Object^  sender, System::EventArgs^  e) {
 		if (pictureBox2->Top == 470) {
-			for (int pasazer = 0; pasazer < 8; pasazer++) {
+			for (int pasazer = 0; pasazer < wind.size(); pasazer++) {
 				if (wind[pasazer].target == 0) {
 					wind.erase(wind.begin() + pasazer);
 				}
 			}
-			if (wind.size() < 8) {
-				wind.push_back(person());
-				wind[wind.size()] = pietro0[0];
-				pietro0.erase(pietro0.begin());
+			if(pietro0.size()>0){
+				for (int k = 0; k < pietro0.size();k++){
+					if (wind.size() < 8) {
+						wind.push_back(person());
+						wind[wind.size()-1] = pietro0[k];
+						pietro0.erase(pietro0.begin());	
+					}
+				}
 			}
 		}
 		else if (pictureBox2->Top == 330) {
-			for (int pasazer = 0; pasazer < 8; pasazer++) {
+			for (int pasazer = 0; pasazer < wind.size(); pasazer++) {
 				if (wind[pasazer].target == 1) {
 					wind.erase(wind.begin() + pasazer);
 				}
 			}
-			if (wind.size() < 8) {
-				wind.push_back(person());
-				wind[wind.size()] = p1[0];
-				p1.erase(p1.begin());
+			if (p1.size()>0) {
+				for (int k = 0; k < p1.size(); k++) {
+					if (wind.size() < 8) {
+						wind.push_back(person());
+						wind[wind.size() - 1] = p1[k];
+						p1.erase(p1.begin());
+					}
+				}
 			}
 		}
 		else if (pictureBox2->Top == 205) {
-			for (int pasazer = 0; pasazer < 8; pasazer++) {
+			for (int pasazer = 0; pasazer < wind.size(); pasazer++) {
 				if (wind[pasazer].target == 2) {
 					wind.erase(wind.begin() + pasazer);
 				}
 			}
-			if (wind.size() < 8) {
-				wind.push_back(person());
-				wind[wind.size()] = p2[0];
-				p2.erase(p2.begin());
+			if (p2.size()>0) {
+				for (int k = 0; k < p2.size(); k++) {
+					if (wind.size() < 8) {
+						wind.push_back(person());
+						wind[wind.size() - 1] = p2[k];
+						p2.erase(p2.begin());
+					}
+				}
 			}
 		}
 		else if (pictureBox2->Top == 100) {
-			for (int pasazer = 0; pasazer < 8; pasazer++) {
+			for (int pasazer = 0; pasazer < wind.size(); pasazer++) {
 				if (wind[pasazer].target == 3) {
 					wind.erase(wind.begin() + pasazer);
 				}
 			}
-			if (wind.size() < 8) {
-				wind.push_back(person());
-				wind[wind.size()] = p3[0];
-				p3.erase(p3.begin());
+			if (p3.size()>0) {
+				for (int k = 0; k < p3.size(); k++) {
+					if (wind.size() < 8) {
+						wind.push_back(person());
+						wind[wind.size() - 1] = p3[k];
+						p3.erase(p3.begin());
+					}
+				}
 			}
 		}
-	}
+	}  
+private: System::Void timer2_Tick_1(System::Object^  sender, System::EventArgs^  e) {
+	this->maskedTextBox1->Text = Convert::ToString(pietro0.size());
+	this->maskedTextBox2->Text = Convert::ToString(p1.size());
+	this->maskedTextBox3->Text = Convert::ToString(p2.size());
+	this->maskedTextBox4->Text = Convert::ToString(p3.size());
+
+}
 };
 }
