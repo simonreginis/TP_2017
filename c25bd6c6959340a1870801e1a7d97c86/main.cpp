@@ -1,93 +1,125 @@
-#if defined(UNICODE) && !defined(_UNICODE)
-    #define _UNICODE
-#elif defined(_UNICODE) && !defined(UNICODE)
-    #define UNICODE
-#endif
-
+#include "Resource.h"
 #include <tchar.h>
 #include <windows.h>
+#include <vector>
+#include <sstream>
 
-/*  Declare Windows procedure  */
-LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-
-/*  Make the class name into a global variable  */
-TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
-
-int WINAPI WinMain (HINSTANCE hThisInstance,
-                     HINSTANCE hPrevInstance,
-                     LPSTR lpszArgument,
-                     int nCmdShow)
+HWND hwnd;
+POINT old_point;
+HWND button, button_1, button_2, button_3, button_4;
+HWND radio, radio_1, radio_2, radio_3, radio_4;
+BOOL Init(HINSTANCE hInstance, int nCmdShow)
 {
-    HWND hwnd;               /* This is the handle for our window */
-    MSG messages;            /* Here messages to the application are saved */
-    WNDCLASSEX wincl;        /* Data structure for the windowclass */
+    button = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 0", WS_CHILD |  WS_VISIBLE,1120, 170, 90, 30, hwnd,(HMENU) ID_BUTTON_1, hInstance, NULL );
+    button_1 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 1", WS_CHILD | WS_VISIBLE,1120, 210, 90, 30, hwnd,(HMENU) ID_BUTTON_2, hInstance, NULL );
+    button_2 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 2", WS_CHILD | WS_VISIBLE,1120, 250, 90, 30, hwnd,(HMENU) ID_BUTTON_3, hInstance, NULL );
+    button_3 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 3", WS_CHILD | WS_VISIBLE,1120, 290, 90, 30, hwnd,(HMENU) ID_BUTTON_4, hInstance, NULL );
+    button_4 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 4", WS_CHILD | WS_VISIBLE,1120, 330, 90, 30, hwnd,(HMENU) ID_BUTTON_5, hInstance, NULL );
+    radio = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 0", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 10, 160, 20, hwnd,(HMENU) ID_RADIO_1, hInstance, NULL );
+    radio_1 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 1", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 40, 160, 20, hwnd,(HMENU) ID_RADIO_2, hInstance, NULL );
+    radio_2 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 2", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 70, 160, 20, hwnd,(HMENU) ID_RADIO_3, hInstance, NULL );
+    radio_3 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 3", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 100, 160, 20, hwnd,(HMENU) ID_RADIO_4, hInstance, NULL );
+    radio_4 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 4", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 130, 160, 20, hwnd,(HMENU) ID_RADIO_5, hInstance, NULL );
+    ShowWindow (hwnd, nCmdShow);
+}
 
-    /* The Window structure */
-    wincl.hInstance = hThisInstance;
-    wincl.lpszClassName = szClassName;
+ATOM RegisterClass(HINSTANCE hInstance)
+{
+    WNDCLASSEX wincl;        /* Data structure for the windowclass */
+    wincl.hInstance = hInstance;
+	wincl.lpszClassName = _T("WindowsApp");
     wincl.lpfnWndProc = WindowProcedure;      /* This function is called by windows */
     wincl.style = CS_DBLCLKS;                 /* Catch double-clicks */
     wincl.cbSize = sizeof (WNDCLASSEX);
-
-    /* Use default icon and mouse-pointer */
     wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
     wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
     wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
     wincl.lpszMenuName = NULL;                 /* No menu */
     wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
     wincl.cbWndExtra = 0;                      /* structure or the window instance */
-    /* Use Windows's default colour as the background of the window */
-    wincl.hbrBackground = (HBRUSH) COLOR_BACKGROUND;
+    wincl.hbrBackground = (HBRUSH) CreateSolidBrush(RGB(255, 255, 255));;
+    return RegisterClassEx(&wincl);
+}
 
-    /* Register the window class, and if it fails quit the program */
-    if (!RegisterClassEx (&wincl))
-        return 0;
 
-    /* The class is registered, let's create the program*/
+int WINAPI WinMain (HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgument,int nCmdShow)
+{
+    MSG messages;
+    RegisterClass(hInstance);
+    HFONT hNormalFont =( HFONT ) GetStockObject( DEFAULT_GUI_FONT );
     hwnd = CreateWindowEx (
            0,                   /* Extended possibilites for variation */
-           szClassName,         /* Classname */
-           _T("Code::Blocks Template Windows App"),       /* Title Text */
+           _T("WindowsApp"),         /* Classname */
+           _T("Test"),       /* Title Text */
            WS_OVERLAPPEDWINDOW, /* default window */
-           CW_USEDEFAULT,       /* Windows decides the position */
-           CW_USEDEFAULT,       /* where the window ends up on the screen */
-           544,                 /* The programs width */
-           375,                 /* and height in pixels */
+           100,       /* Windows decides the position */
+           0,       /* where the window ends up on the screen */
+           1280,                 /* The programs width */
+           820,                 /* and height in pixels */
            HWND_DESKTOP,        /* The window is a child-window to desktop */
            NULL,                /* No menu */
-           hThisInstance,       /* Program Instance handler */
+           hInstance,       /* Program Instance handler */
            NULL                 /* No Window Creation data */
            );
-
-    /* Make the window visible on the screen */
-    ShowWindow (hwnd, nCmdShow);
-
-    /* Run the message loop. It will run until GetMessage() returns 0 */
+    if (!Init(hInstance, nCmdShow))
+        return 1;
     while (GetMessage (&messages, NULL, 0, 0))
     {
-        /* Translate virtual-key messages into character messages */
         TranslateMessage(&messages);
-        /* Send message to WindowProcedure */
         DispatchMessage(&messages);
     }
-
-    /* The program return-value is 0 - The value that PostQuitMessage() gave */
     return messages.wParam;
 }
 
 
-/*  This function is called by the Windows function DispatchMessage()  */
-
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)                  /* handle the messages */
+    switch (message)
     {
         case WM_DESTROY:
-            PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
+            PostQuitMessage (0);
             break;
-        default:                      /* for messages that we don't deal with */
+        case WM_COMMAND:
+            switch( wParam )
+            {
+            case ID_BUTTON_1:
+                // SPAWN HUMAN
+                break;
+            case ID_BUTTON_2:
+                // SPAWN HUMAN;
+                break;
+            case ID_BUTTON_3:
+                // SPAWN HUMAN
+                break;
+            case ID_BUTTON_4:
+                // SPAWN HUMAN
+                break;
+            case ID_BUTTON_5:
+                // SPAWN HUMAN
+                break;
+            case ID_RADIO_1:
+                //TARGET ?? ? ?
+                break;
+            case ID_RADIO_2:
+                 //TARGET ?? ? ?
+                break;
+            case ID_RADIO_3:
+                 //TARGET ?? ? ?
+                break;
+            case ID_RADIO_4:
+                //TARGET ?? ? ?
+                break;
+            case ID_RADIO_5:
+                 //TARGET ?? ? ?
+                break;
+
+            default:
+                break;
+            }
+            break;
+
+        default:
             return DefWindowProc (hwnd, message, wParam, lParam);
     }
-
     return 0;
 }
