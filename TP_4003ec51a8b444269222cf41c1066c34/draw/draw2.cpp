@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "draw2.h"
+#include "elevator.h"
 #include <vector>
 #include <cstdio>
 
@@ -28,6 +29,7 @@ HBITMAP bkground;
 enum TFloor {ground = 416, first = 216, second = 16};
 enum TFloor elevatorFloor = ground;
 RECT drawArea = { 280, 0, 1100, 800 };
+CElevator elevator;
 
 
 // Forward declarations of functions included in this code module:
