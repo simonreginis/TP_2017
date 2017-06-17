@@ -8,6 +8,32 @@ HWND hwnd;
 POINT old_point;
 HWND button, button_1, button_2, button_3, button_4;
 HWND radio, radio_1, radio_2, radio_3, radio_4;
+
+void draw_main();
+BOOL Init(HINSTANCE hInstance, int nCmdShow);
+ATOM RegisterClass(HINSTANCE hInstance);
+LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
+
+USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768;
+
+void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{
+    Rectangle(hdcBufor, x1,y1,x2,y2);
+}
+
+void draw_main()
+{
+    HDC hdcOkno;
+    hdcOkno = GetDC( hwnd );
+    HPEN old,pen;
+    pen = CreatePen( PS_SOLID, 2,  RGB( 0, 0, 0 ) );
+    old =( HPEN ) SelectObject( hdcOkno, pen );
+    draw_rect_object(hdcOkno, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
+    SelectObject( hdcOkno, old );
+    DeleteObject( pen );
+    ReleaseDC( hwnd, hdcOkno );
+}
+
 BOOL Init(HINSTANCE hInstance, int nCmdShow)
 {
     button = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 0", WS_CHILD |  WS_VISIBLE,1120, 170, 90, 30, hwnd,(HMENU) ID_BUTTON_1, hInstance, NULL );
@@ -21,6 +47,7 @@ BOOL Init(HINSTANCE hInstance, int nCmdShow)
     radio_3 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 3", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 100, 160, 20, hwnd,(HMENU) ID_RADIO_4, hInstance, NULL );
     radio_4 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 4", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 130, 160, 20, hwnd,(HMENU) ID_RADIO_5, hInstance, NULL );
     ShowWindow (hwnd, nCmdShow);
+    draw_main();
 }
 
 ATOM RegisterClass(HINSTANCE hInstance)
