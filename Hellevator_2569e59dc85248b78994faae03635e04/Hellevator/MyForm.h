@@ -611,7 +611,8 @@ namespace Hellevator {
 
 				if(!p->isFinished)
 					if ((p->direction == Passenger::RIGHT && ((p->Location.X + p->Width) > callButton->Location.X + 1))
-						|| (p->direction == Passenger::LEFT && (p->Location.X < (callButton->Location.X + callButton->Width - 1)))) {
+						|| (p->direction == Passenger::LEFT && (p->Location.X < (callButton->Location.X + callButton->Width - 1))))
+					{
 						p->isWaiting = true;
 						floor_button_Click(callButton, nullptr);
 					}
@@ -672,6 +673,10 @@ void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArg
 		if (p->isWaiting) {
 			this->Controls->Remove(p);
 			elevator->AddPassenger(p);
+
+			int floorTag = Convert::ToInt32(p->destinationFloor->Tag);
+			Button^ b = getFloorButtonByTag(floorTag);
+			floor_button_Click(b, nullptr);
 		}
 	}
 	
