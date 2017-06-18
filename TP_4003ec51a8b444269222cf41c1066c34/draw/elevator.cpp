@@ -3,6 +3,12 @@
 #include <queue>
 #include "elevator.h"
 
+//TODO
+/*
+aktualizacja poprzedniego pietra
+algorytm windy
+wsiadajacy ludzie
+*/
 
 using namespace std;
 
@@ -34,6 +40,22 @@ CElevator::CElevator(int floors_number)
 void CElevator::load_array(vector2D_t ext_array)
 {
 	floor_array = ext_array;
+}
+
+int	CElevator::count_people_in(int	floor_number)
+{
+	int people_amount;
+
+	vector<vector<int>>::iterator line_it = floor_array.begin() + floor_number;
+	vector<int>::iterator col_it;
+
+	for (col_it = (*line_it).begin(); col_it != (*line_it).end(); line_it++)
+	{
+		people_amount += *col_it;
+	}
+
+	return people_amount;
+
 }
 
 
@@ -85,12 +107,16 @@ int CElevator::load_people()
 	return people_sum;
 }
 
-
 int CElevator::unload_people()
 {
 	return elev_content[floor_order.front()];
 }
 
+int CElevator::get_next_floor()
+{
+	return floor_order.front();
+}
+	
 
 elev_out_t CElevator::make_turn(vector2D_t ext_array)
 {
@@ -100,6 +126,9 @@ elev_out_t CElevator::make_turn(vector2D_t ext_array)
 		make_order();
 	}
 
+	elev_content[elev_pos] = count_people_in(elev_pos);    //wsiadaj¹cy ludzie
+	elev_content[get_next_floor()] = 0;						// wysiadajacy ludzie
+
 	return make_elev_out();
 } 
 
@@ -108,13 +137,14 @@ elev_out_t CElevator::make_elev_out()
 {
 	elev_out_t buffer;
 
-	buffer.next_floor = translate_floor(floor_order.front());
+	buffer.next_floor = translate_floor(get_next_floor());
 	buffer.prev_floor = translate_floor(elev_pos);
 	buffer.elev_content = elev_content;
 	buffer.people_in = load_people();
 	buffer.people_out = unload_people();
 	buffer.load = get_load();
 
+	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
 	floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
