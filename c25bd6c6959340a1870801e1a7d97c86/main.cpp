@@ -167,10 +167,52 @@ void lift_move(HDC hdcBufor)
 
 void lift_open_door(HDC hdcBufor)
 {
-}
-
-void lift_close_door(HDC hdcBufor)
-{
+    lift.door_are_closed=false;
+    if(lift.current_state<3)
+        lift.current_state++;
+    if(lift.door_y!=lift.pos_y+lift.height-5 || lift.current_state>3) //!!!!!!
+    {
+                //!
+                draw_rect_object(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+                //!
+                USI temp;
+                HPEN old,pen;
+                pen = CreatePen( PS_SOLID, 14,  RGB( 255, 255, 255 ) );
+                old =( HPEN ) SelectObject( hdcBufor, pen );
+                if(lift.current_level%2==0)
+                    temp=lift.pos_x-5;
+                else
+                    temp=lift.pos_x+lift.width+3;
+                MoveToEx( hdcBufor, temp, lift.pos_y+5, &old_point );
+                LineTo(hdcBufor, temp, lift.door_y );
+                SelectObject( hdcBufor, old );
+                DeleteObject( pen );
+                if(lift.current_state<4)
+                    lift.door_y++;
+                else
+                {
+                    humans_enter_lift(hdcBufor);
+                    if(lift.current_state==6)
+                        humans_exit_lift(hdcBufor);
+                    if(lift.current_state==7)       //CLOSE DOOORRRRRRRRRRRRRRRRRR
+                        {
+                        if(lift.door_y!=lift.pos_y)
+                            lift.door_y--;
+                        else
+                            {
+                            lift.door_are_closed=true;
+                            lift.current_state=0;
+                            }
+                        }
+                }
+                //ReleaseDC( hwnd, hdcBufor );
+    }
+    else
+    {
+        if(lift.current_state<4) //!!!!!!!!!!!!! musi byc ?
+        lift.current_state++;
+    }
+    //std::cout<<"lift dir: "<<lift.direction<<"     " <<lift.max_level<<std::endl;
 }
 
 void draw_main(USI init=0)
