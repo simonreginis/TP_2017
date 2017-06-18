@@ -12,7 +12,6 @@
 #include <time.h>
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
 
 #define MAX_LOADSTRING 100
 
@@ -25,7 +24,7 @@ public:
 	int positionY;
 	int destination;
 	int source;
-	int weight = 70;
+	int weight;
 	int number;
 	void drawhuman(HDC hdc, int destination)
 	{
@@ -251,7 +250,10 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 		repaintWindow(hWnd, hdc, ps);
 		remove();
 		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty()))
+		{
 			floors.clear();
+			SetTimer(hWnd, TMR_4, 5000, 0);
+		}
 		if (floors.empty())
 		{
 			controllerBlock = TRUE;
@@ -347,12 +349,22 @@ void timer3(HWND hWnd, PAINTSTRUCT &ps)		//wychodzenie ludzi z windy
 }
 
 
+void timer5(HWND hWnd, PAINTSTRUCT &ps)
+{
+	if (currentPosition == 552)
+		KillTimer(hWnd, TMR_5);
+		currentPosition = currentPosition + 3;
+		repaintWindow(hWnd, hdc, ps);
+}
+
+
 void createhuman(std::vector<HUMAN> &people, int positionX, int positionY, int source, int destination, int P_M)
 {
 	person.positionX = positionX + (P_M * people.size() * 40);
 	person.positionY = positionY;
 	person.source = source;
 	person.destination = destination;
+	person.weight = rand() % 4 + 75;
 	people.push_back(person);
 }
 
@@ -365,7 +377,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: W tym miejscu umieœæ kod.
-
+	srand(time(NULL));
     // Zainicjuj ci¹gi globalne
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_TP_PROJECT4, szWindowClass, MAX_LOADSTRING);
@@ -643,6 +655,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case TMR_4:
 			move(hWnd, ps, 552, 552);
+			break;case TMR_3:
+			timer3(hWnd, ps);
+			break;
+		case TMR_4:
+			SetTimer(hWnd, TMR_5, speed, 0);
+			KillTimer(hWnd, TMR_4);
+			break;
+		case TMR_5:
+			timer5(hWnd, ps);
 			break;
 		}
 	default:
