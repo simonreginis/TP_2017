@@ -190,7 +190,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
 		TEXT("Zoom IN"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		280, 20,                                  // the left and top co-ordinates
+		100, 20,                                  // the left and top co-ordinates
 		60, 25,                              // width and height
 		hWnd,                                 // parent window handle
 		(HMENU)ID_ZOOM_IN,                   // the ID of your button
@@ -200,7 +200,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
 		TEXT("Zoom OUT"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		1100, 700,                                  // the left and top co-ordinates
+		100, 700,                                  // the left and top co-ordinates
 		60, 25,                              // width and height
 		hWnd,                                 // parent window handle
 		(HMENU)ID_ZOOM_OUT,                   // the ID of your button
@@ -209,7 +209,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
 		TEXT("Zoom X IN"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		345, 420,                                  // the left and top co-ordinates
+		100, 420,                                  // the left and top co-ordinates
 		60, 25,                              // width and height
 		hWnd,                                 // parent window handle
 		(HMENU)ID_ZOOM_X_IN,                   // the ID of your button
@@ -222,7 +222,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 	
-	SetTimer(hWnd, TMR_1, 100, NULL);
+	SetTimer(hWnd, TMR_1, 20, NULL);
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
 	ShowWindow(hWnd, nCmdShow);
@@ -298,10 +298,13 @@ void DrawDoubleBuffer(HWND hWnd)
 	SelectObject(menHdc, men);
 	FillRect(memHdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
 
+	BitBlt(memHdc, 280, 0, 820, 800, bkgHdc, 0, 0, SRCCOPY);
+	BitBlt(memHdc, GetPosForMen(elevatorFloor).X, GetPosForMen(elevatorFloor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
+	DrawElevator(memHdc);
 	BitBlt(hdc, 0, 0, win_width, win_height, memHdc, 0, 0, SRCCOPY);
-	BitBlt(hdc, 280, 0, 820, 800, bkgHdc, 0, 0, SRCCOPY);
-	BitBlt(hdc, GetPosForMen(elevatorFloor).X, GetPosForMen(elevatorFloor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
-	DrawElevator(hdc);
+	
+	
+	
 	
 
 	DeleteObject(memBitmap);
