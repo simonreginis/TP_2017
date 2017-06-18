@@ -12,20 +12,117 @@ HWND radio, radio_1, radio_2, radio_3, radio_4;
 
 USI human_destination=0;
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
-struct lift
+
+struct elevator
 {
     USI current_level=0, max_weight=600, curr_weight=0, last_place_x=SHAFT_X1+10;
     USI height=150, width=290, pos_x=SHAFT_X1+10,pos_y=SHAFT_Y2-((current_level+1)*height)-7;
-    USI door_y=pos_y, direction=0, min_level=999, max_level=0;
+    USI door_y=pos_y, direction=0, min_level=999, max_level=0, stopped=0;
+    bool door_are_closed=true;
     //! ???? USI target_level=current_level; ////
 };
+elevator lift;
+
+std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
+bool timer_on=false;
 
 void draw_main(USI init=0)
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
-USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768;
+class human
+{
+public:
+    human(USI level);
+    ~human(){;}
+    void wait_for_lift();
+    bool enter_lift();
+    void exit_lift();
+    USI get_pos_x() {return pos_x;}
+    USI get_pos_y() {return pos_y;}
+    USI get_side() {return side;}
+    USI set_side(USI side_temp ) {side=side_temp;}
+    USI get_dir() {return direction;}
+    void set_dir(USI dir) {direction=dir;}
+    USI get_level() {return start_level;}
+    //! bool is_waiting() {return waiting;} ???????????
+private:
+    USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70; // SIDE=1 - Lewa
+    //! bool waiting=false; ?????????????????????
+};
+
+human::human(USI level)
+{
+    start_level=level;
+    (level%2==0) ? set_side(1) : set_side(2);
+    dest_level=human_destination;
+    (get_side()==1) ? pos_x=10 : pos_x=1014;
+    pos_y=(SHAFT_Y2-17 -((start_level)*lift.height));
+    if(dest_level>start_level)
+    {
+        set_dir(2); //UP
+        buttons_on_level[start_level]=2;
+    }
+    else
+    {
+        set_dir(1); //DOWN
+        buttons_on_level[start_level]=1;
+    }
+}
+
+
+bool human::enter_lift()        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{
+    if(lift.curr_weight+h_weight<lift.max_weight)
+        {
+            if(get_side()==1)
+                {
+                if(pos_x<=lift.last_place_x+34)
+                    pos_x++;
+                }
+            else if(get_side()==2)
+                {
+                if(pos_x>=lift.last_place_x+4)
+                    pos_x--;
+                }
+            lift.last_place_x+=34;
+            lift.curr_weight+=70;
+            //waiting=0;
+            return true;
+        }
+    return  false;      //IF WEIGHT > LIMIT
+}
+
+void human::exit_lift()
+{
+    if(get_side()==1){
+        if(pos_x>=10)
+            pos_x--;
+    }
+    else if(get_side()==2)
+        if(pos_x<=1014)
+            pos_x++;
+    lift.last_place_x-=12;
+    lift.curr_weight-=70;
+}
+
+void human::wait_for_lift()         
+{
+    if(get_side()==1)
+    {
+        if(pos_x<SHAFT_X1-10)
+            pos_x++;
+    }
+    else if(get_side()==2)
+        {
+        if(pos_x>SHAFT_X2+10)
+            pos_x--;
+        }
+    //waiting=1;
+}
+
+
 
 void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
