@@ -25,7 +25,7 @@ struct elev_out_t
 class CElevator
 {
 private:
-
+	bool        new_array;
 	int			floor_amount;
 	int			elev_pos;
 	vector<int> elev_content;
@@ -36,7 +36,7 @@ public:
 
 	CElevator(int floors_number);
 
-	elev_out_t	make_turn(vector2D_t ext_array);
+	elev_out_t	make_turn();
 	void		clear_order();
 	void		load_array(vector2D_t ext_array);
 	void		make_order();

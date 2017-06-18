@@ -14,6 +14,7 @@ using namespace std;
 
 CElevator::CElevator(int floors_number)
 {
+	new_array = false;
 	elev_pos = 0;
 	floor_amount = floors_number;
 
@@ -35,6 +36,7 @@ CElevator::CElevator(int floors_number)
 void CElevator::load_array(vector2D_t ext_array)
 {
 	floor_array = ext_array;
+	new_array = true;
 }
 
 void CElevator::clear_order()
@@ -133,15 +135,15 @@ void CElevator::unload_people()
 	elev_content[get_next_floor()] = 0;
 }
 
-elev_out_t CElevator::make_turn(vector2D_t ext_array)
+elev_out_t CElevator::make_turn()
 {
-	if (!check_array(ext_array))
+	if (new_array)
 	{
-		load_array(ext_array);
 		make_order();
+		new_array = false;
 	}
 	
-	load_people();                                                         //wsiadaj¹cy ludzie
+	load_people();																//wsiadaj¹cy ludzie
 	unload_people();												              // wysiadajacy ludzie
 
 	return make_elev_out();
