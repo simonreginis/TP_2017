@@ -105,7 +105,7 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 
-void elevator()
+void elevator() //rysowanie windy
 {
 	SelectObject(hdc, Pen);
 	Rectangle(hdc, middle - 162, 10, middle + 162, 573);
@@ -123,7 +123,7 @@ void elevator()
 }
 
 
-void drawpeople(std::vector<HUMAN> &people)
+void drawpeople(std::vector<HUMAN> &people)	//rysowanie ludzi
 {
 	for (int i = 0; i < 10; i++)
 	{
@@ -133,7 +133,7 @@ void drawpeople(std::vector<HUMAN> &people)
 	}
 }
 
-int Peopleweight()								/////////////////
+int Peopleweight()				//obliczanie sumy wagi wszystkich osób w windzie
 {
 	int weight = 0;
 	for (int i = 0; i < peopleC.size(); i++)
@@ -142,7 +142,7 @@ int Peopleweight()								/////////////////
 }
 
 
-void drawweight()
+void drawweight()				//wypisywanie wagi
 {
 	int weight = Peopleweight();
 	char intStr[4];
@@ -152,7 +152,7 @@ void drawweight()
 	TextOut(hdc, 410, 20, (LPCWSTR)intStr, 1);
 	itoa(weight % 10, intStr, 10);
 	TextOut(hdc, 420, 20, (LPCWSTR)intStr, 1);
-}												//////////////////
+}
 
 
 void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
@@ -162,7 +162,7 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 		InvalidateRect(hWnd, NULL, TRUE); // repaint all
 		hdc = BeginPaint(hWnd, &ps);
 	}
-	drawweight();										////////////
+	drawweight();
 	elevator();
 	drawpeople(peopleF5);
 	drawpeople(peopleF4);
@@ -173,7 +173,7 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 }
 
 
-bool searching(int a)
+bool searching(int a)			//sprawdzanie czy ktoś w windzie chce wjechać na konkretne piętro
 {
 	for (int i = 0; i < peopleC.size(); i++)
 		if (peopleC[i].destination == a)
@@ -182,20 +182,18 @@ bool searching(int a)
 }
 
 
-void removing(int a)
+void removing(int a)			//jeśli nikt nie chce wjechać na dane piętro, a na tym piętrze nikogo nie ma, nie ma sensu żeby winda tam jechała
 {
 	for (;;)
 	{
 		bool W = TRUE;
 		for (int i = 0; i < peopleC.size(); i++)
-		{
 			if (floors[i] == a)
 			{
 				floors.erase(floors.begin() + i);
 				W = FALSE;
 				break;
 			}
-		}
 		if (W)
 			break;
 	}
@@ -221,7 +219,7 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 {
 	KillTimer(hWnd, TMR_5);
 	valueTimer1 = a;			//żeby wpisać do windy polecenie zabrania ludzi z piętra, winda najpierw musi z niego odjechać
-	if (controllerBlock)		//Blokada na wielokrotne wpisywanie polecenia wjazdu na to samo piętro
+	if (controllerBlock)			//Blokada na wielokrotne wpisywanie polecenia wjazdu na to samo piętro
 	{
 		floors.push_back(a);
 		controllerBlock = FALSE;
@@ -232,7 +230,7 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 		SetTimer(hWnd, TMR_1, speed, 0);
 }
 
-bool P_G_O()
+bool P_G_O()	//jeśli winda przejeżdża przez piętro, na które chce się dostać jeden lub więcej ludzi, zatrzymuje się
 {
 	for (int i = 0; i < peopleC.size(); i++)
 		if (peopleC[i].destination == currentPosition)
@@ -240,7 +238,7 @@ bool P_G_O()
 	return FALSE;
 }
 
-bool P_G_I()
+bool P_G_I()	//jeśli winda przejeżdża przez piętro, na którym są ludzie, winda zatrzymuje się
 {
 	if((currentPosition == 120) && (!peopleF5.empty()) || (currentPosition == 228) && (!peopleF4.empty()) || (currentPosition == 336) && (!peopleF3.empty()) ||
 		(currentPosition == 444) && (!peopleF2.empty()) || (currentPosition == 552) && (!peopleF1.empty()))
@@ -262,12 +260,12 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 		controllerBlock = TRUE;
 		controllerBlock_2 = FALSE;
 	}
-	if (TIMER1)
+	if (TIMER1)	//podczas działania pozostałych timerów, ten timer się nie wyłącza, dlatego trzeba go "zablokować"
 	{
 		controller = FALSE;
 		repaintWindow(hWnd, hdc, ps);
-		remove();
-		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty()))
+		remove();			//czyszczenie wektora z poleceniami dla windy
+		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty())) //pusta mapa
 		{
 			floors.clear();
 			SetTimer(hWnd, TMR_4, 5000, 0);
@@ -311,7 +309,7 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 			TIMER1 = FALSE;
 			SetTimer(hWnd, TMR_3, 500, 0);
 		}
-		memory2 = memory1;
+		memory2 = memory1; 	//zapamiętywanie piętra na które została wezwana winda 
 	}
 }
 
@@ -323,10 +321,10 @@ void timer2(HWND hWnd, PAINTSTRUCT &ps, std::vector<HUMAN> &peopleF, int P_M, in
 	{
 		peopleF.front().positionX = middle + 142 - (peopleC.size() * 37);
 		//peopleF.front().number = peopleC.size();
-		peopleC.push_back(peopleF.front());
+		peopleC.push_back(peopleF.front());				//przerzucanie ludzi z piętra do windy
 		peopleF.erase(peopleF.begin());
 		for (int i = 0; i < peopleF.size(); i++)
-			peopleF[i].positionX = position + (P_M * i * 40);
+			peopleF[i].positionX = position + (P_M * i * 40);	//zmiana współrzędnych ludzi
 		controller = TRUE;
 		repaintWindow(hWnd, hdc, ps);
 	}
@@ -343,7 +341,7 @@ void timer2(HWND hWnd, PAINTSTRUCT &ps, std::vector<HUMAN> &peopleF, int P_M, in
 void timer3(HWND hWnd, PAINTSTRUCT &ps)		//wychodzenie ludzi z windy
 {
 	TIMER1 = FALSE;
-	for (;;)
+	for (;;)		//pętla nieskończona, kończąca się gdy wyjdą ludzie, a ci co zostają w windzie zostaną poukładani
 	{
 		bool W = TRUE;
 		for (int i = 0; i < peopleC.size(); i++)
@@ -385,6 +383,7 @@ void createhuman(std::vector<HUMAN> &people, int positionX, int positionY, int s
 	person.weight = rand() % 4 + 68;
 	people.push_back(person);
 }
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
