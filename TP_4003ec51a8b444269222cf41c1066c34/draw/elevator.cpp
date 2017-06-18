@@ -35,7 +35,7 @@ void CElevator::load_array(vector2D_t ext_array)
 void CElevator::clear_order()
 {
 	while (!floor_order.empty())  floor_order.pop();
-		
+
 }
 
 
@@ -49,15 +49,15 @@ void CElevator::make_order()
 		sum_in_people();
 	}
 	*/
-	
+
 	clear_order();
 
 	for (int i = 0; i < 10; i++)
 	{
-		floor_order.push(i%3);
+		floor_order.push(i % 3);
 	}
-	
-	
+
+
 }
 
 
@@ -101,7 +101,7 @@ int CElevator::get_next_floor()
 {
 	return floor_order.front();
 }
-	
+
 
 
 void CElevator::load_people()
@@ -113,10 +113,10 @@ void CElevator::load_people()
 
 	for (col_it = (*line_it).begin(); col_it != (*line_it).end() && elev_it != elev_content.end(); col_it++, elev_it++)
 	{
-		while (check_load() && *col_it )
+		while (check_load() && *col_it)
 		{
-			*elev_it++;
-			*col_it--;
+			(*elev_it)++;
+			(*col_it)--;
 		}
 	}
 }
@@ -134,12 +134,12 @@ elev_out_t CElevator::make_turn()
 		make_order();
 		new_array = false;
 	}
-	
+
 	load_people();																//wsiadaj¹cy ludzie
 	unload_people();												              // wysiadajacy ludzie
 
 	return make_elev_out();
-} 
+}
 
 
 
@@ -157,7 +157,7 @@ elev_out_t CElevator::make_elev_out()
 	buffer.floor_array = floor_array;
 
 	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
-	if(floor_order.size() > 0) floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
+	if (floor_order.size() > 0) floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
 }
@@ -172,7 +172,7 @@ int CElevator::sum_elev_people()
 	{
 		people_amount += *it;
 	}
-	
+
 	return people_amount;
 }
 
@@ -183,6 +183,6 @@ int CElevator::get_load()
 
 bool CElevator::check_load()
 {
-	if ((get_load() + HUMAN_WEIGHT) < MAX_LOAD )  return true;  // + HUMAN_WEIGHT zeby sprawdzic, czy ktos sie jeszcze zmiesci
+	if ((get_load() + HUMAN_WEIGHT) < MAX_LOAD)  return true;  // + HUMAN_WEIGHT zeby sprawdzic, czy ktos sie jeszcze zmiesci
 	else return false;
 }
