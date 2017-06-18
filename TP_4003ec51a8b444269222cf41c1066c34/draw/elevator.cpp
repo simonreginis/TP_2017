@@ -1,7 +1,8 @@
+#include "stdafx.h"
 #include <vector>
 #include <queue>
 #include "elevator.h"
-#include "stdafx.h"
+
 
 using namespace std;
 

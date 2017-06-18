@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "draw2.h"
+#include "elevator.h"
 #include <vector>
 #include <cstdio>
 
@@ -28,6 +29,7 @@ HBITMAP bkground;
 enum TFloor {ground = 416, first = 216, second = 16};
 enum TFloor elevatorFloor = ground;
 RECT drawArea = { 280, 0, 1100, 800 };
+CElevator elevator;
 
 
 // Forward declarations of functions included in this code module:
@@ -247,13 +249,13 @@ void DrawElevator(HDC hdc)
 void DrawDoubleBuffer(HWND hWnd)
 {
 	RECT Client_Rect;
-	GetClientRect(hWnd, &Client_Rect);
-	int win_width = Client_Rect.right - Client_Rect.left;
-	int win_height = Client_Rect.bottom + Client_Rect.left;
 	PAINTSTRUCT ps;
 	HDC Memhdc, BkgMemhdc;
 	HDC hdc;
 	HBITMAP Membitmap;
+	GetClientRect(hWnd, &Client_Rect);
+	int win_width = Client_Rect.right - Client_Rect.left;
+	int win_height = Client_Rect.bottom + Client_Rect.left;
 	hdc = BeginPaint(hWnd, &ps);
 	Memhdc = CreateCompatibleDC(hdc);
 	BkgMemhdc = CreateCompatibleDC(hdc);
@@ -291,11 +293,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		switch (wmId)
 		{
+
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case ID_ZOOM_IN:
-			
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case IDM_EXIT:
@@ -312,13 +314,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
 		repaintWindow(hWnd, hdc, ps, &drawArea);
 		EndPaint(hWnd, &ps);
-
 		break;
 	case WM_ERASEBKGND:
 		return true;
 		break;
 	case WM_DESTROY:
-		
 		PostQuitMessage(0);
 		break;
 
