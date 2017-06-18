@@ -40,8 +40,6 @@ namespace Hellevator {
 	private: System::Windows::Forms::PictureBox^  pictureBox4;
 	private: System::Windows::Forms::PictureBox^  pictureBox5;
 	private: System::Windows::Forms::PictureBox^  pictureBox6;
-	private: System::Windows::Forms::Button^  button2;
-	private: System::Windows::Forms::Button^  button3;
 	private: ElevatorCallButton^  floor1_button;
 	private: ElevatorCallButton^  floor2_button;
 	private: ElevatorCallButton^  floor3_button;
@@ -53,7 +51,6 @@ namespace Hellevator {
 	private: Floor^ floor4;
 	private: Floor^ floor5;
 
-	private: System::Windows::Forms::PictureBox^  pictureBox3;
 	private: Elevator^ elevator;
 
 	public:
@@ -86,10 +83,7 @@ namespace Hellevator {
 			}
 		}
 
-	protected:
 
-
-	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::ComponentModel::IContainer^  components;
 
@@ -108,16 +102,12 @@ namespace Hellevator {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox4 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox5 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->floor1_button = (gcnew ElevatorCallButton());
 			this->floor2_button = (gcnew ElevatorCallButton());
 			this->floor3_button = (gcnew ElevatorCallButton());
@@ -134,18 +124,7 @@ namespace Hellevator {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(1600, 603);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 3;
-			this->button1->Text = L"WejdŸ do Windy";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
 			// timer1
 			// 
@@ -157,7 +136,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(215, 643);
+			this->pictureBox1->Location = System::Drawing::Point(30, 450);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(100, 100);
 			this->pictureBox1->TabIndex = 4;
@@ -167,7 +146,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox2->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(1303, 482);
+			this->pictureBox2->Location = System::Drawing::Point(900, 350);
 			this->pictureBox2->Name = L"pictureBox2";
 			this->pictureBox2->Size = System::Drawing::Size(100, 100);
 			this->pictureBox2->TabIndex = 5;
@@ -177,7 +156,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox4->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox4.Image")));
-			this->pictureBox4->Location = System::Drawing::Point(215, 343);
+			this->pictureBox4->Location = System::Drawing::Point(30, 250);
 			this->pictureBox4->Name = L"pictureBox4";
 			this->pictureBox4->Size = System::Drawing::Size(100, 100);
 			this->pictureBox4->TabIndex = 6;
@@ -187,7 +166,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox5->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox5.Image")));
-			this->pictureBox5->Location = System::Drawing::Point(1303, 165);
+			this->pictureBox5->Location = System::Drawing::Point(900, 150);
 			this->pictureBox5->Name = L"pictureBox5";
 			this->pictureBox5->Size = System::Drawing::Size(100, 100);
 			this->pictureBox5->TabIndex = 7;
@@ -197,45 +176,15 @@ namespace Hellevator {
 			// 
 			this->pictureBox6->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox6.Image")));
-			this->pictureBox6->Location = System::Drawing::Point(215, 12);
+			this->pictureBox6->Location = System::Drawing::Point(30, 50);
 			this->pictureBox6->Name = L"pictureBox6";
 			this->pictureBox6->Size = System::Drawing::Size(100, 100);
 			this->pictureBox6->TabIndex = 8;
 			this->pictureBox6->TabStop = false;
 			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->BackColor = System::Drawing::Color::Transparent;
-			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(225, 798);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(90, 90);
-			this->pictureBox3->TabIndex = 10;
-			this->pictureBox3->TabStop = false;
-			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(1600, 506);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
-			this->button2->TabIndex = 11;
-			this->button2->Text = L"Twórz";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
-			// 
-			// button3
-			// 
-			this->button3->Location = System::Drawing::Point(1600, 430);
-			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(75, 23);
-			this->button3->TabIndex = 12;
-			this->button3->Text = L"button3";
-			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
-			// 
 			// floor1_button
 			// 
-			this->floor1_button->Location = System::Drawing::Point(620, 800);
+			this->floor1_button->Location = System::Drawing::Point(300, 500);
 			this->floor1_button->Name = L"floor1_button";
 			this->floor1_button->Size = System::Drawing::Size(60, 60);
 			this->floor1_button->TabIndex = 13;
@@ -246,7 +195,7 @@ namespace Hellevator {
 			// 
 			// floor3_button
 			// 
-			this->floor3_button->Location = System::Drawing::Point(620, 400);
+			this->floor3_button->Location = System::Drawing::Point(300, 300);
 			this->floor3_button->Name = L"floor3_button";
 			this->floor3_button->Size = System::Drawing::Size(60, 60);
 			this->floor3_button->TabIndex = 14;
@@ -257,7 +206,7 @@ namespace Hellevator {
 			// 
 			// floor5_button
 			// 
-			this->floor5_button->Location = System::Drawing::Point(620, 80);
+			this->floor5_button->Location = System::Drawing::Point(300, 100);
 			this->floor5_button->Name = L"floor5_button";
 			this->floor5_button->Size = System::Drawing::Size(60, 60);
 			this->floor5_button->TabIndex = 15;
@@ -268,7 +217,7 @@ namespace Hellevator {
 			// 
 			// floor2_button
 			// 
-			this->floor2_button->Location = System::Drawing::Point(1010, 600);
+			this->floor2_button->Location = System::Drawing::Point(700, 400);
 			this->floor2_button->Name = L"floor2_button";
 			this->floor2_button->Size = System::Drawing::Size(60, 60);
 			this->floor2_button->TabIndex = 16;
@@ -279,7 +228,7 @@ namespace Hellevator {
 			// 
 			// floor4_button
 			// 
-			this->floor4_button->Location = System::Drawing::Point(1010, 240);
+			this->floor4_button->Location = System::Drawing::Point(700, 200);
 			this->floor4_button->Name = L"floor4_button";
 			this->floor4_button->Size = System::Drawing::Size(60, 60);
 			this->floor4_button->TabIndex = 17;
@@ -290,43 +239,43 @@ namespace Hellevator {
 			// 
 			// floor1
 			// 
-			this->floor1->Location = System::Drawing::Point(70, 850);
+			this->floor1->Location = System::Drawing::Point(70, 590);
 			this->floor1->Name = L"floor1";
-			this->floor1->Size = System::Drawing::Size(600, 10);
+			this->floor1->Size = System::Drawing::Size(300, 10);
 			this->floor1->Tag = L"1";
 			// 
 			// floor2
 			// 
-			this->floor2->Location = System::Drawing::Point(1000, 700);
+			this->floor2->Location = System::Drawing::Point(680, 490);
 			this->floor2->Name = L"floor2";
-			this->floor2->Size = System::Drawing::Size(600, 10);
+			this->floor2->Size = System::Drawing::Size(300, 10);
 			this->floor2->Tag = L"2";
 			// 
 			// floor3
 			// 
-			this->floor3->Location = System::Drawing::Point(70, 550);
+			this->floor3->Location = System::Drawing::Point(70, 390);
 			this->floor3->Name = L"floor3";
-			this->floor3->Size = System::Drawing::Size(600, 10);
+			this->floor3->Size = System::Drawing::Size(300, 10);
 			this->floor3->Tag = L"3";
 			// 
 			// floor4
 			// 
-			this->floor4->Location = System::Drawing::Point(1000, 380);
+			this->floor4->Location = System::Drawing::Point(680, 290);
 			this->floor4->Name = L"floor4";
-			this->floor4->Size = System::Drawing::Size(600, 10);
+			this->floor4->Size = System::Drawing::Size(300, 10);
 			this->floor4->Tag = L"4";
 			// 
 			// floor5
 			// 
-			this->floor5->Location = System::Drawing::Point(70, 200);
+			this->floor5->Location = System::Drawing::Point(70, 190);
 			this->floor5->Name = L"floor5";
-			this->floor5->Size = System::Drawing::Size(600, 10);
+			this->floor5->Size = System::Drawing::Size(300, 10);
 			this->floor5->Tag = L"5";
 			//
 			// elevator
 			//
 			this->elevator->BackColor = System::Drawing::Color::DarkGray;
-			this->elevator->Location = System::Drawing::Point(705, 0);
+			this->elevator->Location = System::Drawing::Point(380, 0);
 			this->elevator->Name = L"elevator";
 			this->elevator->Size = System::Drawing::Size(294, this->Height);
 			this->elevator->TabIndex = 9;
@@ -338,21 +287,17 @@ namespace Hellevator {
 			this->BackColor = System::Drawing::Color::LightCyan;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1700, 900);
+			this->ClientSize = System::Drawing::Size(1080, 600);
 			this->Controls->Add(this->floor1_button);
 			this->Controls->Add(this->floor2_button);
 			this->Controls->Add(this->floor3_button);
 			this->Controls->Add(this->floor4_button);
 			this->Controls->Add(this->floor5_button);
-			this->Controls->Add(this->button3);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox6);
 			this->Controls->Add(this->pictureBox5);
 			this->Controls->Add(this->pictureBox4);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->floor1);
 			this->Controls->Add(this->floor2);
 			this->Controls->Add(this->floor3);
@@ -366,14 +311,10 @@ namespace Hellevator {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox4))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox5))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox6))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		this->timer1->Start();
-	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 
 		/*if (timer != 175)
@@ -404,20 +345,6 @@ namespace Hellevator {
 		}
 
 		timer++;*/
-	}
-	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-		for (int i = 0; i < 5; i++)
-		{
-			// Generowanie ludzików po naciśnięciu buttona
-			Passenger^ passenger = gcnew Passenger(rand() % 1000 + 100, rand() % 1000 + 100);
-			picList->Add(passenger);
-			this->Controls->Add(passenger);
-		}
-		//Operacje na tych obiektach tutaj działają
-
-	}
-	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		((Passenger^)picList[0])->moveDown();
 	}
 	private: System::Void floor_button_Click(System::Object^  sender, System::EventArgs^  e) {
 		ElevatorCallButton^ b = ((ElevatorCallButton^)sender);
