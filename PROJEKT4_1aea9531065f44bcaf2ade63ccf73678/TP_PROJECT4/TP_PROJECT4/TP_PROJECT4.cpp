@@ -173,9 +173,9 @@ void removing(int a)
 		bool W = TRUE;
 		for (int i = 0; i < peopleC.size(); i++)
 		{
-			if (peopleC[i].destination == a)
+			if (floors[i] == a)
 			{
-				peopleC.erase(peopleC.begin() + i);
+				floors.erase(floors.begin() + i);
 				W = FALSE;
 				break;
 			}
