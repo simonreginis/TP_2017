@@ -11,4 +11,4 @@
 
 ## Kilka słów o projekcie
 
-* Program ilustruje działanie windy, rozwozi ludzi na poszczególne piętra. W sytuacji bezczynnego stania na którymś piętrze winda zjeżdża na parter. 
+* Program ilustruje działanie windy, rozwozi ludzi na poszczególne piętra. W sytuacji bezczynnego stania na którymś piętrze winda zjeżdża na parter. Wyświetlamy wagę jadących windą ludzików.
