@@ -607,13 +607,14 @@ namespace Hellevator {
 				ElevatorCallButton^ callButton = getFloorButtonByTag(floorTag);
 
 				if (!p->isWaiting)
-					p->direction == 1 ? p->moveRight() : p->moveLeft();
+					p->direction == Passenger::RIGHT ? p->moveRight() : p->moveLeft();
 
-				if ((p->direction == 1 && ((p->Location.X + p->Width) > callButton->Location.X))
-					|| (p->direction == -1 && (p->Location.X < (callButton->Location.X + callButton->Width)))) {
-					p->isWaiting = true;
-					floor_button_Click(callButton, nullptr);
-				}
+				if(!p->isFinished)
+					if ((p->direction == Passenger::RIGHT && ((p->Location.X + p->Width) > callButton->Location.X + 1))
+						|| (p->direction == Passenger::LEFT && (p->Location.X < (callButton->Location.X + callButton->Width - 1)))) {
+						p->isWaiting = true;
+						floor_button_Click(callButton, nullptr);
+					}
 			}
 		}
 	}
@@ -651,32 +652,8 @@ namespace Hellevator {
 			return nullptr;
 		}
 	}
-
-	private: void SetWaitingButtonInactiveColor(int floorNumber) {
-		ElevatorCallButton^ b;
-		switch (floorNumber) {
-		case 1:
-			b = floor1_button;
-			break;
-		case 2:
-			b = floor2_button;
-			break;
-		case 3:
-			b = floor3_button;
-			break;
-		case 4:
-			b = floor4_button;
-			break;
-		case 5:
-			b = floor5_button;
-			break;
-		default:
-			return;
-			break;
-		}
-		b->SetActive(false);
-	}
-			 void OnFloorReached(System::Object ^sender, System::EventArgs ^e);
+	
+    void OnFloorReached(System::Object ^sender, System::EventArgs ^e);
 };
 }
 
@@ -685,7 +662,9 @@ void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArg
 {
 	FloorEventArgs^ args = (FloorEventArgs^)e;
 
-	SetWaitingButtonInactiveColor( args->FloorTag );
+	ElevatorCallButton^ b = getFloorButtonByTag(args->FloorTag);
+
+	b->SetActive(false);
 
 	Floor^ f = getFloorByTag(args->FloorTag);
 	for each (Passenger^ p in f->passengers)
@@ -702,17 +681,19 @@ void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArg
 		int x, y;
 
 		if (f->Location.X > elevator->Location.X) {
-			x = f->Location.X;
+			x = b->Location.X + p->Width;
 			p->direction = Passenger::RIGHT;
 		}
 		else {
-			x = f->Location.X + f->Width - p->Width;
+			x = b->Location.X - p->Width;
 			p->direction = Passenger::LEFT;
 		}
 
 		y = f->Location.Y - f->Height - p->Height;
 
 		p->Location = Point(x, y);;
+		p->isWaiting = false;
+		p->isFinished = true;
 		this->Controls->Add(p);
 	}
 }

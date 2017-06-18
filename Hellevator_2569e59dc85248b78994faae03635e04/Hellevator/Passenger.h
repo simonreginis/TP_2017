@@ -21,6 +21,7 @@ namespace Hellevator {
 
 	public: Floor^ destinationFloor;
 	public: bool isWaiting = false;
+	public: bool isFinished = false;
 	public: int direction;
 
 	public:
