@@ -32,13 +32,13 @@ HBITMAP bkground;
 HBITMAP men;
 
 CElevator elevator(MAX_FLOOR);
-enum TFloor elevatorFloor = second;
+enum TFloor elevatorFloor = first;
 enum TFloor newFloor = first;
 uint16_t elevatorY = elevatorFloor;
 bool onFloor = true;
-
+elev_out_t elevatorStatus;
 vector2D_t floorMatrix;
-
+static bool once = false;
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -245,7 +245,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
-	InsertNewMan(0, 1);
+	//InsertNewMan(0, 1);
+	elevator.make_order();
 	SetTimer(hWnd, TMR_1, 1, NULL);
 	SetTimer(hWnd, TMR_2, 1, NULL);
 
@@ -422,7 +423,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	static bool once = true;
+	
 	switch (message)
 	{
 	case WM_COMMAND:
@@ -438,31 +439,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case ID_GROUND_FIRST:
 			newFloor = ground;
 			InsertNewMan(0, 1);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_GROUND_SECOND:
 			newFloor = ground;
-			InsertNewMan(0, 1);
+			InsertNewMan(0, 2);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_SECOND:
 			newFloor = first;
 			InsertNewMan(1, 1);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_GROUND:
 			newFloor = first;
 			InsertNewMan(1, 0);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_FIRST:
 			newFloor = second;
 			InsertNewMan(2, 1);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_GROUND:
 			newFloor = second;
 			InsertNewMan(2, 0);
+			elevator.load_array(floorMatrix);
+			once = true;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_ZOOM_OUT:
@@ -504,17 +517,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				repaintWindow(hWnd, hdc, ps, &drawArea);
 				onFloor = false;
+				
 			}
 			else
+			{
 				onFloor = true;
-			once = true;
+				once = true;
+			}
+				
 			break;
 		case TMR_2:
 			if (onFloor && once)
 			{
-				newFloor = elevator.make_turn(floorMatrix).next_floor;
-				Sleep(2000);
+				Sleep(1000);
+				elevatorStatus = elevator.make_turn();
+				floorMatrix = elevatorStatus.floor_array;
+				newFloor = elevatorStatus.next_floor;
 				once = false;
+				
+				
 			}
 			
 			break;
@@ -525,6 +546,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
+
+
+
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
