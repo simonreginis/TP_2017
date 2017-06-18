@@ -202,6 +202,7 @@ void remove()
 
 void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 {
+	KillTimer(hWnd, TMR_5);
 	valueTimer1 = a;			//żeby wpisać do windy polecenie zabrania ludzi z piętra, winda najpierw musi z niego odjechać
 	if (controllerBlock)		//Blokada na wielokrotne wpisywanie polecenia wjazdu na to samo piętro
 	{
