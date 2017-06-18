@@ -33,7 +33,7 @@ HBITMAP men;
 
 CElevator elevator(MAX_FLOOR);
 enum TFloor elevatorFloor = second;
-enum TFloor newFloor = ground;
+enum TFloor newFloor = first;
 uint16_t elevatorY = elevatorFloor;
 bool onFloor = true;
 
@@ -170,7 +170,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-
+void InsertNewMan(unsigned int startFloor, unsigned int endFloor);
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	HWND hWnd;
@@ -245,7 +245,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
-
+	InsertNewMan(0, 1);
 	SetTimer(hWnd, TMR_1, 1, NULL);
 	SetTimer(hWnd, TMR_2, 1, NULL);
 
@@ -510,8 +510,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			once = true;
 			break;
 		case TMR_2:
-			if (onFloor && once) elevator.make_turn(floorMatrix);
-			once = false;
+			if (onFloor && once)
+			{
+				newFloor = elevator.make_turn(floorMatrix).next_floor;
+				once = false;
+			}
+			
 			break;
 		}
 

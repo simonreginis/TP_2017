@@ -140,7 +140,7 @@ elev_out_t CElevator::make_turn(vector2D_t ext_array)
 		load_array(ext_array);
 		make_order();
 	}
-
+	
 	load_people();                                                         //wsiadaj¹cy ludzie
 	unload_people();												              // wysiadajacy ludzie
 
@@ -162,7 +162,7 @@ elev_out_t CElevator::make_elev_out()
 	buffer.people_elev = sum_elev_people();
 
 	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
-	floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
+	/*if(floor_order.size() > 0)*/ floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
 }
