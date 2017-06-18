@@ -6,9 +6,28 @@
 
 using namespace std;
 
-CElevator::CElevator()
+CElevator::CElevator(int floors_number)
 {
 	elev_pos = 0;
+	floor_amount = floors_number;
+
+	vector<int> new_raw;
+	vector<vector<int>>::iterator line_it = floor_array.begin();
+
+	for (int i = 0; i < floor_amount; i++)
+	{
+		elev_content.push_back(0);
+
+		floor_array.push_back(new_raw);
+
+		for (int i = 0; i < floor_amount; i++)
+		{
+			(*line_it).push_back(0);
+		}
+
+		line_it++;
+	}
+
 }
 
 
@@ -31,7 +50,7 @@ void CElevator::make_order()
 		}
 
 	}
-
+	
 }
 
 
@@ -41,13 +60,14 @@ bool CElevator::check_array(vector2D_t ext_array)
 	else return false;
 }
 
-int CElevator::select_floor()
+TFloor CElevator::translate_floor(int floor_number)
 {
-	int next_floor;
-	next_floor = floor_order.front();
-	floor_order.pop();
-
-	return next_floor;
+	switch (floor_number)
+	{
+	case 1: return first;
+	case 2:return second;
+	default: return ground;
+	}
 }
 
 int CElevator::load_people()
@@ -88,12 +108,14 @@ elev_out_t CElevator::make_elev_out()
 {
 	elev_out_t buffer;
 
-	buffer.next_floor = select_floor();
-	buffer.prev_floor = elev_pos;
+	buffer.next_floor = translate_floor(floor_order.front());
+	buffer.prev_floor = translate_floor(elev_pos);
 	buffer.elev_content = elev_content;
 	buffer.people_in = load_people();
 	buffer.people_out = unload_people();
 	buffer.load = get_load();
+
+	floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
 }
