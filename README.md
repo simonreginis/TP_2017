@@ -1,20 +1,16 @@
 # TP_2017
 
-## Tworzymy własny projekt
+## Autorzy  
 
-* Zaczynamy od zrobienia forka głównego projektu
-* Każdy projekt powinien zostać umieszczony w osobnym folderze nazwaFolderu_ID (ID zostanie przydzielone do kazdej grupy projektowej)
-* Po zakończeniu projektu robimy Pull Request do brancha develop
+* Sara Zapałowska 165718
+* Wojciech Zapał 165360
 
-## Co folder projektowy musi posiadać
+## Aby uruchomić projekt
 
-* Źródła programu (C, C++)
-* Dokumentację (README.md) - kilka zdań na temat samego projektu + opis jak zbudować kod
+* Pobierz folder projekt4 i uruchom plik .sln w Visual Studio 2015 
 
-## Uwaga 
-* Nie umieszczamy w repozyterium plikow binarnych! 
+## Kilka słów o projekcie 
 
-## Linki
+* Projekt przedstawia windę, która gdy jest pusta to po 5 sekundach zjeżdża automatycznie na dół. 
 
-* Kurs dotyczący GIT - https://www.atlassian.com/git/tutorials 
 
