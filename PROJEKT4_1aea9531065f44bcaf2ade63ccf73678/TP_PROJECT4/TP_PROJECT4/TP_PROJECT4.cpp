@@ -157,7 +157,7 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps)
 }
 
 
-bool xyz(int a)
+bool searching(int a)
 {
 	for (int i = 0; i < peopleC.size(); i++)
 		if (peopleC[i].destination == a)
@@ -166,7 +166,7 @@ bool xyz(int a)
 }
 
 
-void xyz2(int a)
+void removing(int a)
 {
 	for (;;)
 	{
@@ -188,16 +188,16 @@ void xyz2(int a)
 
 void remove()
 {
-	if ((peopleF1.empty()) && (xyz(552)))
-		xyz2(552);
-	if ((peopleF2.empty()) && (xyz(444)))
-		xyz2(444);
-	if ((peopleF3.empty()) && (xyz(336)))
-		xyz2(336);
-	if ((peopleF4.empty()) && (xyz(228)))
-		xyz2(228);
-	if ((peopleF5.empty()) && (xyz(120)))
-		xyz2(120);
+	if ((peopleF1.empty()) && (searching(552)))
+		removing(552);
+	if ((peopleF2.empty()) && (searching(444)))
+		removing(444);
+	if ((peopleF3.empty()) && (searching(336)))
+		removing(336);
+	if ((peopleF4.empty()) && (searching(228)))
+		removing(228);
+	if ((peopleF5.empty()) && (searching(120)))
+		removing(120);
 }
 
 
@@ -215,7 +215,7 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 		SetTimer(hWnd, TMR_1, speed, 0);
 }
 
-bool abc()
+bool P_G_O()
 {
 	for (int i = 0; i < peopleC.size(); i++)
 		if (peopleC[i].destination == currentPosition)
@@ -223,7 +223,7 @@ bool abc()
 	return FALSE;
 }
 
-bool abc2()
+bool P_G_I()
 {
 	if((currentPosition == 120) && (!peopleF5.empty()) || (currentPosition == 228) && (!peopleF4.empty()) || (currentPosition == 336) && (!peopleF3.empty()) ||
 		(currentPosition == 444) && (!peopleF2.empty()) || (currentPosition == 552) && (!peopleF1.empty()))
@@ -257,12 +257,12 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 			controllerBlock = TRUE;
 			KillTimer(hWnd, TMR_1);
 		}
-		else if (abc())
+		else if (P_G_O())
 		{
 			TIMER1 = FALSE;
 			SetTimer(hWnd, TMR_3, 500, 0);
 		}
-		else if ((peopleC.size() != 8) && (abc2()))
+		else if ((peopleC.size() != 8) && (P_G_I()))
 		{
 			TIMER1 = FALSE;
 			SetTimer(hWnd, TMR_2, 500, 0);
