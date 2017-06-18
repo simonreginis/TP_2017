@@ -121,6 +121,7 @@ void human::wait_for_lift()
         }
     //waiting=1;
 }
+std::vector <human> people;
 
 void move_humans(HDC hdcBufor)
 {
