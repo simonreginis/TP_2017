@@ -28,7 +28,11 @@ HWND hText;
 HBITMAP bkground;
 HBITMAP men;
 enum TFloor {ground = 416, first = 216, second = 16};
+
 enum TFloor elevatorFloor = second;
+enum TFloor newFloor = second;
+uint16_t elevatorY = elevatorFloor;
+
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -218,6 +222,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 	
+	SetTimer(hWnd, TMR_1, 100, NULL);
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
 	ShowWindow(hWnd, nCmdShow);
@@ -245,7 +250,7 @@ void DrawElevator(HDC hdc)
 {
 	Graphics graphics(hdc);
 	Pen pen2(Color(255, 0, 255, 0),4.5f);
-	graphics.DrawRectangle(&pen2, 587,elevatorFloor, 198, 169);
+	graphics.DrawRectangle(&pen2, 587,elevatorY, 198, 169);
 }
 
 Point GetPosForMen(TFloor elevatorFloor)
@@ -307,7 +312,26 @@ void DrawDoubleBuffer(HWND hWnd)
 	EndPaint(hWnd, &ps);
 }
 
-
+bool AnimateElevator(TFloor &desiredFloor)
+{
+	
+	
+	if (elevatorFloor > elevatorY) //w góre
+	{
+		elevatorY++;
+		return true;
+	}
+	else if (elevatorFloor < elevatorY) //w dó³
+	{
+		elevatorY--;
+		return true;
+	}
+	else
+	{
+		elevatorFloor = desiredFloor;
+		return false;
+	}
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -328,6 +352,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case ID_ZOOM_IN:
+			newFloor = ground;
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_ZOOM_OUT:
+			newFloor = first;
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case IDM_EXIT:
@@ -361,6 +390,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case TMR_1:
+			if(AnimateElevator(newFloor)) repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		}
 
