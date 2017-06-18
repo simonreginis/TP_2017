@@ -382,7 +382,7 @@ void createhuman(std::vector<HUMAN> &people, int positionX, int positionY, int s
 	person.positionY = positionY;
 	person.source = source;
 	person.destination = destination;
-	person.weight = rand() % 4 + 75;
+	person.weight = rand() % 4 + 68;
 	people.push_back(person);
 }
 
