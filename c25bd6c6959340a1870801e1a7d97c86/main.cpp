@@ -20,7 +20,7 @@ struct lift
     //! ???? USI target_level=current_level; ////
 };
 
-void draw_main();
+void draw_main(USI init=0)
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -46,17 +46,53 @@ void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!
     }
 }
 
-void draw_main()
+void lift_move(HDC hdcBufor)
 {
-    HDC hdcOkno;
+ /*
+ if(lift.direction==2)
+ 	lift.pos_y++;
+ else
+  lift.pos_y--;
+ */
+}
+
+void lift_open_door(HDC hdcBufor)
+{
+}
+
+void lift_close_door(HDC hdcBufor)
+{
+}
+
+void draw_main(USI init=0)
+{
+    HDC hdcOkno,hdcBufor;
     hdcOkno = GetDC( hwnd );
-    HPEN old,pen;
+    HPEN old,pen,pen2;
+    HBITMAP Membitmap = CreateCompatibleBitmap(hdcOkno, 1024, 768);
+    hdcBufor = CreateCompatibleDC( hdcOkno );
+	SelectObject(hdcBufor, Membitmap);
     pen = CreatePen( PS_SOLID, 2,  RGB( 0, 0, 0 ) );
-    old =( HPEN ) SelectObject( hdcOkno, pen );
-    draw_rect_object(hdcOkno, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
-    SelectObject( hdcOkno, old );
+    old =( HPEN ) SelectObject( hdcBufor, pen );
+    draw_rect_object(hdcBufor, 0, 0, 1024, 768);
+    //draw_rect_object(hdcBufor, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
+    for(int i=0;i<5;i++)
+        draw_level(hdcBufor, i);
+    pen2 = CreatePen( PS_SOLID, 1,  RGB( 250, 10, 10 ) );
+    old =( HPEN ) SelectObject( hdcBufor, pen2 );
+    if(init==1)
+        draw_rect_object(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+    lift_move(hdcBufor);
+    SelectObject( hdcBufor, old );
+    move_humans(hdcBufor);
+    BitBlt( hdcOkno, 0, 0, 1024, 768, hdcBufor, 0, 0, SRCCOPY );  
+    BitBlt( hdcOkno, SHAFT_X1, SHAFT_Y1, 309, 768, hdcBufor, SHAFT_X1, SHAFT_Y1, SRCCOPY );  
+    BitBlt( hdcOkno, lift.pos_x, lift.pos_y, lift.width, lift.height, hdcBufor, lift.pos_x, lift.pos_y, SRCCOPY ); 
     DeleteObject( pen );
+    DeleteObject( pen2 );
+    DeleteObject(Membitmap);
     ReleaseDC( hwnd, hdcOkno );
+    DeleteDC( hdcBufor );
 }
 
 BOOL Init(HINSTANCE hInstance, int nCmdShow)
@@ -72,7 +108,7 @@ BOOL Init(HINSTANCE hInstance, int nCmdShow)
     radio_3 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 3", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 100, 160, 20, hwnd,(HMENU) ID_RADIO_4, hInstance, NULL );
     radio_4 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 4", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 130, 160, 20, hwnd,(HMENU) ID_RADIO_5, hInstance, NULL );
     ShowWindow (hwnd, nCmdShow);
-    draw_main();
+    draw_main(1);
 }
 
 ATOM RegisterClass(HINSTANCE hInstance)
