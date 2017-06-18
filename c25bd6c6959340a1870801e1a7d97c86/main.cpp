@@ -26,7 +26,7 @@ elevator lift;
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 bool timer_on=false;
 
-void draw_main(USI init=0)
+void draw_main(USI init);
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -121,6 +121,17 @@ void human::wait_for_lift()
         }
     //waiting=1;
 }
+
+void move_humans(HDC hdcBufor)
+{
+    //bitmap
+    for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
+        {
+            it->wait_for_lift();
+            Ellipse( hdcBufor, it->get_pos_x()-5, it->get_pos_y()+10, it->get_pos_x()+5, it->get_pos_y() );
+        }
+}
+
 
 
 
