@@ -13,6 +13,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
+#define MAX_FLOOR 3
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
@@ -34,6 +35,9 @@ enum TFloor elevatorFloor = second;
 enum TFloor newFloor = second;
 uint16_t elevatorY = elevatorFloor;
 
+
+vector2D_t floorMatrix;
+
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -53,6 +57,7 @@ bool CALLBACK SetFont(HWND child, LPARAM font) {
 	return true;
 }
 
+void InitFloorMatrix(unsigned int floorAmount);
 
 void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps, RECT *drawArea)
 {
@@ -78,10 +83,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 
 	// TODO: Place code here.
+	InitFloorMatrix(MAX_FLOOR);
 	MSG msg;
 	HACCEL hAccelTable;
 
-	
+
 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
@@ -164,7 +170,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        create and display the main program window.
 //
 
-
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	HWND hWnd;
@@ -232,15 +237,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_SECOND_GROUND,                   // the ID of your button
 		hInstance,                            // the instance of your application
 		NULL);
-	
+
 
 	SendMessageW(hUpDown, UDM_SETBUDDY, (WPARAM)hText, 0);
 	if (!hWnd)
 	{
 		return FALSE;
 	}
-	
-	SetTimer(hWnd, TMR_1, 20, NULL);
+
+	SetTimer(hWnd, TMR_1, 1, NULL);
+
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
 	ShowWindow(hWnd, nCmdShow);
@@ -267,8 +273,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 void DrawElevator(HDC hdc)
 {
 	Graphics graphics(hdc);
-	Pen pen2(Color(255, 0, 255, 0),4.5f);
-	graphics.DrawRectangle(&pen2, 587,elevatorY, 198, 169);
+	Pen pen2(Color(255, 0, 255, 0), 4.5f);
+	graphics.DrawRectangle(&pen2, 587, elevatorY, 198, 169);
 }
 
 Point GetPosForMen(TFloor elevatorFloor)
@@ -293,12 +299,55 @@ Point GetPosForMen(TFloor elevatorFloor)
 	}
 	return retPoint;
 }
+Point GetPosForMen(unsigned int floor)
+{
+	Point retPoint;
+	switch (floor)
+	{
+	case 0:
+		retPoint.X = 570;
+		retPoint.Y = 480;
+		break;
+	case 1:
+		retPoint.X = 750;
+		retPoint.Y = 280;
+		break;
+	case 2:
+		retPoint.X = 570;
+		retPoint.Y = 80;
+		break;
+	default:
+		break;
+	}
+	return retPoint;
+}
+
+void DrawMen(HDC hdc)
+{
+	HDC menHdc;
+	menHdc = CreateCompatibleDC(hdc);
+	SelectObject(menHdc, men);
+	for (int floor = 0; floor < MAX_FLOOR; floor++)
+	{
+		int amount = floorMatrix[floor][0] + floorMatrix[floor][1] + floorMatrix[floor][2];
+		for (; amount > 0; amount--)
+		{
+			if (floor == 1)
+				BitBlt(hdc, GetPosForMen(floor).X + 56 * amount - 1, GetPosForMen(floor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
+			else
+				BitBlt(hdc, GetPosForMen(floor).X - 56 * amount - 1, GetPosForMen(floor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
+		}
+	}
+
+
+	DeleteDC(menHdc);
+}
 
 void DrawDoubleBuffer(HWND hWnd)
 {
 	RECT Client_Rect;
 	PAINTSTRUCT ps;
-	HDC memHdc, bkgHdc, menHdc;
+	HDC memHdc, bkgHdc;
 	HDC hdc;
 	HBITMAP memBitmap;
 	GetClientRect(hWnd, &Client_Rect);
@@ -307,36 +356,37 @@ void DrawDoubleBuffer(HWND hWnd)
 	hdc = BeginPaint(hWnd, &ps);
 	memHdc = CreateCompatibleDC(hdc);
 	bkgHdc = CreateCompatibleDC(hdc);
-	menHdc = CreateCompatibleDC(hdc);
+
 	memBitmap = CreateCompatibleBitmap(hdc, win_width, win_height);
 
-	
+
 	SelectObject(memHdc, memBitmap);
 	SelectObject(bkgHdc, bkground);
-	SelectObject(menHdc, men);
+
 	FillRect(memHdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
 
 	BitBlt(memHdc, 280, 0, 820, 800, bkgHdc, 0, 0, SRCCOPY);
-	BitBlt(memHdc, GetPosForMen(elevatorFloor).X, GetPosForMen(elevatorFloor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
+
 	DrawElevator(memHdc);
+	DrawMen(memHdc);
 	BitBlt(hdc, 0, 0, win_width, win_height, memHdc, 0, 0, SRCCOPY);
-	
-	
-	
-	
+
+
+
+
 
 	DeleteObject(memBitmap);
 	DeleteDC(bkgHdc);
 	DeleteDC(memHdc);
-	DeleteDC(menHdc);
+
 	DeleteDC(hdc);
 	EndPaint(hWnd, &ps);
 }
 
 bool AnimateElevator(TFloor &desiredFloor)
 {
-	
-	
+
+
 	if (elevatorFloor > elevatorY) //w góre
 	{
 		elevatorY++;
@@ -352,6 +402,16 @@ bool AnimateElevator(TFloor &desiredFloor)
 		elevatorFloor = desiredFloor;
 		return false;
 	}
+}
+
+void InitFloorMatrix(unsigned int floorAmount)
+{
+	floorMatrix.resize(floorAmount, vector<int>(floorAmount));
+}
+
+void InsertNewMan(unsigned int startFloor, unsigned int endFloor)
+{
+	floorMatrix[startFloor][endFloor]++;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -372,8 +432,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
-		case ID_ZOOM_IN:
+		case ID_GROUND_FIRST:
+			newFloor = first;
+			InsertNewMan(0, 1);
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_GROUND_SECOND:
+			newFloor = second;
+			InsertNewMan(0, 1);
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_FIRST_SECOND:
+			newFloor = second;
+			InsertNewMan(1, 1);
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_FIRST_GROUND:
 			newFloor = ground;
+			InsertNewMan(1, 0);
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_SECOND_FIRST:
+			newFloor = first;
+			InsertNewMan(2, 1);
+			repaintWindow(hWnd, hdc, ps, &drawArea);
+			break;
+		case ID_SECOND_GROUND:
+			newFloor = ground;
+			InsertNewMan(2, 0);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_ZOOM_OUT:
@@ -383,7 +469,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
-		
+
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
@@ -406,12 +492,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 		break;
 
-	
+
 	case WM_TIMER:
 		switch (wParam)
 		{
 		case TMR_1:
-			if(AnimateElevator(newFloor)) repaintWindow(hWnd, hdc, ps, &drawArea);
+			if (AnimateElevator(newFloor)) repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		}
 
@@ -424,12 +510,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	TCHAR buffer[60];
-	
+
 	switch (Msg)
 	{
 	case WM_COMMAND:
 	{
-		
+
 		// reakcja na przyciski
 		switch (LOWORD(wParam))
 		{
@@ -438,7 +524,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
-	
+
 	default: return FALSE;
 	}
 
