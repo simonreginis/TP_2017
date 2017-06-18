@@ -13,6 +13,7 @@ enum TFloor { ground = 416, first = 216, second = 16 };
 
 struct elev_out_t
 {
+	vector2D_t  floor_array;
 	vector <int> elev_content;
 	TFloor		 prev_floor;
 	TFloor		 next_floor;
@@ -48,7 +49,7 @@ public:
 	elev_out_t  make_elev_out();
 	void		load_people();
 	void	    unload_people();
-	int			sum_in_people();
+	int			sum_in_people(int floor_number);
 	int			sum_out_people();
 	int			sum_elev_people();
 	int			get_next_floor();

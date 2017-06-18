@@ -50,17 +50,13 @@ void CElevator::make_order()
 {
 	vector<vector<int>>::iterator line_it = floor_array.begin();
 	vector<int>::iterator col_it;
-	/*for (; line_it != floor_array.end(); line_it++)
+	/*
+	for (line_it = floor_array.begin() + elev_pos; line_it != floor_array.end(); line_it++)   // sumowanie pieter powyzej
 	{
-
-		for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
-		{
-
-
-		}
-
-	} */
-
+		sum_in_people();
+	}
+	*/
+	
 	clear_order();
 
 	for (int i = 0; i < 10; i++)
@@ -88,11 +84,11 @@ TFloor CElevator::translate_floor(int floor_number)
 	}
 }
 
-int CElevator::sum_in_people()
+int CElevator::sum_in_people(int floor_number)
 {
 	int people_sum = 0;
 
-	vector<vector<int>>::iterator line_it = floor_array.begin() + get_next_floor();
+	vector<vector<int>>::iterator line_it = floor_array.begin() + floor_number;
 	vector<int>::iterator col_it;
 
 	for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
@@ -124,9 +120,12 @@ void CElevator::load_people()
 
 	for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++, elev_it++)
 	{
-		*elev_it += *col_it;
+		while (check_load() && *col_it)
+		{
+			*elev_it++;
+			*col_it--;
+		}
 	}
-
 }
 
 
@@ -158,10 +157,11 @@ elev_out_t CElevator::make_elev_out()
 	buffer.next_floor = translate_floor(get_next_floor());
 	buffer.prev_floor = translate_floor(elev_pos);
 	buffer.elev_content = elev_content;
-	buffer.people_in = sum_in_people();
+	buffer.people_in = sum_in_people(get_next_floor());
 	buffer.people_out = sum_out_people();
 	buffer.load = get_load();
 	buffer.people_elev = sum_elev_people();
+	buffer.floor_array = floor_array;
 
 	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
 	/*if(floor_order.size() > 0)*/ floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
