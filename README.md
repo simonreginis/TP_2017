@@ -11,6 +11,6 @@
 
 ## Kilka słów o projekcie 
 
-* Projekt przedstawia windę, która gdy jest pusta to po 5 sekundach zjeżdża automatycznie na dół. 
+* Projekt przedstawia windę, po 5 sekundach bezczynności zjeżdża automatycznie na parter. 
 
 
