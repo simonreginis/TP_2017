@@ -401,6 +401,7 @@ bool AnimateElevator(TFloor &desiredFloor)
 	}
 	else
 	{
+		
 		elevatorFloor = desiredFloor;
 		return false;
 	}
@@ -421,7 +422,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	int ret = 0;
+	static bool once = true;
 	switch (message)
 	{
 	case WM_COMMAND:
@@ -506,9 +507,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			else
 				onFloor = true;
+			once = true;
 			break;
 		case TMR_2:
-			if (onFloor) elevator.make_turn(floorMatrix);
+			if (onFloor && once) elevator.make_turn(floorMatrix);
+			once = false;
 			break;
 		}
 
