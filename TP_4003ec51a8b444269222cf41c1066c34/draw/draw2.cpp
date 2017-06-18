@@ -25,6 +25,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 // buttons
 HWND hwndButton;
 HWND hText;
+HWND hUpDown;
 HBITMAP bkground;
 HBITMAP men;
 
@@ -177,46 +178,63 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	men = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP1));
 	// create button and store the handle    
 
-	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
-		TEXT("DISCARD SAMPLES"),                  // the caption of the button
+	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
+		TEXT("1"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		100, 190,                                  // the left and top co-ordinates
-		110, 25,                              // width and height
+		250, 530,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
 		hWnd,                                 // parent window handle
-		(HMENU)DISCARD_BTN,                   // the ID of your button
-		hInstance,                            // the instance of your application
-		NULL);                               // extra bits you dont really need
-
-	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
-		TEXT("Zoom IN"),                  // the caption of the button
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		100, 20,                                  // the left and top co-ordinates
-		60, 25,                              // width and height
-		hWnd,                                 // parent window handle
-		(HMENU)ID_ZOOM_IN,                   // the ID of your button
-		hInstance,                            // the instance of your application
-		NULL);                               // extra bits you dont really need
-
-	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
-		TEXT("Zoom OUT"),                  // the caption of the button
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		100, 700,                                  // the left and top co-ordinates
-		60, 25,                              // width and height
-		hWnd,                                 // parent window handle
-		(HMENU)ID_ZOOM_OUT,                   // the ID of your button
+		(HMENU)ID_GROUND_FIRST,                   // the ID of your button
 		hInstance,                            // the instance of your application
 		NULL);
 	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
-		TEXT("Zoom X IN"),                  // the caption of the button
+		TEXT("2"),                  // the caption of the button
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
-		100, 420,                                  // the left and top co-ordinates
-		60, 25,                              // width and height
+		250, 500,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
 		hWnd,                                 // parent window handle
-		(HMENU)ID_ZOOM_X_IN,                   // the ID of your button
+		(HMENU)ID_GROUND_SECOND,                   // the ID of your button
 		hInstance,                            // the instance of your application
 		NULL);
-
+	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
+		TEXT("0"),                  // the caption of the button
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
+		1100, 325,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
+		hWnd,                                 // parent window handle
+		(HMENU)ID_FIRST_GROUND,                   // the ID of your button
+		hInstance,                            // the instance of your application
+		NULL);
+	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
+		TEXT("2"),                  // the caption of the button
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
+		1100, 295,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
+		hWnd,                                 // parent window handle
+		(HMENU)ID_FIRST_SECOND,                   // the ID of your button
+		hInstance,                            // the instance of your application
+		NULL);
+	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
+		TEXT("1"),                  // the caption of the button
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
+		250, 100,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
+		hWnd,                                 // parent window handle
+		(HMENU)ID_SECOND_FIRST,                   // the ID of your button
+		hInstance,                            // the instance of your application
+		NULL);
+	hwndButton = CreateWindow(TEXT("button"),                     // The class name required is button
+		TEXT("0"),                  // the caption of the button
+		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,  // the styles
+		250, 130,                                  // the left and top co-ordinates
+		25, 25,                              // width and height
+		hWnd,                                 // parent window handle
+		(HMENU)ID_SECOND_GROUND,                   // the ID of your button
+		hInstance,                            // the instance of your application
+		NULL);
 	
+
+	SendMessageW(hUpDown, UDM_SETBUDDY, (WPARAM)hText, 0);
 	if (!hWnd)
 	{
 		return FALSE;
