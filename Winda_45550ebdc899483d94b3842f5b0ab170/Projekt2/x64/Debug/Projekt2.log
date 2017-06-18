@@ -1,3 +1,4 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: Katalog pośredni (x64\Debug\) zawiera pliki udostępnione z innego projektu (Projekt2.vcxproj). Może to spowodować niepoprawne zachowanie podczas oczyszczania i ponownej kompilacji.
+﻿K:\Program Files (x86)\Microsoft Visual Studio\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: Katalog pośredni (x64\Debug\) zawiera pliki udostępnione z innego projektu (Projekt2.vcxproj). Może to spowodować niepoprawne zachowanie podczas oczyszczania i ponownej kompilacji.
   MyForm1.cpp
-  Projekt2.vcxproj -> C:\Users\Piotrek\Downloads\TP_2017-master (7)\TP_2017-master\Projekt2\x64\Debug\WindaPietra.exe
+c:\users\danie\desktop\winda-proj\winda_45550ebdc899483d94b3842f5b0ab170\projekt2\MyForm1.h(616): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+  Projekt2.vcxproj -> C:\Users\danie\Desktop\Winda-proj\Winda_45550ebdc899483d94b3842f5b0ab170\x64\Debug\WindaPietra.exe

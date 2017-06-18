@@ -84,6 +84,9 @@ namespace Projekt2 {
 
 
 	private: System::Windows::Forms::Timer^  jazda;
+	private: System::Windows::Forms::TextBox^  textBox4;
+	private: System::Windows::Forms::ProgressBar^  progressBar1;
+	private: System::Windows::Forms::TextBox^  textBox5;
 
 
 
@@ -138,6 +141,9 @@ namespace Projekt2 {
 			this->pakowanie = (gcnew System::Windows::Forms::Timer(this->components));
 			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->jazda = (gcnew System::Windows::Forms::Timer(this->components));
+			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
+			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
+			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -331,7 +337,7 @@ namespace Projekt2 {
 			// 
 			// maskedTextBox5
 			// 
-			this->maskedTextBox5->Location = System::Drawing::Point(375, 58);
+			this->maskedTextBox5->Location = System::Drawing::Point(341, 55);
 			this->maskedTextBox5->Name = L"maskedTextBox5";
 			this->maskedTextBox5->Size = System::Drawing::Size(100, 20);
 			this->maskedTextBox5->TabIndex = 26;
@@ -361,11 +367,42 @@ namespace Projekt2 {
 			this->jazda->Interval = 1;
 			this->jazda->Tick += gcnew System::EventHandler(this, &MyForm1::jazda_Tick);
 			// 
+			// textBox4
+			// 
+			this->textBox4->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox4->Location = System::Drawing::Point(235, 58);
+			this->textBox4->Name = L"textBox4";
+			this->textBox4->Size = System::Drawing::Size(100, 13);
+			this->textBox4->TabIndex = 27;
+			this->textBox4->Text = L"Masa pasa¿erów:";
+			// 
+			// progressBar1
+			// 
+			this->progressBar1->Location = System::Drawing::Point(447, 55);
+			this->progressBar1->Maximum = 560;
+			this->progressBar1->Name = L"progressBar1";
+			this->progressBar1->Size = System::Drawing::Size(100, 20);
+			this->progressBar1->Step = 70;
+			this->progressBar1->TabIndex = 28;
+			this->progressBar1->Click += gcnew System::EventHandler(this, &MyForm1::progressBar1_Click);
+			// 
+			// textBox5
+			// 
+			this->textBox5->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox5->Location = System::Drawing::Point(683, 83);
+			this->textBox5->Name = L"textBox5";
+			this->textBox5->Size = System::Drawing::Size(204, 13);
+			this->textBox5->TabIndex = 29;
+			this->textBox5->Text = L"Iloœæ pasa¿erów czekaj¹cych na windê:";
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1062, 645);
+			this->Controls->Add(this->textBox5);
+			this->Controls->Add(this->progressBar1);
+			this->Controls->Add(this->textBox4);
 			this->Controls->Add(this->maskedTextBox5);
 			this->Controls->Add(this->maskedTextBox4);
 			this->Controls->Add(this->maskedTextBox3);
@@ -587,7 +624,9 @@ private: System::Void timer2_Tick_1(System::Object^  sender, System::EventArgs^ 
 	this->maskedTextBox1->Text = Convert::ToString(pietro0.size());
 	this->maskedTextBox2->Text = Convert::ToString(p1.size());
 	this->maskedTextBox3->Text = Convert::ToString(p2.size());
-	this->maskedTextBox4->Text = Convert::ToString(p3.size());
+
+	this->maskedTextBox4->Text = Convert::ToString(p3.size());\
+		this->progressBar1->Value = wind.size() * 70;
 }
 private: System::Void jazda_Tick(System::Object^  sender, System::EventArgs^  e) {
 	if (wind.size() == 0 && pietro0.size() == 00 && p1.size() == 0 && p2.size() == 0 && p3.size() == 0)
@@ -630,6 +669,8 @@ private: System::Void jazda_Tick(System::Object^  sender, System::EventArgs^  e)
 			}
 		}
 	}
+}
+private: System::Void progressBar1_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }
