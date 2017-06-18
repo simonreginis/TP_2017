@@ -26,14 +26,9 @@ CElevator::CElevator(int floors_number)
 
 		floor_array.push_back(new_raw);
 
-		for (int i = 0; i < floor_amount; i++)
-		{
-			(*line_it).push_back(0);
-		}
-
-		line_it++;
+		
 	}
-
+	floor_array.resize(floor_amount, vector<int>(floor_amount));
 }
 
 
