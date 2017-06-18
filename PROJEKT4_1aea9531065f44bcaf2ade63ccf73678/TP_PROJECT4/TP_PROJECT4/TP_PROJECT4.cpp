@@ -267,8 +267,8 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 		{
 			floors.clear();
 			controllerBlock = TRUE;
-			KillTimer(hWnd, TMR_1);
 			SetTimer(hWnd, TMR_4, 5000, 0);
+			KillTimer(hWnd, TMR_1);
 		}
 		/*if (floors.empty())
 		{
