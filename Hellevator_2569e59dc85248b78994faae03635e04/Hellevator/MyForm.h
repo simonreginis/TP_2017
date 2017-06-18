@@ -684,4 +684,14 @@ namespace Hellevator {
 void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArgs ^e)
 {
 	SetWaitingButtonInactiveColor( ((FloorEventArgs^)e)->FloorTag );
+
+	Floor^ f = getFloorByTag(((FloorEventArgs^)e)->FloorTag);
+	for each (Passenger^ p in f->passengers)
+	{
+		if (p->isWaiting) {
+			this->Controls->Remove(p);
+			elevator->AddPassenger(p);
+		}
+	}
+	
 }

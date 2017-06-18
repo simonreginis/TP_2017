@@ -1,4 +1,5 @@
 #pragma once
+#include "Passenger.h"
 #include "Floor.h"
 #include "FloorEventArgs.h"
 
@@ -24,6 +25,7 @@ namespace Hellevator {
 	private: int cabinPosition = 0;
 	private: int waitLeft = 0;
 	private: ArrayList^ floorsWaiting = gcnew ArrayList();
+	private: ArrayList^ passengers = gcnew ArrayList();
 
 	public: event EventHandler^ FloorReached;
 
@@ -78,6 +80,14 @@ namespace Hellevator {
 		g->DrawLine(cabinPen, offset_x + coffset_x, cabinPosition + offset_y + coffset_y, this->Width - offset_x - coffset_x, cabinPosition + offset_y + coffset_y);
 		g->DrawLine(cabinPen, this->Width - offset_x - coffset_x, cabinPosition + cabinHeight - offset_y - coffset_y, offset_x, cabinPosition + cabinHeight - offset_y - coffset_y);
 		g->DrawLine(cabinPen, this->Width - offset_x - coffset_x, cabinPosition + cabinHeight - offset_y - coffset_y, this->Width - offset_x - coffset_x, cabinPosition + offset_y + coffset_y);
+
+		// passengers
+		for (int i = 0; i < passengers->Count; i++)
+		{
+			Passenger^ p = (Passenger^) passengers[i];
+			p->Left = i * 40;
+			this->Controls->Add(p);
+		}
 	}
 
 	private:
@@ -133,6 +143,12 @@ namespace Hellevator {
 	public: void AddWaitingFloor(Floor^ floor) {
 		if (!floorsWaiting->Contains(floor)) {
 			floorsWaiting->Add(floor);
+		}
+	}
+
+	public: void AddPassenger(Passenger^ passenger) {
+		if (!passengers->Contains(passenger)) {
+			passengers->Add(passenger);
 		}
 	}
 	};
