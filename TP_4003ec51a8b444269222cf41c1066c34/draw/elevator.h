@@ -16,6 +16,7 @@ struct elev_out_t
 	vector <int> elev_content;
 	TFloor		 prev_floor;
 	TFloor		 next_floor;
+	int			 people_elev;
 	int			 people_in;
 	int			 people_out;
 	int			 load;
@@ -36,17 +37,19 @@ public:
 	CElevator(int floors_number);
 
 	elev_out_t	make_turn(vector2D_t ext_array);
+	void		clear_order();
 	void		load_array(vector2D_t ext_array);
 	void		make_order();
 	bool		check_array(vector2D_t ext_array);
 	bool		check_load();
 	int			get_load();
-	int			count_people_in(int floor_number);
 	TFloor		translate_floor(int floor_number);
 
 	elev_out_t  make_elev_out();
-	int		    load_people();
-	int		    unload_people();
+	void		load_people();
+	void	    unload_people();
+	int			sum_in_people();
+	int			sum_out_people();
 	int			sum_elev_people();
 	int			get_next_floor();
 	
