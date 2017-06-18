@@ -40,7 +40,7 @@
 #define TMR_2						445
 #define TMR_3						446
 #define TMR_4						447
-#define TMR_4						448
+#define TMR_5						448
 
 #ifndef IDC_STATIC
 #define IDC_STATIC					-1
