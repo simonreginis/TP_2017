@@ -387,12 +387,12 @@ bool AnimateElevator(TFloor &desiredFloor)
 {
 
 
-	if (elevatorFloor > elevatorY) //w góre
+	if (elevatorFloor > elevatorY) 
 	{
 		elevatorY++;
 		return true;
 	}
-	else if (elevatorFloor < elevatorY) //w dó³
+	else if (elevatorFloor < elevatorY) 
 	{
 		elevatorY--;
 		return true;
@@ -433,32 +433,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case ID_GROUND_FIRST:
-			newFloor = first;
+			newFloor = ground;
 			InsertNewMan(0, 1);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_GROUND_SECOND:
-			newFloor = second;
+			newFloor = ground;
 			InsertNewMan(0, 1);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_SECOND:
-			newFloor = second;
+			newFloor = first;
 			InsertNewMan(1, 1);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_GROUND:
-			newFloor = ground;
+			newFloor = first;
 			InsertNewMan(1, 0);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_FIRST:
-			newFloor = first;
+			newFloor = second;
 			InsertNewMan(2, 1);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_GROUND:
-			newFloor = ground;
+			newFloor = second;
 			InsertNewMan(2, 0);
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
