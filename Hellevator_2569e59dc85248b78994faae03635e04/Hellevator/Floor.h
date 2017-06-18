@@ -15,6 +15,8 @@ namespace Hellevator {
 	/// </summary>
 	public ref class Floor : public System::Windows::Forms::UserControl
 	{
+	public: ArrayList^ passengers = gcnew ArrayList();
+
 	public:
 		Floor(void)
 		{

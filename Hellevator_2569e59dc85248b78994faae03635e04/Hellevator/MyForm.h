@@ -88,6 +88,10 @@ namespace Hellevator {
 			this->elevator->floors->Add(floor3);
 			this->elevator->floors->Add(floor4);
 			this->elevator->floors->Add(floor5);
+
+			Passenger^ p = gcnew Passenger(10, 20, floor3, 1);
+			floor5->passengers->Add(p);
+			this->Controls->Add(p);
 		}
 
 	protected:
@@ -555,6 +559,7 @@ namespace Hellevator {
 		}
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		movePassengers();
 
 		/*if (timer != 175)
 		{
@@ -593,6 +598,26 @@ namespace Hellevator {
 		elevator->AddWaitingFloor(getFloorByTag(floorTag));
 	}
 
+	private: void movePassengers() {
+		for each (Floor^ f in elevator->floors)
+		{
+			for each (Passenger^ p in f->passengers)
+			{
+				int floorTag = Convert::ToInt32(f->Tag);
+				ElevatorCallButton^ callButton = getFloorButtonByTag(floorTag);
+
+				if (!p->isWaiting)
+					p->direction == 1 ? p->moveRight() : p->moveLeft();
+
+				if ((p->direction == 1 && ((p->Location.X + p->Width) > callButton->Location.X))
+					|| (p->direction == -1 && (p->Location.X < (callButton->Location.X + callButton->Width)))) {
+					p->isWaiting = true;
+					floor_button_Click(callButton, nullptr);
+				}
+			}
+		}
+	}
+
 	private: Floor^ getFloorByTag(int tag) {
 		switch (tag) {
 		case 1:
@@ -605,6 +630,23 @@ namespace Hellevator {
 			return floor4;
 		case 5:
 			return floor5;
+		default:
+			return nullptr;
+		}
+	}
+
+	private: ElevatorCallButton^ getFloorButtonByTag(int tag) {
+		switch (tag) {
+		case 1:
+			return floor1_button;
+		case 2:
+			return floor2_button;
+		case 3:
+			return floor3_button;
+		case 4:
+			return floor4_button;
+		case 5:
+			return floor5_button;
 		default:
 			return nullptr;
 		}

@@ -1,4 +1,5 @@
 #pragma once
+#include "Floor.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -15,7 +16,26 @@ namespace Hellevator {
 	/// </summary>
 	public ref class Passenger : public System::Windows::Forms::PictureBox
 	{
+	public: static const int RIGHT = 1;
+	public: static const int LEFT = -1;
+
+	public: Floor^ destinationFloor;
+	public: bool isWaiting = false;
+	public: int direction;
+
 	public:
+		Passenger(int posX, int posY, Floor^ destination, int direction)
+		{
+			this->destinationFloor = destination;
+			this->direction = direction;
+
+			InitializeComponent();
+			this->Location = Point(posX, posY);
+			this->Size = System::Drawing::Size(90, 90);
+			this->Load("Resources/deadpool.png");
+			this->BackColor = System::Drawing::Color::Transparent;
+			this->BringToFront();
+		}
 		Passenger(int posX, int posY)
 		{
 			InitializeComponent();
