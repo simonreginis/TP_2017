@@ -654,11 +654,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			timer3(hWnd, ps);
 			break;
 		case TMR_4:
-			move(hWnd, ps, 552, 552);
-			break;case TMR_3:
-			timer3(hWnd, ps);
-			break;
-		case TMR_4:
 			SetTimer(hWnd, TMR_5, speed, 0);
 			KillTimer(hWnd, TMR_4);
 			break;
