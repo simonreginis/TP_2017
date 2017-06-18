@@ -11,6 +11,7 @@ typedef vector<vector<int>> vector2D_t;
 struct elev_out_t
 {
 	vector <int> elev_content;
+	int			 prev_floor;
 	int			 next_floor;
 	int			 people_in;
 	int			 people_out;

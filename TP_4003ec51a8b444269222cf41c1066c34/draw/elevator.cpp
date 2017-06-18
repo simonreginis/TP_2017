@@ -89,6 +89,7 @@ elev_out_t CElevator::make_elev_out()
 	elev_out_t buffer;
 
 	buffer.next_floor = select_floor();
+	buffer.prev_floor = elev_pos;
 	buffer.elev_content = elev_content;
 	buffer.people_in = load_people();
 	buffer.people_out = unload_people();
