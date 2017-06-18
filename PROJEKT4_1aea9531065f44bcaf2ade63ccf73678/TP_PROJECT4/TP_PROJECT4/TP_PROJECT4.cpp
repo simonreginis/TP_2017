@@ -75,7 +75,6 @@ bool controller = TRUE;									//<----------
 int speed = 0;
 bool controllerBlock = TRUE;
 bool controllerBlock_2 = FALSE;
-bool timerblock = TRUE;
 bool memorycontroller = TRUE;
 bool controller10 = TRUE;
 bool veccontrl = TRUE;
@@ -226,8 +225,7 @@ void move(HWND hWnd, PAINTSTRUCT &ps, int a, int b)
 	}
 	floors.push_back(b);
 	repaintWindow(hWnd, hdc, ps);
-	if (timerblock)
-		SetTimer(hWnd, TMR_1, speed, 0);
+	SetTimer(hWnd, TMR_1, speed, 0);
 }
 
 bool P_G_O()	//jeśli winda przejeżdża przez piętro, na które chce się dostać jeden lub więcej ludzi, zatrzymuje się
@@ -330,7 +328,6 @@ void timer2(HWND hWnd, PAINTSTRUCT &ps, std::vector<HUMAN> &peopleF, int P_M, in
 	}
 	if (((peopleF.empty()) && (peopleC.size() <= 8)) || ((!peopleF.empty()) && (peopleC.size() == 8)))
 	{
-		timerblock = TRUE;
 		controller = FALSE;
 		TIMER1 = TRUE;
 		KillTimer(hWnd, TMR_2);
