@@ -26,10 +26,11 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 HWND hwndButton;
 HWND hText;
 HBITMAP bkground;
+HBITMAP men;
 enum TFloor {ground = 416, first = 216, second = 16};
-enum TFloor elevatorFloor = ground;
+enum TFloor elevatorFloor = second;
 RECT drawArea = { 280, 0, 1100, 800 };
-CElevator elevator;
+
 
 
 // Forward declarations of functions included in this code module:
@@ -169,6 +170,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		CW_USEDEFAULT, 0, 1200, 800, NULL, NULL, hInstance, NULL);
 
 	bkground = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP2));
+	men = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_BITMAP1));
 	// create button and store the handle    
 
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
@@ -246,33 +248,61 @@ void DrawElevator(HDC hdc)
 	graphics.DrawRectangle(&pen2, 587,elevatorFloor, 198, 169);
 }
 
+Point GetPosForMen(TFloor elevatorFloor)
+{
+	Point retPoint;
+	switch (elevatorFloor)
+	{
+	case ground:
+		retPoint.X = 520;
+		retPoint.Y = 480;
+		break;
+	case first:
+		retPoint.X = 800;
+		retPoint.Y = 280;
+		break;
+	case second:
+		retPoint.X = 520;
+		retPoint.Y = 80;
+		break;
+	default:
+		break;
+	}
+	return retPoint;
+}
+
 void DrawDoubleBuffer(HWND hWnd)
 {
 	RECT Client_Rect;
 	PAINTSTRUCT ps;
-	HDC Memhdc, BkgMemhdc;
+	HDC memHdc, bkgHdc, menHdc;
 	HDC hdc;
-	HBITMAP Membitmap;
+	HBITMAP memBitmap;
 	GetClientRect(hWnd, &Client_Rect);
 	int win_width = Client_Rect.right - Client_Rect.left;
 	int win_height = Client_Rect.bottom + Client_Rect.left;
 	hdc = BeginPaint(hWnd, &ps);
-	Memhdc = CreateCompatibleDC(hdc);
-	BkgMemhdc = CreateCompatibleDC(hdc);
-	Membitmap = CreateCompatibleBitmap(hdc, win_width, win_height);
+	memHdc = CreateCompatibleDC(hdc);
+	bkgHdc = CreateCompatibleDC(hdc);
+	menHdc = CreateCompatibleDC(hdc);
+	memBitmap = CreateCompatibleBitmap(hdc, win_width, win_height);
 
 	
-	SelectObject(Memhdc, Membitmap);
-	SelectObject(BkgMemhdc, bkground);
-	FillRect(Memhdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
+	SelectObject(memHdc, memBitmap);
+	SelectObject(bkgHdc, bkground);
+	SelectObject(menHdc, men);
+	FillRect(memHdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW));
 
-	BitBlt(hdc, 0, 0, win_width, win_height, Memhdc, 0, 0, SRCCOPY);
-	BitBlt(hdc, 280, 0, 820, 800, BkgMemhdc, 0, 0, SRCCOPY);
+	BitBlt(hdc, 0, 0, win_width, win_height, memHdc, 0, 0, SRCCOPY);
+	BitBlt(hdc, 280, 0, 820, 800, bkgHdc, 0, 0, SRCCOPY);
+	BitBlt(hdc, GetPosForMen(elevatorFloor).X, GetPosForMen(elevatorFloor).Y, 820, 800, menHdc, 0, 0, SRCCOPY);
 	DrawElevator(hdc);
+	
 
-	DeleteObject(Membitmap);
-	DeleteDC(BkgMemhdc);
-	DeleteDC(Memhdc);
+	DeleteObject(memBitmap);
+	DeleteDC(bkgHdc);
+	DeleteDC(memHdc);
+	DeleteDC(menHdc);
 	DeleteDC(hdc);
 	EndPaint(hWnd, &ps);
 }

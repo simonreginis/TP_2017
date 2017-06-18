@@ -66,5 +66,8 @@
     <Image Include="bk.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="men.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
