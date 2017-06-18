@@ -683,9 +683,11 @@ namespace Hellevator {
 
 void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArgs ^e)
 {
-	SetWaitingButtonInactiveColor( ((FloorEventArgs^)e)->FloorTag );
+	FloorEventArgs^ args = (FloorEventArgs^)e;
 
-	Floor^ f = getFloorByTag(((FloorEventArgs^)e)->FloorTag);
+	SetWaitingButtonInactiveColor( args->FloorTag );
+
+	Floor^ f = getFloorByTag(args->FloorTag);
 	for each (Passenger^ p in f->passengers)
 	{
 		if (p->isWaiting) {
@@ -694,4 +696,23 @@ void Hellevator::MyForm::OnFloorReached(System::Object ^sender, System::EventArg
 		}
 	}
 	
+	ArrayList^ droppedPassengers = args->DroppedPassengers;
+	for each (Passenger^ p in droppedPassengers)
+	{
+		int x, y;
+
+		if (f->Location.X > elevator->Location.X) {
+			x = f->Location.X;
+			p->direction = Passenger::RIGHT;
+		}
+		else {
+			x = f->Location.X + f->Width - p->Width;
+			p->direction = Passenger::LEFT;
+		}
+
+		y = f->Location.Y - f->Height - p->Height;
+
+		p->Location = Point(x, y);;
+		this->Controls->Add(p);
+	}
 }

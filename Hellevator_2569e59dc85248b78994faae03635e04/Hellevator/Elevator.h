@@ -129,9 +129,21 @@ namespace Hellevator {
 				waitLeft = 0;
 			}
 			else {
-				int tag = Convert::ToInt32(((Floor^)floorsWaiting[0])->Tag);
-				FloorEventArgs^ fe = gcnew FloorEventArgs(tag);
+				Floor^ reachedFloor = (Floor^)floorsWaiting[0];
+				ArrayList^ droppedPassengers = gcnew ArrayList();
+
+				for each (Passenger^ p in passengers)
+					if (p->destinationFloor == reachedFloor)
+						droppedPassengers->Add(p);
+
+				for each (Passenger^ p in droppedPassengers)
+					passengers->Remove(p);
+
+				int tag = Convert::ToInt32((reachedFloor)->Tag);
+				FloorEventArgs^ fe = gcnew FloorEventArgs(tag, droppedPassengers);
+				
 				OnFloorReached(fe);
+				
 				waitLeft = 200;
 				floorsWaiting->RemoveAt(0);
 			}
