@@ -1,9 +1,15 @@
 ﻿#pragma once
 #include <vector>
+#include <queue>
 
 namespace Project4 {
 
 	std::vector <int> kolejnosc;
+	std::queue <int> P1;
+	std::queue <int> P2;
+	std::queue <int> P3;
+	std::queue <int> P4;
+	std::queue <int> P5;
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -24,6 +30,11 @@ namespace Project4 {
 		static int kierunek = 1;
 		static int postoj = 0;
 		static int bezczynnosc = 0;
+		static int a, b, c;
+		static int licznik_osob = 0;
+		bool zakonczony = false;
+		bool spr;
+
 		//i1na2 - int, znaczy ilość ludzi czekająch na piętrze 1 i chcących jechać na piętro 2
 		//s1na2 - string, odwzorowanie i1na2
 		//w_na1 - int, pokazuje ile osób w windzie chce jechać na 1 piętro
@@ -43,9 +54,9 @@ namespace Project4 {
 		static int i_obciazenie = 0;
 		String^ s_obciazenie;
 
-	//b1na2 - guzik który po wciśnięciu tworzy na 1 piętrze osobę która chce jechać na 2 piętro
-    //l1na2 - label pokazujacy ile razy dany guzik został wciśnięty, w tym przypadku guzik b1na2
-	//l_w_na1 - label pokazujący wartość inta w_na1 (w_na1 opisany wyżej)
+		//b1na2 - guzik który po wciśnięciu tworzy na 1 piętrze osobę która chce jechać na 2 piętro
+		//l1na2 - label pokazujacy ile razy dany guzik został wciśnięty, w tym przypadku guzik b1na2
+		//l_w_na1 - label pokazujący wartość inta w_na1 (w_na1 opisany wyżej)
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label3;
@@ -98,6 +109,7 @@ namespace Project4 {
 	private: System::Windows::Forms::Timer^  timer2;
 	private: System::Windows::Forms::Timer^  timer3;
 	private: System::Windows::Forms::Label^  l_obciazenie;
+
 	private: System::Windows::Forms::Label^  l_w_na5;
 
 
@@ -139,213 +151,411 @@ namespace Project4 {
 				break;
 			}
 
-			i_obciazenie = 70*(w_na1 + w_na2 + w_na3 + w_na4 + w_na5);
+			i_obciazenie = 70 * (w_na1 + w_na2 + w_na3 + w_na4 + w_na5);
 			s_obciazenie = Convert::ToString(i_obciazenie);
 			l_obciazenie->Text = "Obciążenie : " + s_obciazenie;
 
 		};
 
+
+
 		//Funkcje Piętro_x obsługują wsiadanie i wysiadanie osób: zmianę labelów, zmiennych int, dodawanie do kolejności kolejne piętra
 		void Pietro_1(void)
 		{
-			w_na1 = 0;
-			sw_na1 = Convert::ToString(w_na1);
-			l_w_na1->Text = "w->1 : " + sw_na1;
+			spr = false;
 
-			w_na2 += i1na2;
-			sw_na2 = Convert::ToString(w_na2);
-			l_w_na2->Text = "w->2 : " + sw_na2;
-			if (i1na2 != 0) kolejnosc.push_back(2);
-			i1na2 = 0;
-			s1na2 = Convert::ToString(i1na2);
-			l1na2->Text = "1->2 : " + s1na2;
-			
-			w_na3 += i1na3;
-			sw_na3 = Convert::ToString(w_na3);
-			l_w_na3->Text = "w->3 : " + sw_na3;
-			if (i1na3 != 0) kolejnosc.push_back(3);
-			i1na3 = 0;
-			s1na3 = Convert::ToString(i1na3);
-			l1na3->Text = "1->3 : " + s1na3;
+			if (w_na1 != 0)
+			{
+				w_na1--;
+				sw_na1 = Convert::ToString(w_na1);
+				l_w_na1->Text = "w->1 : " + sw_na1;
+				licznik_osob--;
+			}
 
+			if (w_na1 == 0 && P1.empty() == false && P1.front() == 2 && licznik_osob < 8 && spr == false)
+			{
+				w_na2++;
+				sw_na2 = Convert::ToString(w_na2);
+				l_w_na2->Text = "w->2 : " + sw_na2;
+				kolejnosc.push_back(2);
+				i1na2--;
+				s1na2 = Convert::ToString(i1na2);
+				l1na2->Text = "1->2 : " + s1na2;
+				P1.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na4 += i1na4;
-			sw_na4 = Convert::ToString(w_na4);
-			l_w_na4->Text = "w->4 : " + sw_na4;
-			if (i1na4 != 0) kolejnosc.push_back(4);
-			i1na4 = 0;
-			s1na4 = Convert::ToString(i1na4);
-			l1na4->Text = "1->4 : " + s1na4;
+			if (w_na1 == 0 && P1.empty() == false && P1.front() == 3 && licznik_osob < 8 && spr == false)
+			{
+				w_na3++;
+				sw_na3 = Convert::ToString(w_na3);
+				l_w_na3->Text = "w->3 : " + sw_na3;
+				kolejnosc.push_back(3);
+				i1na3--;
+				s1na3 = Convert::ToString(i1na3);
+				l1na3->Text = "1->3 : " + s1na3;
+				P1.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na5 += i1na5;
-			sw_na5 = Convert::ToString(w_na5);
-			l_w_na5->Text = "w->5 : " + sw_na5;
-			if (i1na5 != 0) kolejnosc.push_back(5);
-			i1na5 = 0;
-			s1na5 = Convert::ToString(i1na5);
-			l1na5->Text = "1->5 : " + s1na5;
+			if (w_na1 == 0 && P1.empty() == false && P1.front() == 4 && licznik_osob < 8 && spr == false)
+			{
+				w_na4++;
+				sw_na4 = Convert::ToString(w_na4);
+				l_w_na4->Text = "w->4 : " + sw_na4;
+				kolejnosc.push_back(4);
+				i1na4--;
+				s1na4 = Convert::ToString(i1na4);
+				l1na4->Text = "1->4 : " + s1na4;
+				P1.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
+			if (w_na1 == 0 && P1.empty() == false && P1.front() == 5 && licznik_osob < 8 && spr == false)
+			{
+				w_na5++;
+				sw_na5 = Convert::ToString(w_na5);
+				l_w_na5->Text = "w->5 : " + sw_na5;
+				kolejnosc.push_back(5);
+				i1na5--;
+				s1na5 = Convert::ToString(i1na5);
+				l1na5->Text = "1->5 : " + s1na5;
+				P1.pop();
+				licznik_osob++;
+				spr = true;
+			}
+
+			if (P1.empty() == true && w_na1 == 0)		//jesli na pietrze juz nikt nie czeka
+				zakonczony = true;
+
+			if (licznik_osob == 8 && w_na1 == 0 && P1.empty() == false)	//jesli ktos nie wsiadl to winda znowu przyjedzie na dane pietro
+			{
+				zakonczony = true;
+				kolejnosc.push_back(1);
+			}
 		};
+
 
 
 		void Pietro_2(void)
 		{
+			spr = false;
 
-			w_na1 += i2na1;
-			sw_na1 = Convert::ToString(w_na1);
-			l_w_na1->Text = "w->1 : " + sw_na1;
-			if (i2na1 != 0) kolejnosc.push_back(1);
-			i2na1 = 0;
-			s2na1 = Convert::ToString(i2na1);
-			l2na1->Text = "2->1 : " + s2na1;
+			if (w_na2 != 0)
+			{
+				w_na2--;
+				sw_na2 = Convert::ToString(w_na2);
+				l_w_na2->Text = "w->2 : " + sw_na2;
+				licznik_osob--;
+			}
 
-			w_na2 = 0;
-			sw_na2 = Convert::ToString(w_na2);
-			l_w_na2->Text = "w->2 : " + sw_na2;
+			if (w_na2 == 0 && P2.empty() == false && P2.front() == 1 && licznik_osob < 8 && spr == false)
+			{
+				w_na1++;
+				sw_na1 = Convert::ToString(w_na1);
+				l_w_na1->Text = "w->1 : " + sw_na1;
+				kolejnosc.push_back(1);
+				i2na1--;
+				s2na1 = Convert::ToString(i2na1);
+				l2na1->Text = "2->1 : " + s2na1;
+				P2.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na3 += i2na3;
-			sw_na3 = Convert::ToString(w_na3);
-			l_w_na3->Text = "w->3 : " + sw_na3;
-			if (i2na3 != 0) kolejnosc.push_back(3);
-			i2na3 = 0;
-			s2na3 = Convert::ToString(i2na3);
-			l2na3->Text = "2->3 : " + s2na3;
+			if (w_na2 == 0 && P2.empty() == false && P2.front() == 3 && licznik_osob < 8 && spr == false)
+			{
+				w_na3++;
+				sw_na3 = Convert::ToString(w_na3);
+				l_w_na3->Text = "w->3 : " + sw_na3;
+				kolejnosc.push_back(3);
+				i2na3--;
+				s2na3 = Convert::ToString(i2na3);
+				l2na3->Text = "2->3 : " + s2na3;
+				P2.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na4 += i2na4;
-			sw_na4 = Convert::ToString(w_na4);
-			l_w_na4->Text = "w->4 : " + sw_na4;
-			if (i2na4 != 0) kolejnosc.push_back(4);
-			i2na4 = 0;
-			s2na4 = Convert::ToString(i2na4);
-			l2na4->Text = "2->4 : " + s2na4;
+			if (w_na2 == 0 && P2.empty() == false && P2.front() == 4 && licznik_osob < 8 && spr == false)
+			{
+				w_na4++;
+				sw_na4 = Convert::ToString(w_na4);
+				l_w_na4->Text = "w->4 : " + sw_na4;
+				kolejnosc.push_back(4);
+				i2na4--;
+				s2na4 = Convert::ToString(i2na4);
+				l2na4->Text = "2->4 : " + s2na4;
+				P2.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na5 += i2na5;
-			sw_na5 = Convert::ToString(w_na5);
-			l_w_na5->Text = "w->5 : " + sw_na5;
-			if (i2na5 != 0) kolejnosc.push_back(5);
-			i2na5 = 0;
-			s2na5 = Convert::ToString(i2na5);
-			l2na5->Text = "2->5 : " + s2na5;
+			if (w_na2 == 0 && P2.empty() == false && P2.front() == 5 && licznik_osob < 8 && spr == false)
+			{
+				w_na5++;
+				sw_na5 = Convert::ToString(w_na5);
+				l_w_na5->Text = "w->5 : " + sw_na5;
+				kolejnosc.push_back(5);
+				i2na5--;
+				s2na5 = Convert::ToString(i2na5);
+				l2na5->Text = "2->5 : " + s2na5;
+				P2.pop();
+				licznik_osob++;
+				spr = true;
+			}
+
+			if (P2.empty() == true && w_na2 == 0)
+				zakonczony = true;
+
+			if (licznik_osob == 8 && w_na2 == 0 && P2.empty() == false)
+			{
+				zakonczony = true;
+				kolejnosc.push_back(2);
+			}
 		};
+
+
 
 		void Pietro_3(void)
 		{
+			spr = false;
 
-			w_na1 += i3na1;
-			sw_na1 = Convert::ToString(w_na1);
-			l_w_na1->Text = "w->1 : " + sw_na1;
-			if (i3na1 != 0) kolejnosc.push_back(1);
-			i3na1 = 0;
-			s3na1 = Convert::ToString(i3na1);
-			l3na1->Text = "3->1 : " + s3na1;
+			if (w_na3 != 0)
+			{
+				w_na3--;
+				sw_na3 = Convert::ToString(w_na3);
+				l_w_na3->Text = "w->3 : " + sw_na3;
+				licznik_osob--;
+			}
 
-			w_na2 += i3na2;
-			sw_na2 = Convert::ToString(w_na2);
-			l_w_na2->Text = "w->2 : " + sw_na2;
-			if (i3na2 != 0) kolejnosc.push_back(2);
-			i3na2 = 0;
-			s3na2 = Convert::ToString(i3na2);
-			l3na2->Text = "3->2 : " + s3na2;
+			if (w_na3 == 0 && P3.empty() == false && P3.front() == 1 && licznik_osob < 8 && spr == false)
+			{
+				w_na1++;
+				sw_na1 = Convert::ToString(w_na1);
+				l_w_na1->Text = "w->1 : " + sw_na1;
+				kolejnosc.push_back(1);
+				i3na1--;
+				s3na1 = Convert::ToString(i3na1);
+				l3na1->Text = "3->1 : " + s3na1;
+				P3.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na3 = 0;
-			sw_na3 = Convert::ToString(w_na3);
-			l_w_na3->Text = "w->3 : " + sw_na3;
+			if (w_na3 == 0 && P3.empty() == false && P3.front() == 2 && licznik_osob < 8 && spr == false)
+			{
+				w_na2++;
+				sw_na2 = Convert::ToString(w_na2);
+				l_w_na2->Text = "w->2 : " + sw_na2;
+				kolejnosc.push_back(2);
+				i3na2--;
+				s3na2 = Convert::ToString(i3na2);
+				l3na2->Text = "3->2 : " + s3na2;
+				P3.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na4 += i3na4;
-			sw_na4 = Convert::ToString(w_na4);
-			l_w_na4->Text = "w->4 : " + sw_na4;
-			if (i3na4 != 0) kolejnosc.push_back(4);
-			i3na4 = 0;
-			s3na4 = Convert::ToString(i3na4);
-			l3na4->Text = "3->4 : " + s3na4;
+			if (w_na3 == 0 && P3.empty() == false && P3.front() == 4 && licznik_osob < 8 && spr == false)
+			{
+				w_na4++;
+				sw_na4 = Convert::ToString(w_na4);
+				l_w_na4->Text = "w->4 : " + sw_na4;
+				kolejnosc.push_back(4);
+				i3na4--;
+				s3na4 = Convert::ToString(i3na4);
+				l3na4->Text = "3->4 : " + s3na4;
+				P3.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na5 += i3na5;
-			sw_na5 = Convert::ToString(w_na5);
-			l_w_na5->Text = "w->5 : " + sw_na5;
-			if (i3na5 != 0) kolejnosc.push_back(5);
-			i3na5 = 0;
-			s3na5 = Convert::ToString(i3na5);
-			l3na5->Text = "3->5 : " + s3na5;
+			if (w_na3 == 0 && P3.empty() == false && P3.front() == 5 && licznik_osob < 8 && spr == false)
+			{
+				w_na5++;
+				sw_na5 = Convert::ToString(w_na5);
+				l_w_na5->Text = "w->5 : " + sw_na5;
+				kolejnosc.push_back(5);
+				i3na5--;
+				s3na5 = Convert::ToString(i3na5);
+				l3na5->Text = "3->5 : " + s3na5;
+				P3.pop();
+				licznik_osob++;
+				spr = true;
+			}
+
+			if (P3.empty() == true && w_na3 == 0)
+				zakonczony = true;
+
+			if (licznik_osob == 8 && w_na3 == 0 && P3.empty() == false)
+			{
+				zakonczony = true;
+				kolejnosc.push_back(3);
+			}
 		};
+
+
 
 		void Pietro_4(void)
 		{
+			spr = false;
 
-			w_na1 += i4na1;
-			sw_na1 = Convert::ToString(w_na1);
-			l_w_na1->Text = "w->1 : " + sw_na1;
-			if (i4na1 != 0) kolejnosc.push_back(1);
-			i4na1 = 0;
-			s4na1 = Convert::ToString(i4na1);
-			l4na1->Text = "4->1 : " + s4na1;
+			if (w_na4 != 0)
+			{
+				w_na4--;
+				sw_na4 = Convert::ToString(w_na4);
+				l_w_na4->Text = "w->4 : " + sw_na4;
+				licznik_osob--;
+			}
 
-			w_na2 += i4na2;
-			sw_na2 = Convert::ToString(w_na2);
-			l_w_na2->Text = "w->2 : " + sw_na2;
-			if (i4na2 != 0) kolejnosc.push_back(2);
-			i4na2 = 0;
-			s4na2 = Convert::ToString(i4na2);
-			l4na2->Text = "4->2 : " + s4na2;
+			if (w_na4 == 0 && P4.empty() == false && P4.front() == 1 && licznik_osob < 8 && spr == false)
+			{
+				w_na1++;
+				sw_na1 = Convert::ToString(w_na1);
+				l_w_na1->Text = "w->1 : " + sw_na1;
+				kolejnosc.push_back(1);
+				i4na1--;
+				s4na1 = Convert::ToString(i4na1);
+				l4na1->Text = "4->1 : " + s4na1;
+				P4.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na3 += i4na3;
-			sw_na3 = Convert::ToString(w_na3);
-			l_w_na3->Text = "w->3 : " + sw_na3;
-			if (i4na3 != 0) kolejnosc.push_back(3);
-			i4na3 = 0;
-			s4na3 = Convert::ToString(i4na3);
-			l4na3->Text = "4->3 : " + s4na3;
+			if (w_na4 == 0 && P4.empty() == false && P4.front() == 2 && licznik_osob < 8 && spr == false)
+			{
+				w_na2++;
+				sw_na2 = Convert::ToString(w_na2);
+				l_w_na2->Text = "w->2 : " + sw_na2;
+				kolejnosc.push_back(2);
+				i4na2--;
+				s4na2 = Convert::ToString(i4na2);
+				l4na2->Text = "4->2 : " + s4na2;
+				P4.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na4 = 0;
-			sw_na4 = Convert::ToString(w_na4);
-			l_w_na4->Text = "w->4 : " + sw_na4;
+			if (w_na4 == 0 && P4.empty() == false && P4.front() == 3 && licznik_osob < 8 && spr == false)
+			{
+				w_na3++;
+				sw_na3 = Convert::ToString(w_na3);
+				l_w_na3->Text = "w->3 : " + sw_na3;
+				kolejnosc.push_back(3);
+				i4na3--;
+				s4na3 = Convert::ToString(i4na3);
+				l4na3->Text = "4->3 : " + s4na3;
+				P4.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na5 += i4na5;
-			sw_na5 = Convert::ToString(w_na5);
-			l_w_na5->Text = "w->5 : " + sw_na5;
-			if (i4na5 != 0) kolejnosc.push_back(5);
-			i4na5 = 0;
-			s4na5 = Convert::ToString(i4na5);
-			l4na5->Text = "4->5 : " + s4na5;
+			if (w_na4 == 0 && P4.empty() == false && P4.front() == 5 && licznik_osob < 8 && spr == false)
+			{
+				w_na5++;
+				sw_na5 = Convert::ToString(w_na5);
+				l_w_na5->Text = "w->5 : " + sw_na5;
+				kolejnosc.push_back(5);
+				i4na5--;
+				s4na5 = Convert::ToString(i4na5);
+				l4na5->Text = "4->5 : " + s4na5;
+				P4.pop();
+				licznik_osob++;
+				spr = true;
+			}
+
+			if (P4.empty() == true && w_na4 == 0)
+				zakonczony = true;
+
+			if (licznik_osob == 8 && w_na4 == 0 && P4.empty() == false)
+			{
+				zakonczony = true;
+				kolejnosc.push_back(4);
+			}
 		};
+
+
 
 		void Pietro_5(void)
 		{
+			spr = false;
 
-			w_na1 += i5na1;
-			sw_na1 = Convert::ToString(w_na1);
-			l_w_na1->Text = "w->1 : " + sw_na1;
-			if (i5na1 != 0) kolejnosc.push_back(1);
-			i5na1 = 0;
-			s5na1 = Convert::ToString(i5na1);
-			l5na1->Text = "5->1 : " + s5na1;
+			if (w_na5 != 0)
+			{
+				w_na5--;
+				sw_na5 = Convert::ToString(w_na5);
+				l_w_na5->Text = "w->5 : " + sw_na5;
+				licznik_osob--;
+			}
 
-			w_na2 += i5na2;
-			sw_na2 = Convert::ToString(w_na2);
-			l_w_na2->Text = "w->2 : " + sw_na2;
-			if (i5na2 != 0) kolejnosc.push_back(2);
-			i5na2 = 0;
-			s5na2 = Convert::ToString(i5na2);
-			l5na2->Text = "5->2 : " + s5na2;
+			if (w_na5 == 0 && P5.empty() == false && P5.front() == 1 && licznik_osob < 8 && spr == false)
+			{
+				w_na1++;
+				sw_na1 = Convert::ToString(w_na1);
+				l_w_na1->Text = "w->1 : " + sw_na1;
+				kolejnosc.push_back(1);
+				i5na1--;
+				s5na1 = Convert::ToString(i5na1);
+				l5na1->Text = "5->1 : " + s5na1;
+				P5.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na3 += i5na3;
-			sw_na3 = Convert::ToString(w_na3);
-			l_w_na3->Text = "w->3 : " + sw_na3;
-			if (i5na3 != 0) kolejnosc.push_back(3);
-			i5na3 = 0;
-			s5na3 = Convert::ToString(i5na3);
-			l5na3->Text = "5->3 : " + s5na3;
+			if (w_na5 == 0 && P5.empty() == false && P5.front() == 2 && licznik_osob < 8 && spr == false)
+			{
+				w_na2++;
+				sw_na2 = Convert::ToString(w_na2);
+				l_w_na2->Text = "w->2 : " + sw_na2;
+				kolejnosc.push_back(2);
+				i5na2--;
+				s5na2 = Convert::ToString(i5na2);
+				l5na2->Text = "5->2 : " + s5na2;
+				P5.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na4 += i5na4;
-			sw_na4 = Convert::ToString(sw_na4);
-			l_w_na4->Text = "w->4 : " + w_na4;
-			if (i5na4 != 0) kolejnosc.push_back(4);
-			i5na4 = 0;
-			s5na4 = Convert::ToString(i5na4);
-			l5na4->Text = "5->4 : " + s5na4;
+			if (w_na5 == 0 && P5.empty() == false && P5.front() == 3 && licznik_osob < 8 && spr == false)
+			{
+				w_na3++;
+				sw_na3 = Convert::ToString(w_na3);
+				l_w_na3->Text = "w->3 : " + sw_na3;
+				kolejnosc.push_back(3);
+				i5na3--;
+				s5na3 = Convert::ToString(i5na3);
+				l5na3->Text = "5->3 : " + s5na3;
+				P5.pop();
+				licznik_osob++;
+				spr = true;
+			}
 
-			w_na5 = 0;
-			sw_na5 = Convert::ToString(w_na5);
-			l_w_na5->Text = "w->5 : " + sw_na5;
+			if (w_na5 == 0 && P5.empty() == false && P5.front() == 4 && licznik_osob < 8 && spr == false)
+			{
+				w_na4++;
+				sw_na4 = Convert::ToString(sw_na4);
+				l_w_na4->Text = "w->4 : " + w_na4;
+				kolejnosc.push_back(4);
+				i5na4--;
+				s5na4 = Convert::ToString(i5na4);
+				l5na4->Text = "5->4 : " + s5na4;
+				P5.pop();
+				licznik_osob++;
+				spr = true;
+			}
+
+			if (P5.empty() == true && w_na5 == 0)
+				zakonczony = true;
+
+			if (licznik_osob == 8 && w_na5 == 0 && P5.empty() == false)
+			{
+				zakonczony = true;
+				kolejnosc.push_back(5);
+			}
 		};
 
 	protected:
@@ -527,7 +737,7 @@ namespace Project4 {
 			// 
 			// b1na2
 			// 
-			this->b1na2->Location = System::Drawing::Point(36, 415);
+			this->b1na2->Location = System::Drawing::Point(37, 514);
 			this->b1na2->Name = L"b1na2";
 			this->b1na2->Size = System::Drawing::Size(21, 26);
 			this->b1na2->TabIndex = 10;
@@ -537,7 +747,7 @@ namespace Project4 {
 			// 
 			// b2na3
 			// 
-			this->b2na3->Location = System::Drawing::Point(786, 338);
+			this->b2na3->Location = System::Drawing::Point(784, 368);
 			this->b2na3->Name = L"b2na3";
 			this->b2na3->Size = System::Drawing::Size(21, 26);
 			this->b2na3->TabIndex = 11;
@@ -547,7 +757,7 @@ namespace Project4 {
 			// 
 			// b3na2
 			// 
-			this->b3na2->Location = System::Drawing::Point(36, 234);
+			this->b3na2->Location = System::Drawing::Point(35, 265);
 			this->b3na2->Name = L"b3na2";
 			this->b3na2->Size = System::Drawing::Size(21, 26);
 			this->b3na2->TabIndex = 12;
@@ -557,7 +767,7 @@ namespace Project4 {
 			// 
 			// b4na2
 			// 
-			this->b4na2->Location = System::Drawing::Point(786, 109);
+			this->b4na2->Location = System::Drawing::Point(785, 156);
 			this->b4na2->Name = L"b4na2";
 			this->b4na2->Size = System::Drawing::Size(21, 26);
 			this->b4na2->TabIndex = 13;
@@ -567,7 +777,7 @@ namespace Project4 {
 			// 
 			// b5na2
 			// 
-			this->b5na2->Location = System::Drawing::Point(34, 45);
+			this->b5na2->Location = System::Drawing::Point(37, 87);
 			this->b5na2->Name = L"b5na2";
 			this->b5na2->Size = System::Drawing::Size(21, 26);
 			this->b5na2->TabIndex = 14;
@@ -577,7 +787,7 @@ namespace Project4 {
 			// 
 			// b1na3
 			// 
-			this->b1na3->Location = System::Drawing::Point(36, 447);
+			this->b1na3->Location = System::Drawing::Point(37, 482);
 			this->b1na3->Name = L"b1na3";
 			this->b1na3->Size = System::Drawing::Size(21, 26);
 			this->b1na3->TabIndex = 15;
@@ -587,7 +797,7 @@ namespace Project4 {
 			// 
 			// b4na3
 			// 
-			this->b4na3->Location = System::Drawing::Point(786, 141);
+			this->b4na3->Location = System::Drawing::Point(784, 124);
 			this->b4na3->Name = L"b4na3";
 			this->b4na3->Size = System::Drawing::Size(21, 26);
 			this->b4na3->TabIndex = 16;
@@ -597,7 +807,7 @@ namespace Project4 {
 			// 
 			// b5na3
 			// 
-			this->b5na3->Location = System::Drawing::Point(34, 77);
+			this->b5na3->Location = System::Drawing::Point(37, 55);
 			this->b5na3->Name = L"b5na3";
 			this->b5na3->Size = System::Drawing::Size(21, 26);
 			this->b5na3->TabIndex = 17;
@@ -607,7 +817,7 @@ namespace Project4 {
 			// 
 			// b2na1
 			// 
-			this->b2na1->Location = System::Drawing::Point(786, 309);
+			this->b2na1->Location = System::Drawing::Point(784, 400);
 			this->b2na1->Name = L"b2na1";
 			this->b2na1->Size = System::Drawing::Size(20, 23);
 			this->b2na1->TabIndex = 18;
@@ -617,7 +827,7 @@ namespace Project4 {
 			// 
 			// b3na1
 			// 
-			this->b3na1->Location = System::Drawing::Point(37, 206);
+			this->b3na1->Location = System::Drawing::Point(35, 297);
 			this->b3na1->Name = L"b3na1";
 			this->b3na1->Size = System::Drawing::Size(20, 23);
 			this->b3na1->TabIndex = 19;
@@ -627,7 +837,7 @@ namespace Project4 {
 			// 
 			// b4na1
 			// 
-			this->b4na1->Location = System::Drawing::Point(785, 80);
+			this->b4na1->Location = System::Drawing::Point(785, 188);
 			this->b4na1->Name = L"b4na1";
 			this->b4na1->Size = System::Drawing::Size(20, 23);
 			this->b4na1->TabIndex = 20;
@@ -637,7 +847,7 @@ namespace Project4 {
 			// 
 			// b5na1
 			// 
-			this->b5na1->Location = System::Drawing::Point(35, 16);
+			this->b5na1->Location = System::Drawing::Point(38, 119);
 			this->b5na1->Name = L"b5na1";
 			this->b5na1->Size = System::Drawing::Size(20, 23);
 			this->b5na1->TabIndex = 21;
@@ -647,7 +857,7 @@ namespace Project4 {
 			// 
 			// b5na4
 			// 
-			this->b5na4->Location = System::Drawing::Point(35, 109);
+			this->b5na4->Location = System::Drawing::Point(37, 26);
 			this->b5na4->Name = L"b5na4";
 			this->b5na4->Size = System::Drawing::Size(20, 23);
 			this->b5na4->TabIndex = 22;
@@ -657,7 +867,7 @@ namespace Project4 {
 			// 
 			// b3na4
 			// 
-			this->b3na4->Location = System::Drawing::Point(37, 266);
+			this->b3na4->Location = System::Drawing::Point(36, 236);
 			this->b3na4->Name = L"b3na4";
 			this->b3na4->Size = System::Drawing::Size(20, 23);
 			this->b3na4->TabIndex = 23;
@@ -667,7 +877,7 @@ namespace Project4 {
 			// 
 			// b2na4
 			// 
-			this->b2na4->Location = System::Drawing::Point(786, 370);
+			this->b2na4->Location = System::Drawing::Point(785, 339);
 			this->b2na4->Name = L"b2na4";
 			this->b2na4->Size = System::Drawing::Size(20, 23);
 			this->b2na4->TabIndex = 24;
@@ -677,7 +887,7 @@ namespace Project4 {
 			// 
 			// b1na4
 			// 
-			this->b1na4->Location = System::Drawing::Point(37, 479);
+			this->b1na4->Location = System::Drawing::Point(37, 453);
 			this->b1na4->Name = L"b1na4";
 			this->b1na4->Size = System::Drawing::Size(20, 23);
 			this->b1na4->TabIndex = 25;
@@ -687,7 +897,7 @@ namespace Project4 {
 			// 
 			// b4na5
 			// 
-			this->b4na5->Location = System::Drawing::Point(786, 173);
+			this->b4na5->Location = System::Drawing::Point(784, 92);
 			this->b4na5->Name = L"b4na5";
 			this->b4na5->Size = System::Drawing::Size(21, 26);
 			this->b4na5->TabIndex = 26;
@@ -697,7 +907,7 @@ namespace Project4 {
 			// 
 			// b3na5
 			// 
-			this->b3na5->Location = System::Drawing::Point(36, 295);
+			this->b3na5->Location = System::Drawing::Point(36, 204);
 			this->b3na5->Name = L"b3na5";
 			this->b3na5->Size = System::Drawing::Size(21, 26);
 			this->b3na5->TabIndex = 27;
@@ -707,7 +917,7 @@ namespace Project4 {
 			// 
 			// b2na5
 			// 
-			this->b2na5->Location = System::Drawing::Point(786, 399);
+			this->b2na5->Location = System::Drawing::Point(784, 307);
 			this->b2na5->Name = L"b2na5";
 			this->b2na5->Size = System::Drawing::Size(21, 26);
 			this->b2na5->TabIndex = 28;
@@ -717,7 +927,7 @@ namespace Project4 {
 			// 
 			// b1na5
 			// 
-			this->b1na5->Location = System::Drawing::Point(36, 507);
+			this->b1na5->Location = System::Drawing::Point(36, 421);
 			this->b1na5->Name = L"b1na5";
 			this->b1na5->Size = System::Drawing::Size(21, 26);
 			this->b1na5->TabIndex = 29;
@@ -728,7 +938,7 @@ namespace Project4 {
 			// l1na2
 			// 
 			this->l1na2->AutoSize = true;
-			this->l1na2->Location = System::Drawing::Point(202, 462);
+			this->l1na2->Location = System::Drawing::Point(202, 527);
 			this->l1na2->Name = L"l1na2";
 			this->l1na2->Size = System::Drawing::Size(43, 13);
 			this->l1na2->TabIndex = 30;
@@ -737,7 +947,7 @@ namespace Project4 {
 			// l1na3
 			// 
 			this->l1na3->AutoSize = true;
-			this->l1na3->Location = System::Drawing::Point(202, 484);
+			this->l1na3->Location = System::Drawing::Point(202, 495);
 			this->l1na3->Name = L"l1na3";
 			this->l1na3->Size = System::Drawing::Size(43, 13);
 			this->l1na3->TabIndex = 31;
@@ -746,7 +956,7 @@ namespace Project4 {
 			// l1na4
 			// 
 			this->l1na4->AutoSize = true;
-			this->l1na4->Location = System::Drawing::Point(202, 507);
+			this->l1na4->Location = System::Drawing::Point(202, 463);
 			this->l1na4->Name = L"l1na4";
 			this->l1na4->Size = System::Drawing::Size(43, 13);
 			this->l1na4->TabIndex = 32;
@@ -755,7 +965,7 @@ namespace Project4 {
 			// l1na5
 			// 
 			this->l1na5->AutoSize = true;
-			this->l1na5->Location = System::Drawing::Point(202, 529);
+			this->l1na5->Location = System::Drawing::Point(202, 434);
 			this->l1na5->Name = L"l1na5";
 			this->l1na5->Size = System::Drawing::Size(43, 13);
 			this->l1na5->TabIndex = 33;
@@ -764,7 +974,7 @@ namespace Project4 {
 			// l2na1
 			// 
 			this->l2na1->AutoSize = true;
-			this->l2na1->Location = System::Drawing::Point(569, 370);
+			this->l2na1->Location = System::Drawing::Point(569, 410);
 			this->l2na1->Name = L"l2na1";
 			this->l2na1->Size = System::Drawing::Size(43, 13);
 			this->l2na1->TabIndex = 34;
@@ -773,7 +983,7 @@ namespace Project4 {
 			// l2na3
 			// 
 			this->l2na3->AutoSize = true;
-			this->l2na3->Location = System::Drawing::Point(569, 390);
+			this->l2na3->Location = System::Drawing::Point(569, 381);
 			this->l2na3->Name = L"l2na3";
 			this->l2na3->Size = System::Drawing::Size(43, 13);
 			this->l2na3->TabIndex = 35;
@@ -782,7 +992,7 @@ namespace Project4 {
 			// l2na4
 			// 
 			this->l2na4->AutoSize = true;
-			this->l2na4->Location = System::Drawing::Point(569, 412);
+			this->l2na4->Location = System::Drawing::Point(569, 349);
 			this->l2na4->Name = L"l2na4";
 			this->l2na4->Size = System::Drawing::Size(43, 13);
 			this->l2na4->TabIndex = 36;
@@ -791,7 +1001,7 @@ namespace Project4 {
 			// l2na5
 			// 
 			this->l2na5->AutoSize = true;
-			this->l2na5->Location = System::Drawing::Point(569, 428);
+			this->l2na5->Location = System::Drawing::Point(569, 320);
 			this->l2na5->Name = L"l2na5";
 			this->l2na5->Size = System::Drawing::Size(43, 13);
 			this->l2na5->TabIndex = 37;
@@ -800,7 +1010,7 @@ namespace Project4 {
 			// l3na1
 			// 
 			this->l3na1->AutoSize = true;
-			this->l3na1->Location = System::Drawing::Point(204, 251);
+			this->l3na1->Location = System::Drawing::Point(202, 307);
 			this->l3na1->Name = L"l3na1";
 			this->l3na1->Size = System::Drawing::Size(43, 13);
 			this->l3na1->TabIndex = 38;
@@ -809,7 +1019,7 @@ namespace Project4 {
 			// l3na2
 			// 
 			this->l3na2->AutoSize = true;
-			this->l3na2->Location = System::Drawing::Point(204, 271);
+			this->l3na2->Location = System::Drawing::Point(202, 278);
 			this->l3na2->Name = L"l3na2";
 			this->l3na2->Size = System::Drawing::Size(43, 13);
 			this->l3na2->TabIndex = 39;
@@ -818,7 +1028,7 @@ namespace Project4 {
 			// l3na4
 			// 
 			this->l3na4->AutoSize = true;
-			this->l3na4->Location = System::Drawing::Point(204, 295);
+			this->l3na4->Location = System::Drawing::Point(202, 246);
 			this->l3na4->Name = L"l3na4";
 			this->l3na4->Size = System::Drawing::Size(43, 13);
 			this->l3na4->TabIndex = 40;
@@ -827,7 +1037,7 @@ namespace Project4 {
 			// l3na5
 			// 
 			this->l3na5->AutoSize = true;
-			this->l3na5->Location = System::Drawing::Point(204, 314);
+			this->l3na5->Location = System::Drawing::Point(202, 217);
 			this->l3na5->Name = L"l3na5";
 			this->l3na5->Size = System::Drawing::Size(43, 13);
 			this->l3na5->TabIndex = 41;
@@ -836,7 +1046,7 @@ namespace Project4 {
 			// l4na1
 			// 
 			this->l4na1->AutoSize = true;
-			this->l4na1->Location = System::Drawing::Point(563, 136);
+			this->l4na1->Location = System::Drawing::Point(569, 198);
 			this->l4na1->Name = L"l4na1";
 			this->l4na1->Size = System::Drawing::Size(43, 13);
 			this->l4na1->TabIndex = 42;
@@ -845,7 +1055,7 @@ namespace Project4 {
 			// l4na2
 			// 
 			this->l4na2->AutoSize = true;
-			this->l4na2->Location = System::Drawing::Point(563, 154);
+			this->l4na2->Location = System::Drawing::Point(569, 169);
 			this->l4na2->Name = L"l4na2";
 			this->l4na2->Size = System::Drawing::Size(43, 13);
 			this->l4na2->TabIndex = 43;
@@ -854,7 +1064,7 @@ namespace Project4 {
 			// l4na3
 			// 
 			this->l4na3->AutoSize = true;
-			this->l4na3->Location = System::Drawing::Point(563, 173);
+			this->l4na3->Location = System::Drawing::Point(569, 137);
 			this->l4na3->Name = L"l4na3";
 			this->l4na3->Size = System::Drawing::Size(43, 13);
 			this->l4na3->TabIndex = 44;
@@ -863,7 +1073,7 @@ namespace Project4 {
 			// l4na5
 			// 
 			this->l4na5->AutoSize = true;
-			this->l4na5->Location = System::Drawing::Point(563, 195);
+			this->l4na5->Location = System::Drawing::Point(569, 105);
 			this->l4na5->Name = L"l4na5";
 			this->l4na5->Size = System::Drawing::Size(43, 13);
 			this->l4na5->TabIndex = 45;
@@ -872,7 +1082,7 @@ namespace Project4 {
 			// l5na1
 			// 
 			this->l5na1->AutoSize = true;
-			this->l5na1->Location = System::Drawing::Point(202, 77);
+			this->l5na1->Location = System::Drawing::Point(202, 129);
 			this->l5na1->Name = L"l5na1";
 			this->l5na1->Size = System::Drawing::Size(43, 13);
 			this->l5na1->TabIndex = 46;
@@ -881,7 +1091,7 @@ namespace Project4 {
 			// l5na2
 			// 
 			this->l5na2->AutoSize = true;
-			this->l5na2->Location = System::Drawing::Point(202, 99);
+			this->l5na2->Location = System::Drawing::Point(202, 100);
 			this->l5na2->Name = L"l5na2";
 			this->l5na2->Size = System::Drawing::Size(43, 13);
 			this->l5na2->TabIndex = 47;
@@ -890,7 +1100,7 @@ namespace Project4 {
 			// l5na3
 			// 
 			this->l5na3->AutoSize = true;
-			this->l5na3->Location = System::Drawing::Point(202, 122);
+			this->l5na3->Location = System::Drawing::Point(202, 68);
 			this->l5na3->Name = L"l5na3";
 			this->l5na3->Size = System::Drawing::Size(43, 13);
 			this->l5na3->TabIndex = 48;
@@ -899,7 +1109,7 @@ namespace Project4 {
 			// l5na4
 			// 
 			this->l5na4->AutoSize = true;
-			this->l5na4->Location = System::Drawing::Point(202, 141);
+			this->l5na4->Location = System::Drawing::Point(202, 36);
 			this->l5na4->Name = L"l5na4";
 			this->l5na4->Size = System::Drawing::Size(43, 13);
 			this->l5na4->TabIndex = 49;
@@ -953,6 +1163,7 @@ namespace Project4 {
 			// timer2
 			// 
 			this->timer2->Enabled = true;
+			this->timer2->Interval = 200;
 			this->timer2->Tick += gcnew System::EventHandler(this, &MyForm::timer2_Tick);
 			// 
 			// timer3
@@ -1044,30 +1255,54 @@ namespace Project4 {
 
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e)		//zegar działa cały czas i na każdy tick aktualizuje wekor kolejnosci jazdy dla windy i cel jazdy windy, a także obsługuje same poruszeni się windy. Zatrzymuje się tylko na symboliczny czas kiedy ludzie "wsiadają" do windy, potem jest ponownie odpalany przez timer2
 	{
-
-		if (kolejnosc.size() != 0)		//wytyczenie celu windy na podstawie pierwszego elementu kolejnosci
+		timer2->Stop();
+		//czyszczenie niepotrzebnych pieter w kolejce 
+		if (kolejnosc.size() != 0 && kolejnosc[0] == 1 && P1.empty() == true && w_na1 == 0)
+			kolejnosc.erase(kolejnosc.begin());
+		else if (kolejnosc.size() != 0 && kolejnosc[0] == 2 && P2.empty() == true && w_na2 == 0)
+			kolejnosc.erase(kolejnosc.begin());
+		else if (kolejnosc.size() != 0 && kolejnosc[0] == 3 && P3.empty() == true && w_na3 == 0)
+			kolejnosc.erase(kolejnosc.begin());
+		else if (kolejnosc.size() != 0 && kolejnosc[0] == 4 && P4.empty() == true && w_na4 == 0)
+			kolejnosc.erase(kolejnosc.begin());
+		else if (kolejnosc.size() != 0 && kolejnosc[0] == 5 && P5.empty() == true && w_na5 == 0)
+			kolejnosc.erase(kolejnosc.begin());
+		else if (kolejnosc.size() != 0)		//wytyczenie celu windy na podstawie pierwszego elementu kolejnosci
 			cel_windy = 610 - 100 * kolejnosc[0];
 
-		if(pozycja_windy != cel_windy)	//wyznaczenie kierunku jazdy windy
-		{ 
-			if(pozycja_windy > cel_windy)
-					kierunek = 1;
+		if (pozycja_windy != cel_windy)	//wyznaczenie kierunku jazdy windy
+		{
+			timer3->Stop();
+			bezczynnosc = 0;
+
+			if (pozycja_windy > cel_windy)
+				kierunek = 1;
 			if (pozycja_windy < cel_windy)
 				kierunek = -1;
 
 			pozycja_windy -= 2 * kierunek;
 			this->pictureBox2->Location = System::Drawing::Point(288, pozycja_windy);
 		}
-		if (pozycja_windy == cel_windy && kolejnosc.size()!=0)		//kiedy winda dojeżdża i w wektorze dalej coś jest
+		if (pozycja_windy == cel_windy && kolejnosc.size() != 0)		//kiedy winda dojeżdża i w wektorze dalej coś jest
 		{
 			timer3->Stop();
 			bezczynnosc = 0;
-			//tutaj (dokladnie tutaj, przed wywołaniem funkcji Przesiadka) !!! wstawić usuwanie powtarzających się pięter w wektorze kolejności, w sensie że po dojechaniu na 4 pietro wszystkie 4 powinny zniknąć w tym miejscu z wektora
-			//kolejka tworzy sie tak że na wciśnięcie guzika dane piętro gdzie został wciśnięty guzik zostaje dodane do kolejki i potem jak winda dojeżdża na dane piętro to w funkcji Przesiadka wsiadajacy ludzie dodaja swoje pietra do kolejki
-			kolejnosc.erase(kolejnosc.begin());
+			//kolejka tworzy sie tak że na wciśnięcie guzika, dane piętro gdzie został wciśnięty guzik zostaje dodane do kolejki i potem jak winda dojeżdża na dane piętro to w funkcji Przesiadka wsiadajacy ludzie dodaja swoje pietra do kolejki
+			a = kolejnosc[0];
+			b = 1;
+			c = 0;
+			while (b <= licznik_osob && kolejnosc.size() != 0 && b <= kolejnosc.size()) //usuwanie powtórzeń tego samego piętra ludzi w windzie  
+			{
+				if (kolejnosc[c] == a)
+				{
+					kolejnosc.erase(kolejnosc.begin() + c);
+				}
+				else
+					c++;
+				b++;
+			}
 			timer1->Stop();
-			timer2->Start();		//timer2 który ponownie uruchamia windę po symbolicznym czasie na wsiadanie ludzi
-			Przesiadka(cel_windy);	//Wsiadanie ludzi: zmienianie danych na labelach i dodawanie wybranych przez ludzi pięter do wektora
+			timer2->Start();
 		}
 		//timer odmierzający 5 sec bezczynności po których winda ma zjechać na parter
 		if (pozycja_windy == cel_windy && kolejnosc.size() == 0)
@@ -1083,6 +1318,7 @@ namespace Project4 {
 		s1na2 = Convert::ToString(i1na2);
 		l1na2->Text = "1->2 : " + s1na2;
 		kolejnosc.push_back(1);
+		P1.push(2);
 	}
 
 	private: System::Void b2na3_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1091,6 +1327,7 @@ namespace Project4 {
 		s2na3 = Convert::ToString(i2na3);
 		l2na3->Text = "2->3 : " + s2na3;
 		kolejnosc.push_back(2);
+		P2.push(3);
 	}
 	private: System::Void b3na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1098,6 +1335,7 @@ namespace Project4 {
 		s3na2 = Convert::ToString(i3na2);
 		l3na2->Text = "3->2 : " + s3na2;
 		kolejnosc.push_back(3);
+		P3.push(2);
 	}
 	private: System::Void b4na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1105,6 +1343,7 @@ namespace Project4 {
 		s4na2 = Convert::ToString(i4na2);
 		l4na2->Text = "4->2 : " + s4na2;
 		kolejnosc.push_back(4);
+		P4.push(2);
 	}
 	private: System::Void b5na2_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1112,6 +1351,7 @@ namespace Project4 {
 		s5na2 = Convert::ToString(i5na2);
 		l5na2->Text = "5->2 : " + s5na2;
 		kolejnosc.push_back(5);
+		P5.push(2);
 	}
 
 	private: System::Void b1na3_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1120,6 +1360,7 @@ namespace Project4 {
 		s1na3 = Convert::ToString(i1na3);
 		l1na3->Text = "1->3 : " + s1na3;
 		kolejnosc.push_back(1);
+		P1.push(3);
 	}
 	private: System::Void b4na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1127,6 +1368,7 @@ namespace Project4 {
 		s4na3 = Convert::ToString(i4na3);
 		l4na3->Text = "4->3 : " + s4na3;
 		kolejnosc.push_back(4);
+		P4.push(3);
 	}
 	private: System::Void b5na3_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1134,6 +1376,7 @@ namespace Project4 {
 		s5na3 = Convert::ToString(i5na3);
 		l5na3->Text = "5->3 : " + s5na3;
 		kolejnosc.push_back(5);
+		P5.push(3);
 	}
 
 	private: System::Void b2na1_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1142,6 +1385,7 @@ namespace Project4 {
 		s2na1 = Convert::ToString(i2na1);
 		l2na1->Text = "2->1 : " + s2na1;
 		kolejnosc.push_back(2);
+		P2.push(1);
 	}
 	private: System::Void b3na1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1149,6 +1393,7 @@ namespace Project4 {
 		s3na1 = Convert::ToString(i3na1);
 		l3na1->Text = "3->1 : " + s3na1;
 		kolejnosc.push_back(3);
+		P3.push(1);
 	}
 	private: System::Void b4na1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1156,6 +1401,7 @@ namespace Project4 {
 		s4na1 = Convert::ToString(i4na1);
 		l4na1->Text = "4->1 : " + s4na1;
 		kolejnosc.push_back(4);
+		P4.push(1);
 	}
 	private: System::Void b5na1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1163,6 +1409,7 @@ namespace Project4 {
 		s5na1 = Convert::ToString(i5na1);
 		l5na1->Text = "5->1 : " + s5na1;
 		kolejnosc.push_back(5);
+		P5.push(1);
 	}
 
 	private: System::Void b5na4_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1171,6 +1418,7 @@ namespace Project4 {
 		s5na4 = Convert::ToString(i5na4);
 		l5na4->Text = "5->4 : " + s5na4;
 		kolejnosc.push_back(5);
+		P5.push(4);
 	}
 	private: System::Void b3na4_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1178,6 +1426,7 @@ namespace Project4 {
 		s3na4 = Convert::ToString(i3na4);
 		l3na4->Text = "3->4 : " + s3na4;
 		kolejnosc.push_back(3);
+		P3.push(4);
 	}
 	private: System::Void b2na4_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1185,6 +1434,7 @@ namespace Project4 {
 		s2na4 = Convert::ToString(i2na4);
 		l2na4->Text = "2->4 : " + s2na4;
 		kolejnosc.push_back(2);
+		P2.push(4);
 	}
 	private: System::Void b1na4_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1192,6 +1442,7 @@ namespace Project4 {
 		s1na4 = Convert::ToString(i1na4);
 		l1na4->Text = "1->4 : " + s1na4;
 		kolejnosc.push_back(1);
+		P1.push(4);
 	}
 
 	private: System::Void b4na5_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1200,6 +1451,7 @@ namespace Project4 {
 		s4na5 = Convert::ToString(i4na5);
 		l4na5->Text = "4->5 : " + s4na5;
 		kolejnosc.push_back(4);
+		P4.push(5);
 	}
 	private: System::Void b3na5_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1207,6 +1459,7 @@ namespace Project4 {
 		s3na5 = Convert::ToString(i3na5);
 		l3na5->Text = "3->5 : " + s3na5;
 		kolejnosc.push_back(3);
+		P3.push(5);
 	}
 	private: System::Void b2na5_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1214,6 +1467,7 @@ namespace Project4 {
 		s2na5 = Convert::ToString(i2na5);
 		l2na5->Text = "2->5 : " + s2na5;
 		kolejnosc.push_back(2);
+		P2.push(5);
 	}
 	private: System::Void b1na5_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1221,29 +1475,30 @@ namespace Project4 {
 		s1na5 = Convert::ToString(i1na5);
 		l1na5->Text = "1->5 : " + s1na5;
 		kolejnosc.push_back(1);
+		P1.push(5);
 	}
 
-	//ten timer zapewanie postój windy przez 2 sec na symboliczne wsiadanie ludzi, ma tyknięcia co 0.1 sec
-	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e)	
+			 //timer sprawiajacy ze pasazerowie wsiadaja pojedynczo i po kolei
+	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
-		postoj++;
-		if (postoj == 20)
+		if (zakonczony == true)
 		{
-			postoj = 0;
-			timer2->Stop();
+			zakonczony = false;
 			timer1->Start();
+			timer2->Stop();
+		}
+		else Przesiadka(cel_windy);	//Wsiadanie ludzi: zmienianie danych na labelach i dodawanie wybranych przez ludzi pięter do wektora
+	}
+	private: System::Void timer3_Tick(System::Object^  sender, System::EventArgs^  e)
+	{
+		bezczynnosc++;
+
+		if (bezczynnosc == 5)
+		{
+			cel_windy = 510;
+			timer3->Stop();
+			bezczynnosc == 0;
 		}
 	}
-private: System::Void timer3_Tick(System::Object^  sender, System::EventArgs^  e) 
-{
-	bezczynnosc++;
-
-	if (bezczynnosc == 5)
-	{
-		cel_windy = 510;
-		timer3->Stop();
-	}
-}
-
-};
+	};
 }
