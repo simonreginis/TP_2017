@@ -13,6 +13,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
+#define TMR_2 2
 #define MAX_FLOOR 3
 
 // Global Variables:
@@ -30,11 +31,11 @@ HWND hUpDown;
 HBITMAP bkground;
 HBITMAP men;
 
-
+CElevator elevator(MAX_FLOOR);
 enum TFloor elevatorFloor = second;
-enum TFloor newFloor = second;
+enum TFloor newFloor = ground;
 uint16_t elevatorY = elevatorFloor;
-
+bool onFloor = true;
 
 vector2D_t floorMatrix;
 
@@ -246,6 +247,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	}
 
 	SetTimer(hWnd, TMR_1, 1, NULL);
+	SetTimer(hWnd, TMR_2, 1, NULL);
 
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
@@ -497,7 +499,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case TMR_1:
-			if (AnimateElevator(newFloor)) repaintWindow(hWnd, hdc, ps, &drawArea);
+			if (AnimateElevator(newFloor))
+			{
+				repaintWindow(hWnd, hdc, ps, &drawArea);
+				onFloor = false;
+			}
+			else
+				onFloor = true;
+			break;
+		case TMR_2:
+			if (onFloor) elevator.make_turn(floorMatrix);
 			break;
 		}
 
