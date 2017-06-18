@@ -31,7 +31,7 @@ private:
 	int			elev_pos;
 	vector<int> elev_content;
 	vector2D_t  floor_array;
-	queue <int> floor_order;
+	deque <int> floor_order;
 
 public:
 

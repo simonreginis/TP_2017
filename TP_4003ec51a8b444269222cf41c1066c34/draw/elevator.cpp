@@ -34,7 +34,7 @@ void CElevator::load_array(vector2D_t ext_array)
 
 void CElevator::clear_order()
 {
-	while (!floor_order.empty())  floor_order.pop();
+	while (!floor_order.empty())  floor_order.pop_front();
 
 }
 
@@ -51,10 +51,10 @@ void CElevator::make_order()
 	*/
 
 	clear_order();
-
+	floor_order.push_back(0);
 	for (int i = 0; i < 10; i++)
 	{
-		floor_order.push(i % 3);
+		floor_order.push_back(i % 3);
 	}
 
 
@@ -99,13 +99,19 @@ int CElevator::sum_out_people()
 
 int CElevator::get_next_floor()
 {
+	/*int retVal = 0;
+	int backup = floor_order.front();
+	floor_order.pop_front();
+	retVal = floor_order.front();
+	floor_order.push_front(backup);
+	return retVal;*/
 	return floor_order.front();
 }
 
 
 
 void CElevator::load_people()
-{
+{//																	ACTUAL FLOOR
 	vector<vector<int>>::iterator line_it = floor_array.begin() + get_next_floor();
 	vector<int>::iterator col_it;
 	vector<int>::iterator elev_it = elev_content.begin();
@@ -119,6 +125,7 @@ void CElevator::load_people()
 			(*col_it)--;
 		}
 	}
+	
 }
 
 
@@ -157,7 +164,7 @@ elev_out_t CElevator::make_elev_out()
 	buffer.floor_array = floor_array;
 
 	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
-	if (floor_order.size() > 0) floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
+	if (floor_order.size() > 0) floor_order.pop_front();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
 }
