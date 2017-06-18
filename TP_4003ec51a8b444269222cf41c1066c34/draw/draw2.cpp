@@ -27,7 +27,7 @@ HWND hwndButton;
 HWND hText;
 HBITMAP bkground;
 HBITMAP men;
-enum TFloor {ground = 416, first = 216, second = 16};
+
 
 enum TFloor elevatorFloor = second;
 enum TFloor newFloor = second;

@@ -8,11 +8,13 @@ using namespace std;
 #define HUMAN_WEIGHT 70
 
 typedef vector<vector<int>> vector2D_t;
+enum TFloor { ground = 416, first = 216, second = 16 };
+
 struct elev_out_t
 {
 	vector <int> elev_content;
-	int			 prev_floor;
-	int			 next_floor;
+	enum TFloor	 prev_floor;
+	enum TFloor	 next_floor;
 	int			 people_in;
 	int			 people_out;
 	int			 load;
