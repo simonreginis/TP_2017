@@ -1,20 +1,14 @@
 # TP_2017
 
-## Tworzymy własny projekt
+## Autorzy
 
-* Zaczynamy od zrobienia forka głównego projektu
-* Każdy projekt powinien zostać umieszczony w osobnym folderze nazwaFolderu_ID (ID zostanie przydzielone do kazdej grupy projektowej)
-* Po zakończeniu projektu robimy Pull Request do brancha develop
+* Krzysztof Włódarczak 165173
+* Robert Wojtaś 165607
 
-## Co folder projektowy musi posiadać
+## Uruchomienie projektu 
 
-* Źródła programu (C, C++)
-* Dokumentację (README.md) - kilka zdań na temat samego projektu + opis jak zbudować kod
+* Pobierz folder TP_PROJECT4 i uruchom plik .sln w programie VisualStudio 2017
 
-## Uwaga 
-* Nie umieszczamy w repozyterium plikow binarnych! 
+## Kilka słów o projekcie
 
-## Linki
-
-* Kurs dotyczący GIT - https://www.atlassian.com/git/tutorials 
-
+* Program ilustruje działanie windy, rozwozi ludzi na poszczególne piętra. W sytuacji bezczynnego stania na którymś piętrze winda zjeżdża na parter. 
