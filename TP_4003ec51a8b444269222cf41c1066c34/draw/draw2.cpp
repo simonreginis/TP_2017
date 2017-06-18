@@ -513,6 +513,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (onFloor && once)
 			{
 				newFloor = elevator.make_turn(floorMatrix).next_floor;
+				Sleep(2000);
 				once = false;
 			}
 			
