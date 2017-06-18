@@ -266,13 +266,15 @@ void timer(HWND hWnd, PAINTSTRUCT &ps)
 		if ((peopleC.empty()) && (peopleF1.empty()) && (peopleF2.empty()) && (peopleF3.empty()) && (peopleF4.empty()) && (peopleF5.empty())) //pusta mapa
 		{
 			floors.clear();
+			controllerBlock = TRUE;
+			KillTimer(hWnd, TMR_1);
 			SetTimer(hWnd, TMR_4, 5000, 0);
 		}
-		if (floors.empty())
+		/*if (floors.empty())
 		{
 			controllerBlock = TRUE;
 			KillTimer(hWnd, TMR_1);
-		}
+		}*/
 		else if (P_G_O())
 		{
 			TIMER1 = FALSE;
