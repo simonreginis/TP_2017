@@ -10,5 +10,10 @@
 ## Uwaga 
 * Nie umieszczamy w repozyterium plikow binarnych! 
 
+
+Symulator windy
+
 Potrzebne do poprawnego otworzenia pliku :
 -VS 2015
+
+Kliknąć TonyStark.sln
