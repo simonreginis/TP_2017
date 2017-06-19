@@ -29,6 +29,8 @@ namespace Hellevator {
 
 	public: event EventHandler^ FloorReached;
 
+	public: TextBox^ tb = gcnew TextBox();
+
 	public:
 		Elevator(void)
 		{
@@ -89,6 +91,10 @@ namespace Hellevator {
 			p->Top = cabinPosition + cabinHeight - p->Height;
 			this->Controls->Add(p);
 		}
+
+		// passengers weight
+		int weight = passengers->Count * 70;
+		this->tb->Text = weight.ToString() + " kg";
 	}
 
 	private:
@@ -106,6 +112,11 @@ namespace Hellevator {
 		{
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			DoubleBuffered = true;
+
+			this->tb->Location = Point(this->Location.X + 10, this->Location.Y);
+			this->tb->Size = Drawing::Size(40, 25);
+			this->tb->BringToFront();
+			this->Controls->Add(tb);
 		}
 #pragma endregion
 
