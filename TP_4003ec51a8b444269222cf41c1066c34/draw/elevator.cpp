@@ -71,7 +71,7 @@ void CElevator::make_order()
 	vector<vector<int>>::iterator line_it = floor_array_next.begin();
 	vector<int>::iterator col_it;
 
-	vector<int> buffer;
+	//vector<int> buffer;
 
 	int i = 0;
 	int j = 0;
@@ -82,11 +82,11 @@ void CElevator::make_order()
 	{
 		if (sum_in_people(i))
 		{
-			buffer.push_back(i);
+			floor_order.push(i);
 
 			for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
 			{
-				if((*col_it)) buffer.push_back(j);
+				if((*col_it)) floor_order.push(j);
 				j++;
 			}
 		}
@@ -94,8 +94,9 @@ void CElevator::make_order()
 		i++;
 	}
 
-	if (!buffer.empty()) make_queue(buffer);
+	/*if (!buffer.empty()) make_queue(buffer);
 		else    floor_order.push(0);
+		*/
 }
 
 
