@@ -30,6 +30,7 @@ HWND hText;
 HWND hUpDown;
 HBITMAP bkground;
 HBITMAP men;
+HDC memHdc;
 
 CElevator elevator(MAX_FLOOR);
 enum TFloor elevatorFloor = first;
@@ -38,7 +39,7 @@ uint16_t elevatorY = elevatorFloor;
 bool onFloor = true;
 elev_out_t elevatorStatus;
 vector2D_t floorMatrix, floorMatrix2;
-static bool once = false;
+static bool once = true;
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -252,7 +253,7 @@ elevatorStatus=	elevator.make_turn();
 	floorMatrix = elevatorStatus.floor_array_next;
 	floorMatrix2 = elevatorStatus.floor_array_prev;
 	SetTimer(hWnd, TMR_1, 1, NULL);
-	SetTimer(hWnd, TMR_2, 1000, NULL);
+	SetTimer(hWnd, TMR_2, 1, NULL);
 
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
@@ -358,7 +359,7 @@ void DrawDoubleBuffer(HWND hWnd)
 {
 	RECT Client_Rect;
 	PAINTSTRUCT ps;
-	HDC memHdc, bkgHdc;
+	HDC  bkgHdc;
 	HDC hdc;
 	HBITMAP memBitmap;
 	GetClientRect(hWnd, &Client_Rect);
@@ -429,6 +430,7 @@ void InsertNewMan(unsigned int startFloor, unsigned int endFloor)
 }
 void DebugMatrix()
 {
+	DrawMen(memHdc);
 	system("cls");
 	cout << "Macierz do Ciebie:" << endl;
 	for (auto line : floorMatrix)
@@ -486,6 +488,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(0, 2);
 			elevator.load_array(floorMatrix);
 			once = true;
+			floorMatrix2 = floorMatrix;
 			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
@@ -494,6 +497,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(1, 2);
 			elevator.load_array(floorMatrix);
 			once = true;
+			floorMatrix2 = floorMatrix;
 			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
@@ -502,6 +506,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(1, 0);
 			elevator.load_array(floorMatrix);
 			once = true;
+			floorMatrix2 = floorMatrix;
 			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
@@ -510,6 +515,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(2, 1);
 			elevator.load_array(floorMatrix);
 			once = true;
+			floorMatrix2 = floorMatrix;
 			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
@@ -518,6 +524,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(2, 0);
 			elevator.load_array(floorMatrix);
 			once = true;
+			floorMatrix2 = floorMatrix;
 			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
@@ -558,6 +565,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case TMR_1:
 			if (AnimateElevator(newFloor))
 			{
+				
 				repaintWindow(hWnd, hdc, ps, &drawArea);
 				onFloor = false;
 				
@@ -570,9 +578,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 
 					DebugMatrix();
+					
 					Sleep(1000);
+					floorMatrix2 = floorMatrix;
 					floorMatrix = elevatorStatus.floor_array_next;
-					floorMatrix2 = elevatorStatus.floor_array_prev;
+					//floorMatrix2 = elevatorStatus.floor_array_prev;
 					elevatorStatus = elevator.make_turn();
 
 					newFloor = elevatorStatus.next_floor;
@@ -584,7 +594,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				
 			break;
 		case TMR_2:
-			if (!once) once = true;
+			if (!once && !onFloor) once = true;
 			
 			break;
 		}
