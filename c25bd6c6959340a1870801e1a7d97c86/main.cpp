@@ -27,6 +27,8 @@ elevator lift;
 
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 
+std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
+
 class human
 {
 public:
@@ -48,7 +50,6 @@ public:
 private:
     USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70, id=0; // SIDE=1 - Lewa
 };
-
 void set_max_or_min(USI lvl)
 {
     if(lvl<lift.current_level)
@@ -457,8 +458,15 @@ BOOL Init(HINSTANCE hInstance, int nCmdShow)
     radio_2 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 2", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 70, 160, 20, hwnd,(HMENU) ID_RADIO_3, hInstance, NULL );
     radio_3 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 3", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 100, 160, 20, hwnd,(HMENU) ID_RADIO_4, hInstance, NULL );
     radio_4 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 4", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 130, 160, 20, hwnd,(HMENU) ID_RADIO_5, hInstance, NULL );
+    hbmHuman[0] =( HBITMAP ) LoadImage( NULL, "0.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[1] =( HBITMAP ) LoadImage( NULL, "1.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[2] =( HBITMAP ) LoadImage( NULL, "2.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[3] =( HBITMAP ) LoadImage( NULL, "3.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[4] =( HBITMAP ) LoadImage( NULL, "4.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
     ShowWindow (hwnd, nCmdShow);
-    draw_main(1);
+    buttons_on_level.reserve(5);
+    buttons_on_level.resize(5,0);
+    main_loop(1);
 }
 
 ATOM RegisterClass(HINSTANCE hInstance)
@@ -509,15 +517,6 @@ int WINAPI WinMain (HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgume
     return messages.wParam;
 }
 
-void turn_on_timer()
-{
-    if(!timer_on)
-        {
-            SetTimer( hwnd, ID_TIMER, 5, NULL );
-            timer_on=true;
-        }
-}
-
 void spawn_human(USI level)
 {
     if(level!=human_destination)
@@ -533,13 +532,28 @@ void spawn_human(USI level)
         }
 }
 
-}
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+        case WM_PAINT:
+        {
+            PAINTSTRUCT ps; // deklaracja struktury
+            HDC hdc = BeginPaint( hwnd, & ps );
+            main_loop();
+            EndPaint( hwnd, & ps ); // zwalniamy hdc
+        }
+        break;
         case WM_DESTROY:
+            KillTimer( hwnd, ID_TIMER );
+            for(int i=0;i<5;i++)
+            DeleteObject( hbmHuman[i]);
             PostQuitMessage (0);
+            break;
+        case WM_TIMER:
+            main_loop();
+            if(g_time_value!=51)
+                g_time_value++;
             break;
         case WM_COMMAND:
             switch( wParam )
@@ -564,11 +578,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 human_destination=0;
                 break;
             case ID_RADIO_2:
-                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_2 );
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_2 );
                 human_destination=1;
                 break;
             case ID_RADIO_3:
-                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_3 );
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_3 );
                 human_destination=2;
                 break;
             case ID_RADIO_4:
@@ -576,7 +590,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 human_destination=3;
                 break;
             case ID_RADIO_5:
-                 CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_5 );
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_5 );
                 human_destination=4;
                 break;
             default:
