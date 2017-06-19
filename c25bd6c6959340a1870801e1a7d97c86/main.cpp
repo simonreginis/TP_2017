@@ -13,7 +13,7 @@ HBITMAP hbmHuman[5];
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-USI human_destination=0, number_people_under_lim=0, number_of_people=0, g_time_value=50; //spawn block do tego zeby co okreslony czas pojawialy sie ludki gdy ciagle kliamy. Pomaga tez przy zachowaniu odleglosci miedzy ludkami
+USI human_destination=0, number_people_under_lim=0, number_of_people=0, g_time_value=50;
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
 
 struct elevator
@@ -25,7 +25,6 @@ struct elevator
 elevator lift;
 
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
-
 
 class human
 {
