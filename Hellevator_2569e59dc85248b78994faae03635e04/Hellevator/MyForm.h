@@ -416,7 +416,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(30, 450);
+			this->pictureBox1->Location = System::Drawing::Point(120, 450);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(100, 100);
 			this->pictureBox1->TabIndex = 4;
@@ -426,7 +426,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox2->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(900, 350);
+			this->pictureBox2->Location = System::Drawing::Point(860, 350);
 			this->pictureBox2->Name = L"pictureBox2";
 			this->pictureBox2->Size = System::Drawing::Size(100, 100);
 			this->pictureBox2->TabIndex = 5;
@@ -436,7 +436,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox4->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox4.Image")));
-			this->pictureBox4->Location = System::Drawing::Point(30, 250);
+			this->pictureBox4->Location = System::Drawing::Point(120, 250);
 			this->pictureBox4->Name = L"pictureBox4";
 			this->pictureBox4->Size = System::Drawing::Size(100, 100);
 			this->pictureBox4->TabIndex = 6;
@@ -446,7 +446,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox5->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox5.Image")));
-			this->pictureBox5->Location = System::Drawing::Point(900, 150);
+			this->pictureBox5->Location = System::Drawing::Point(860, 150);
 			this->pictureBox5->Name = L"pictureBox5";
 			this->pictureBox5->Size = System::Drawing::Size(100, 100);
 			this->pictureBox5->TabIndex = 7;
@@ -456,7 +456,7 @@ namespace Hellevator {
 			// 
 			this->pictureBox6->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox6.Image")));
-			this->pictureBox6->Location = System::Drawing::Point(30, 50);
+			this->pictureBox6->Location = System::Drawing::Point(120, 50);
 			this->pictureBox6->Name = L"pictureBox6";
 			this->pictureBox6->Size = System::Drawing::Size(100, 100);
 			this->pictureBox6->TabIndex = 8;
