@@ -370,3 +370,24 @@ void draw_level(HDC hdcBufor, USI level)
         LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
     }
 }
+
+void move_humans(HDC hdcBufor)
+{
+    BITMAP bmInfo;
+    HDC hdcOkno = GetDC( hwnd );
+    HDC hdcBitmap = CreateCompatibleDC( hdcOkno );
+    for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
+        {
+            if(it->get_side()!=0)   //! spr czy nie zmieniaja min max
+                it->wait_for_lift(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if(it->get_side()==0)
+                it->set_pos_y(lift.pos_y+lift.height-10);
+            if(it->get_side()!=5)
+            {
+                GetObject( hbmHuman[it->get_dest()], sizeof( bmInfo ), & bmInfo );
+                SelectObject( hdcBitmap, hbmHuman[it->get_dest()]);
+                BitBlt( hdcBufor, it->get_pos_x(), it->get_pos_y()-60, bmInfo.bmWidth, bmInfo.bmHeight, hdcBitmap, 0, 0, SRCCOPY );
+            }
+        }
+    DeleteDC( hdcBitmap );
+}
