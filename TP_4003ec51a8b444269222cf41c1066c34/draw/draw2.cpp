@@ -241,14 +241,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		NULL);
 
 
-	
+
 	if (!hWnd)
 	{
 		return FALSE;
 	}
 	InsertNewMan(0, 1);
 	//elevator.load_array(floorMatrix);
-elevatorStatus=	elevator.make_turn();
+	elevatorStatus = elevator.make_turn();
 	//elevator.make_order();
 	floorMatrix = elevatorStatus.floor_array_next;
 	floorMatrix2 = elevatorStatus.floor_array_prev;
@@ -279,6 +279,18 @@ elevatorStatus=	elevator.make_turn();
 // 175 h
 // 209 w
 
+
+void DrawMenInElevator(HDC hdc, int xOffset)
+{
+	HDC menHdc;
+	menHdc = CreateCompatibleDC(hdc);
+	SelectObject(menHdc, men);
+
+	BitBlt(hdc, 600+ xOffset, elevatorY+60, 820, 800, menHdc, 0, 0, SRCCOPY);
+
+	DeleteDC(menHdc);
+}
+
 // 3 pietro: 587,16
 // 2 pietro: 587,216
 // 1 pietro: 587,416
@@ -287,6 +299,26 @@ void DrawElevator(HDC hdc)
 	Graphics graphics(hdc);
 	Pen pen2(Color(255, 0, 255, 0), 4.5f);
 	graphics.DrawRectangle(&pen2, 587, elevatorY, 198, 169);
+	int people = elevatorStatus.elev_content[0] + elevatorStatus.elev_content[1] + elevatorStatus.elev_content[2];
+	switch (elevatorStatus.people_elev)
+	{
+	case 0:
+
+		break;
+	case 1:
+		DrawMenInElevator(hdc,0);
+		break;
+	case 2:
+		DrawMenInElevator(hdc, 0);
+		DrawMenInElevator(hdc, 60);
+		break;
+	case 3:
+	default:
+		DrawMenInElevator(hdc, 0);
+		DrawMenInElevator(hdc, 60);
+		DrawMenInElevator(hdc, 120);
+		break;
+	}
 }
 
 Point GetPosForMen(TFloor elevatorFloor)
@@ -399,19 +431,19 @@ bool AnimateElevator(TFloor &desiredFloor)
 {
 
 
-	if (elevatorFloor > elevatorY) 
+	if (elevatorFloor > elevatorY)
 	{
 		elevatorY++;
 		return true;
 	}
-	else if (elevatorFloor < elevatorY) 
+	else if (elevatorFloor < elevatorY)
 	{
 		elevatorY--;
 		return true;
 	}
 	else
 	{
-		
+
 		elevatorFloor = desiredFloor;
 		return false;
 	}
@@ -453,7 +485,7 @@ void DebugMatrix()
 	cout << "Zawartosc windy:" << endl;
 	for (auto line : elevatorStatus.elev_content)
 	{
-			cout << " " << line;
+		cout << " " << line;
 	}
 }
 
@@ -462,7 +494,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	
+
 	switch (message)
 	{
 	case WM_COMMAND:
@@ -565,10 +597,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case TMR_1:
 			if (AnimateElevator(newFloor))
 			{
-				
+
 				repaintWindow(hWnd, hdc, ps, &drawArea);
 				onFloor = false;
-				
+
 			}
 			else
 			{
@@ -578,24 +610,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 
 					DebugMatrix();
-					
+
 					Sleep(1000);
+					
 					floorMatrix2 = floorMatrix;
 					floorMatrix = elevatorStatus.floor_array_next;
 					//floorMatrix2 = elevatorStatus.floor_array_prev;
+					
 					elevatorStatus = elevator.make_turn();
-
 					newFloor = elevatorStatus.next_floor;
 					once = false;
 
 
 				}
 			}
-				
+
 			break;
 		case TMR_2:
 			if (!once && !onFloor) once = true;
-			
+
 			break;
 		}
 
