@@ -40,6 +40,7 @@ bool onFloor = true;
 elev_out_t elevatorStatus;
 vector2D_t floorMatrix, floorMatrix2;
 static bool once = true;
+int elevatorPeople = 0;
 RECT drawArea = { 280, 0, 1100, 800 };
 
 
@@ -300,7 +301,7 @@ void DrawElevator(HDC hdc)
 	Pen pen2(Color(255, 0, 255, 0), 4.5f);
 	graphics.DrawRectangle(&pen2, 587, elevatorY, 198, 169);
 	int people = elevatorStatus.elev_content[0] + elevatorStatus.elev_content[1] + elevatorStatus.elev_content[2];
-	switch (elevatorStatus.people_elev)
+	switch (elevatorPeople)
 	{
 	case 0:
 
@@ -616,7 +617,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					floorMatrix2 = floorMatrix;
 					floorMatrix = elevatorStatus.floor_array_next;
 					//floorMatrix2 = elevatorStatus.floor_array_prev;
-					
+					elevatorPeople = elevatorStatus.people_elev;
 					elevatorStatus = elevator.make_turn();
 					newFloor = elevatorStatus.next_floor;
 					once = false;
