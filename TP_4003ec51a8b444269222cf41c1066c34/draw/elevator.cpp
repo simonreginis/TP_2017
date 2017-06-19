@@ -47,20 +47,26 @@ void CElevator::make_order()
 {
 	vector<vector<int>>::iterator line_it = floor_array_next.begin();
 	vector<int>::iterator col_it;
-	/*
-	for (line_it = floor_array_next.begin() + elev_pos; line_it != floor_array_next.end(); line_it++)   // sumowanie pieter powyzej
-	{
-		sum_in_people();
-	}
-	*/
+	int i = 0;
+	int j = 0;
 
 	clear_order();
-	floor_order.push(0);
-	for (int i = 0; i < 10; i++)
-	{
-		floor_order.push(i % 3);
-	}
 
+	for (line_it = floor_array_next.begin(); line_it != floor_array_next.end(); line_it++)   // sumowanie pieter powyzej
+	{
+		if (sum_in_people(i))
+		{
+			floor_order.push(i);
+
+			for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
+			{
+				if ((*col_it)) floor_order.push(j);
+				j++;
+			}
+		}
+
+		i++;
+	}
 
 }
 
@@ -145,9 +151,11 @@ elev_out_t CElevator::make_turn()
 		make_order();
 		new_array = false;
 	}
+	else  floor_order.push(0);
 
-	load_people();																//wsiadaj¹cy ludzie
-	unload_people();												              // wysiadajacy ludzie
+
+	load_people();                                                              //wsiadaj¹cy ludzie
+	unload_people();                                                              // wysiadajacy ludzie
 
 	return make_elev_out();
 }

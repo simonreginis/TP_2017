@@ -248,7 +248,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	InsertNewMan(0, 1);
 	//elevator.load_array(floorMatrix);
 //	elevator.make_turn();
-	elevator.make_order();
+	//elevator.make_order();
 	SetTimer(hWnd, TMR_1, 1, NULL);
 	SetTimer(hWnd, TMR_2, 1, NULL);
 
@@ -446,6 +446,11 @@ void DebugMatrix()
 		}
 		cout << endl;
 	}
+	cout << "Zawartosc windy:" << endl;
+	for (auto line : elevatorStatus.elev_content)
+	{
+			cout << " " << line;
+	}
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -484,7 +489,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case ID_FIRST_SECOND:
 			newFloor = first;
-			InsertNewMan(1, 1);
+			InsertNewMan(1, 2);
 			elevator.load_array(floorMatrix);
 			once = true;
 			DebugMatrix();
@@ -559,23 +564,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				onFloor = true;
 				once = true;
+			
 			}
 				
 			break;
 		case TMR_2:
 			if (onFloor && once)
 			{
-				
+
 				DebugMatrix();
 				Sleep(1000);
 				floorMatrix = elevatorStatus.floor_array_next;
 				floorMatrix2 = elevatorStatus.floor_array_prev;
 				elevatorStatus = elevator.make_turn();
-				
+
 				newFloor = elevatorStatus.next_floor;
 				once = false;
-				
-				
+
+
 			}
 			
 			break;
