@@ -1,4 +1,4 @@
 ﻿  draw2.cpp
-c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(558): warning C4101: "buffer": lokalna zmienna, do której nie istnieje odwołanie
+c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(561): warning C4101: "buffer": lokalna zmienna, do której nie istnieje odwołanie
   draw.vcxproj -> C:\Users\Bartek\TP_2017\TP_4003ec51a8b444269222cf41c1066c34\Debug\draw2.exe
   draw.vcxproj -> C:\Users\Bartek\TP_2017\TP_4003ec51a8b444269222cf41c1066c34\Debug\draw2.pdb (Partial PDB)

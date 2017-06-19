@@ -37,7 +37,7 @@ enum TFloor newFloor = first;
 uint16_t elevatorY = elevatorFloor;
 bool onFloor = true;
 elev_out_t elevatorStatus;
-vector2D_t floorMatrix;
+vector2D_t floorMatrix, floorMatrix2;
 static bool once = false;
 RECT drawArea = { 280, 0, 1100, 800 };
 
@@ -246,9 +246,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 	InsertNewMan(0, 1);
-	elevator.load_array(floorMatrix);
-	elevatorStatus = elevator.make_turn();
-//	elevator.make_order();
+	//elevator.load_array(floorMatrix);
+//	elevator.make_turn();
+	elevator.make_order();
 	SetTimer(hWnd, TMR_1, 1, NULL);
 	SetTimer(hWnd, TMR_2, 1, NULL);
 
@@ -334,7 +334,7 @@ void DrawMen(HDC hdc)
 	SelectObject(menHdc, men);
 	for (int floor = 0; floor < MAX_FLOOR; floor++)
 	{
-		int amount = floorMatrix[floor][0] + floorMatrix[floor][1] + floorMatrix[floor][2];
+		int amount = floorMatrix2[floor][0] + floorMatrix2[floor][1] + floorMatrix2[floor][2];
 		for (; amount > 0; amount--)
 		{
 			if (floor == 1)
@@ -413,11 +413,13 @@ bool AnimateElevator(TFloor &desiredFloor)
 void InitFloorMatrix(unsigned int floorAmount)
 {
 	floorMatrix.resize(floorAmount, vector<int>(floorAmount));
+	floorMatrix2.resize(floorAmount, vector<int>(floorAmount));
 }
 
 void InsertNewMan(unsigned int startFloor, unsigned int endFloor)
 {
 	floorMatrix[startFloor][endFloor]++;
+	floorMatrix2[startFloor][endFloor]++;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -524,7 +526,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			else
 			{
 				onFloor = true;
-				//once = true;
+				once = true;
 			}
 				
 			break;
@@ -532,10 +534,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (onFloor && once)
 			{
 				Sleep(1000);
-				floorMatrix = elevatorStatus.floor_array_next;
+				floorMatrix = elevatorStatus.floor_array_prev;
+				floorMatrix2 = elevatorStatus.floor_array_next;
 				elevatorStatus = elevator.make_turn();
 				
-				newFloor = elevatorStatus.prev_floor;
+				newFloor = elevatorStatus.next_floor;
 				once = false;
 				
 				
