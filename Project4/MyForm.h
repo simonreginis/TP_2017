@@ -1,6 +1,23 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+
+///using namespace std;
+
+
 
 namespace Project4 {
+
+	std::vector < int > kolejnosc;
+	int parter = 323;
+	int pierwsze_pietro = 283;
+	int drugie_pietro = 209;
+	int trzecie_pietro = 159;
+	int czwarte_piêtro = 81;
+	int masa = 70;
+
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -8,17 +25,27 @@ namespace Project4 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	///using namespace std;
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 
+		String^ wartosc;
 		static int timer = 0;
-		int pozycja=330;
+		int pozycja = 330;
+		int cel = 330; ///Pietro na ktorym chce wysiasc pasarzer
 		int roznica;
 		int czas = 0;
+
+
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
+			 int wysiadanie = 130;
+
+			 //int t = parter;
+
 	public:
 		MyForm(void)
 		{
@@ -41,7 +68,7 @@ namespace Project4 {
 		}
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
-	private: System::Windows::Forms::PictureBox^  pictureBox3;
+
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Button^  button2;
@@ -54,7 +81,7 @@ namespace Project4 {
 	private: System::Windows::Forms::Button^  button7;
 	private: System::Windows::Forms::Button^  button6;
 	private: System::Windows::Forms::Button^  button5;
-	private: System::Windows::Forms::Button^  button10;
+
 	private: System::ComponentModel::IContainer^  components;
 	protected:
 
@@ -75,7 +102,6 @@ namespace Project4 {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
@@ -88,10 +114,10 @@ namespace Project4 {
 			this->button7 = (gcnew System::Windows::Forms::Button());
 			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button5 = (gcnew System::Windows::Forms::Button());
-			this->button10 = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -103,6 +129,7 @@ namespace Project4 {
 			this->pictureBox1->Size = System::Drawing::Size(715, 519);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
+			
 			// 
 			// pictureBox2
 			// 
@@ -112,15 +139,6 @@ namespace Project4 {
 			this->pictureBox2->Size = System::Drawing::Size(125, 129);
 			this->pictureBox2->TabIndex = 1;
 			this->pictureBox2->TabStop = false;
-			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(289, 350);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(68, 94);
-			this->pictureBox3->TabIndex = 2;
-			this->pictureBox3->TabStop = false;
 			// 
 			// timer1
 			// 
@@ -185,7 +203,7 @@ namespace Project4 {
 			this->groupBox1->Controls->Add(this->button7);
 			this->groupBox1->Controls->Add(this->button6);
 			this->groupBox1->Controls->Add(this->button5);
-			this->groupBox1->Location = System::Drawing::Point(27, 51);
+			this->groupBox1->Location = System::Drawing::Point(27, 27);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(174, 204);
 			this->groupBox1->TabIndex = 8;
@@ -194,16 +212,17 @@ namespace Project4 {
 			// 
 			// button9
 			// 
-			this->button9->Location = System::Drawing::Point(21, 153);
+			this->button9->Location = System::Drawing::Point(21, 37);
 			this->button9->Name = L"button9";
 			this->button9->Size = System::Drawing::Size(50, 23);
 			this->button9->TabIndex = 4;
 			this->button9->Text = L"4";
 			this->button9->UseVisualStyleBackColor = true;
+			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
 			// 
 			// button8
 			// 
-			this->button8->Location = System::Drawing::Point(21, 124);
+			this->button8->Location = System::Drawing::Point(21, 66);
 			this->button8->Name = L"button8";
 			this->button8->Size = System::Drawing::Size(50, 23);
 			this->button8->TabIndex = 3;
@@ -219,48 +238,59 @@ namespace Project4 {
 			this->button7->TabIndex = 2;
 			this->button7->Text = L"2";
 			this->button7->UseVisualStyleBackColor = true;
+			this->button7->Click += gcnew System::EventHandler(this, &MyForm::button7_Click);
 			// 
 			// button6
 			// 
-			this->button6->Location = System::Drawing::Point(21, 66);
+			this->button6->Location = System::Drawing::Point(21, 124);
 			this->button6->Name = L"button6";
 			this->button6->Size = System::Drawing::Size(50, 23);
 			this->button6->TabIndex = 1;
 			this->button6->Text = L"1";
 			this->button6->UseVisualStyleBackColor = true;
+			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
 			// 
 			// button5
 			// 
-			this->button5->Location = System::Drawing::Point(21, 37);
+			this->button5->Location = System::Drawing::Point(21, 153);
 			this->button5->Name = L"button5";
 			this->button5->Size = System::Drawing::Size(50, 23);
 			this->button5->TabIndex = 0;
 			this->button5->Text = L"0";
 			this->button5->UseVisualStyleBackColor = true;
+			this->button5->Click += gcnew System::EventHandler(this, &MyForm::button5_Click);
 			// 
-			// button10
+			// label1
 			// 
-			this->button10->Location = System::Drawing::Point(72, 12);
-			this->button10->Name = L"button10";
-			this->button10->Size = System::Drawing::Size(87, 23);
-			this->button10->TabIndex = 9;
-			this->button10->Text = L"Zaczynamy!!!";
-			this->button10->UseVisualStyleBackColor = true;
-			this->button10->Click += gcnew System::EventHandler(this, &MyForm::button10_Click);
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(24, 282);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(87, 13);
+			this->label1->TabIndex = 11;
+			this->label1->Text = L"Masa pasazerow";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(24, 307);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(13, 13);
+			this->label2->TabIndex = 12;
+			this->label2->Text = L"0";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(967, 526);
-			this->Controls->Add(this->button10);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->Pietro4);
 			this->Controls->Add(this->button4);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
-			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Name = L"MyForm";
@@ -268,95 +298,109 @@ namespace Project4 {
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 	}
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		if (czas < 130)
-			this->pictureBox3->Left += 2;
+		wartosc = Convert::ToString(masa);
+		label2->Text = wartosc;
 
-		else {
-		if (pictureBox2->Top > pozycja)
+
+		if (!kolejnosc.empty()) 
 		{
-			this->pictureBox2->Top -= 1;
-			this->pictureBox3->Top -= 1;
-			//roznica = pictureBox2->Top - pozycja;
-			//this->pictureBox2->Top -= roznica;
+			if (pictureBox2->Top > *(kolejnosc.begin()))
+			{
+				this->pictureBox2->Top -= 1;
+				if (pictureBox2->Top == *(kolejnosc.begin()))
+				{
+					kolejnosc.erase(kolejnosc.begin());
+
+				}
+			}
+			else if (pictureBox2->Top < *(kolejnosc.begin()))
+			{
+				this->pictureBox2->Top += 1;
+				if (pictureBox2->Top == *(kolejnosc.begin()))
+					kolejnosc.erase(kolejnosc.begin());
+			}
 		}
-		else if(pictureBox2->Top < pozycja)
-		{
-			//this->timer1->Stop();
-			this->pictureBox2->Top += 1;
-			this->pictureBox3->Top += 1;
-			//roznica = pictureBox2->Top - pozycja;
-			//this->pictureBox2->Top -= roznica;
-		}
-		}
-			
-		czas++;
+
+
 	}
-private: System::Void button8_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void Pietro4_Click(System::Object^  sender, System::EventArgs^  e) {
-	pozycja = 81;
-	
-	
-	//this->pictureBox2->Top -= 250;
-	//this->pictureBox3->Top -= 250;
 
-	//int r;
+	private: System::Void Pietro4_Click(System::Object^  sender, System::EventArgs^  e) {
+		kolejnosc.push_back(czwarte_piêtro);
+		masa += 70;
 
-	
-		//r = pictureBox2->Top - 88;
-		//this->pictureBox2->Top -= r;
-	
-}
-private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
-	pozycja = 159;
-	
-	//int r;
+	}
+	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
+		kolejnosc.push_back(trzecie_pietro);
+		masa += 70;
 
-	
-		//r = (pictureBox2->Top) - 166;
-		//this->pictureBox2->Top -= r;
-	
 
-}
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	pozycja = 209;
-	
-	//int r;
 
-	
-		//r = pictureBox2->Top - 216;
-		//this->pictureBox2->Top -= r;
-	
-}
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	pozycja = 283;
-	
+	}
+	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+		kolejnosc.push_back(drugie_pietro);
+		masa += 70;
 
-	//int r;
 
-	
-		//r = pictureBox2->Top - 290;
-		//this->pictureBox2->Top -= r;
-	
-}
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	pozycja = 323;
-	
-	
-		//this->pictureBox2->Top= 330;
-	
-}
-private: System::Void button10_Click(System::Object^  sender, System::EventArgs^  e) {
-	//this->timer1->Start();
-}
-};
+	}
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+		kolejnosc.push_back(pierwsze_pietro);
+		masa += 70;
+
+
+	}
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		kolejnosc.push_back(parter);
+		masa += 70;
+
+	}
+
+
+	private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (masa > 0)
+		{
+			kolejnosc.push_back(parter);
+			masa -= 70;
+		}
+	}
+	private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (masa > 0)
+		{
+			kolejnosc.push_back(pierwsze_pietro);
+			masa -= 70;
+		}
+
+	}
+	private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (masa > 0)
+		{
+			kolejnosc.push_back(drugie_pietro);
+			masa -= 70;
+		}
+
+	}
+	private: System::Void button8_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (masa > 0)
+		{
+			kolejnosc.push_back(trzecie_pietro);
+			masa -= 70;
+		}
+	}
+	private: System::Void button9_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (masa > 0)
+		{
+			kolejnosc.push_back(czwarte_piêtro);
+			masa -= 70;
+		}
+
+	}
+	};
 }
