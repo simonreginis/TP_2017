@@ -266,3 +266,123 @@ bool humans_enter_lift(HDC hdcBufor, USI number)            //TRUE WHEN ALL IN  
         return false;
 }
 
+void lift_open_door(HDC hdcBufor)
+{
+    if(lift.current_state==0)
+        lift.current_state=1;
+    if(lift.door_y==lift.pos_y+lift.height-5)
+        lift.current_state=2;
+    USI temp;
+    HPEN old,pen;
+    pen = CreatePen( PS_SOLID, 14,  RGB( 255, 255, 255 ) );
+    old =( HPEN ) SelectObject( hdcBufor, pen );
+    if(lift.current_level%2==0)
+        temp=lift.pos_x-5;
+    else
+        temp=lift.pos_x+lift.width+3;
+    MoveToEx( hdcBufor, temp, lift.pos_y+5, &old_point );
+    LineTo(hdcBufor, temp, lift.door_y );
+    SelectObject( hdcBufor, old );
+    DeleteObject( pen );
+    if(lift.current_state==1)
+    {
+        lift.door_y++;
+        number_people_under_lim=check_limit();
+    }
+    else
+    {
+        if(lift.current_state==2)
+            humans_exit_lift(hdcBufor);
+        if(lift.current_state==3)
+            humans_enter_lift(hdcBufor, number_people_under_lim);
+        if(lift.current_state==4)
+            {
+            if(lift.door_y!=lift.pos_y)
+                lift.door_y--;
+            else
+                lift.current_state=0;
+            }
+    }
+}
+
+void lift_change_state(USI dir, HDC hdcBufor)
+{
+    if(dir==2)
+        lift.current_level=4-(((lift.pos_y+lift.height-15)/lift.height));
+    else
+        lift.current_level=4-(((lift.pos_y-15)/lift.height));
+        if(buttons_on_level[lift.current_level]==dir || buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==4)
+            {
+            if(lift.current_state==0)
+                lift.door_y=lift.pos_y;
+            lift_open_door(hdcBufor);
+            }
+        else if(lift.current_state==4)
+            lift_open_door(hdcBufor);
+}
+
+void lift_move(HDC hdcBufor)
+{
+    std::stringstream WText;
+    WText.str(std::string());
+    WText << "Current lift weight: ";
+    WText << lift.curr_weight;
+    TextOut(hdcBufor, 10, 10, WText.str().c_str(), WText.str().length());
+    Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+   if(lift.direction==2)
+   {
+       if(lift.current_level!=lift.max_level)
+            lift_change_state(2,hdcBufor);
+        else
+        {
+            if(lift.current_state==0)
+                lift.door_y=lift.pos_y;
+            lift_open_door(hdcBufor);
+            if(lift.current_state==0)
+                {
+                lift.max_level=0;
+                if(lift.min_level!=999)
+                    lift.direction=1;
+                else
+                    lift.direction=0;
+                }
+        }
+        if(lift.current_state==0)
+            lift.pos_y--;
+   }
+   else if(lift.direction==1)
+   {
+        if(lift.current_level!=lift.min_level)
+            lift_change_state(1,hdcBufor);
+        else
+        {
+            if(lift.current_state==0)
+                    lift.door_y=lift.pos_y;
+            lift_open_door(hdcBufor);
+            if(lift.current_state==0)
+                {
+                lift.min_level=999;
+                if(lift.max_level!=0)
+                    lift.direction=2;
+                else
+                    lift.direction=0;
+                }
+        }
+        if(lift.current_state==0)
+            lift.pos_y++;
+   }
+}
+
+void draw_level(HDC hdcBufor, USI level)
+{
+    if(level%2==0)
+    {
+        MoveToEx( hdcBufor, 0,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, SHAFT_X1, (SHAFT_Y2-7 -((level)*lift.height)) );
+    }
+    else
+    {
+        MoveToEx( hdcBufor, lift.pos_x+lift.width+10,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
+    }
+}
