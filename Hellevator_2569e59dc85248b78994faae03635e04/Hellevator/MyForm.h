@@ -9,12 +9,6 @@
 #include "ElevatorCallButton.h"
 #include "CreateButton.h"
 
-#define FLOOR_1_HEIGHT 715
-#define FLOOR_2_HEIGHT 545
-#define FLOOR_3_HEIGHT 365
-#define FLOOR_4_HEIGHT 184
-#define FLOOR_5_HEIGHT 3
-
 namespace Hellevator {
 
 	using namespace System;

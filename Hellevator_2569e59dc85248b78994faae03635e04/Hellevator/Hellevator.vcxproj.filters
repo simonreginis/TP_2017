@@ -33,7 +33,6 @@
     <ClCompile Include="ElevatorCallButton.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
     <ClCompile Include="CreateButton.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
@@ -57,7 +56,6 @@
     <ClInclude Include="ElevatorCallButton.h">
       <Filter>Pliki źródłowe</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
     <ClInclude Include="CreateButton.h">
       <Filter>Pliki źródłowe</Filter>
     </ClInclude>

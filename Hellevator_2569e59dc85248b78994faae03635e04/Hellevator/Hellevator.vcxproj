@@ -142,7 +142,6 @@
     <ClCompile Include="FloorEventArgs.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Passenger.cpp" />
-    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateButton.h">
@@ -164,16 +163,10 @@
     <ClInclude Include="Passenger.h">
       <FileType>CppControl</FileType>
     </ClInclude>
-    <ClInclude Include="test.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="test.resx">
-      <DependentUpon>test.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
