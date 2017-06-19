@@ -479,3 +479,119 @@ ATOM RegisterClass(HINSTANCE hInstance)
     wincl.hbrBackground = (HBRUSH) CreateSolidBrush(RGB(255, 255, 255));;
     return RegisterClassEx(&wincl);
 }
+
+int WINAPI WinMain (HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgument,int nCmdShow)
+{
+    MSG messages;
+    RegisterClass(hInstance);
+    HFONT hNormalFont =( HFONT ) GetStockObject( DEFAULT_GUI_FONT );
+    hwnd = CreateWindowEx (
+           0,                   /* Extended possibilites for variation */
+           _T("WindowsApp"),         /* Classname */
+           _T("Projekt 4"),       /* Title Text */
+           WS_OVERLAPPEDWINDOW, /* default window */
+           100,       /* Windows decides the position */
+           0,       /* where the window ends up on the screen */
+           1280,                 /* The programs width */
+           820,                 /* and height in pixels */
+           HWND_DESKTOP,        /* The window is a child-window to desktop */
+           NULL,                /* No menu */
+           hInstance,       /* Program Instance handler */
+           NULL                 /* No Window Creation data */
+           );
+    if (!Init(hInstance, nCmdShow))
+        return 1;
+    while (GetMessage (&messages, NULL, 0, 0))
+    {
+        TranslateMessage(&messages);
+        DispatchMessage(&messages);
+    }
+    return messages.wParam;
+}
+
+void spawn_human(USI level)
+{
+    if(level!=human_destination)
+        {
+            if(g_time_value>=50)
+                {
+                    SetTimer( hwnd, ID_TIMER, 1, NULL );
+                    people.push_back(human(level,number_of_people));
+                    people.back().wait_for_lift();
+                    number_of_people++;
+                    g_time_value=0;
+                }
+        }
+}
+
+LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+        case WM_PAINT:
+        {
+            PAINTSTRUCT ps; // deklaracja struktury
+            HDC hdc = BeginPaint( hwnd, & ps );
+            main_loop();
+            EndPaint( hwnd, & ps ); // zwalniamy hdc
+        }
+        break;
+        case WM_DESTROY:
+            KillTimer( hwnd, ID_TIMER );
+            for(int i=0;i<5;i++)
+            DeleteObject( hbmHuman[i]);
+            PostQuitMessage (0);
+            break;
+        case WM_TIMER:
+            main_loop();
+            if(g_time_value!=51)
+                g_time_value++;
+            break;
+        case WM_COMMAND:
+            switch( wParam )
+            {
+            case ID_BUTTON_1:
+                spawn_human(0);
+                break;
+            case ID_BUTTON_2:
+                spawn_human(1);
+                break;
+            case ID_BUTTON_3:
+                spawn_human(2);
+                break;
+            case ID_BUTTON_4:
+                spawn_human(3);
+                break;
+            case ID_BUTTON_5:
+                spawn_human(4);
+                break;
+            case ID_RADIO_1:
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_1 );
+                human_destination=0;
+                break;
+            case ID_RADIO_2:
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_2 );
+                human_destination=1;
+                break;
+            case ID_RADIO_3:
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_3 );
+                human_destination=2;
+                break;
+            case ID_RADIO_4:
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_4 );
+                human_destination=3;
+                break;
+            case ID_RADIO_5:
+                CheckRadioButton( hwnd, ID_RADIO_1, ID_RADIO_5, ID_RADIO_5 );
+                human_destination=4;
+                break;
+            default:
+                break;
+            }
+            break;
+
+        default:
+            return DefWindowProc (hwnd, message, wParam, lParam);
+    }
+    return 0;
+}
