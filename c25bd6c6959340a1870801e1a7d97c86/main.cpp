@@ -407,3 +407,75 @@ void move_humans(HDC hdcBufor)
         }
     DeleteDC( hdcBitmap );
 }
+void main_loop(USI init=0)
+{
+    HDC hdcOkno,hdcBufor;
+    HPEN old,pen,pen2;
+    hdcOkno = GetDC( hwnd );
+    HBITMAP Membitmap = CreateCompatibleBitmap(hdcOkno, 1024, 768);
+    hdcBufor = CreateCompatibleDC( hdcOkno );
+	SelectObject(hdcBufor, Membitmap);
+    pen = CreatePen( PS_SOLID, 2,  RGB( 0, 0, 0 ) );
+    old =( HPEN ) SelectObject( hdcBufor, pen );
+    Rectangle(hdcBufor, 0, 0, 1024, 768);
+    Rectangle(hdcBufor, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
+    for(int i=0;i<5;i++)
+        draw_level(hdcBufor, i);
+    pen2 = CreatePen( PS_SOLID, 1,  RGB( 250, 10, 10 ) );
+    old =( HPEN ) SelectObject( hdcBufor, pen2 );
+    if(init==1)
+        Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+    lift_move(hdcBufor);
+    SelectObject( hdcBufor, old );
+    move_humans(hdcBufor);
+    BitBlt( hdcOkno, 0, 0, 1024, 768, hdcBufor, 0, 0, SRCCOPY );  //zmienic na SHIFT_WIDTH ITP!!!!
+    BitBlt( hdcOkno, SHAFT_X1, SHAFT_Y1, 309, 768, hdcBufor, SHAFT_X1, SHAFT_Y1, SRCCOPY );  //zmienic na SHIFT_WIDTH ITP!!!!
+    BitBlt( hdcOkno, lift.pos_x, lift.pos_y, lift.width, lift.height, hdcBufor, lift.pos_x, lift.pos_y, SRCCOPY );  //zmienic na SHIFT_WIDTH ITP!!!!
+    DeleteObject( pen );
+    DeleteObject( pen2 );
+    DeleteObject(Membitmap);
+    ReleaseDC( hwnd, hdcOkno );
+    DeleteDC( hdcBufor );
+    // DELETE................. ???
+}
+
+BOOL Init(HINSTANCE hInstance, int nCmdShow)
+{
+    button = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 0", WS_CHILD |  WS_VISIBLE,1120, 170, 90, 30, hwnd,(HMENU) ID_BUTTON_1, hInstance, NULL );
+    button_1 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 1", WS_CHILD | WS_VISIBLE,1120, 210, 90, 30, hwnd,(HMENU) ID_BUTTON_2, hInstance, NULL );
+    button_2 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 2", WS_CHILD | WS_VISIBLE,1120, 250, 90, 30, hwnd,(HMENU) ID_BUTTON_3, hInstance, NULL );
+    button_3 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 3", WS_CHILD | WS_VISIBLE,1120, 290, 90, 30, hwnd,(HMENU) ID_BUTTON_4, hInstance, NULL );
+    button_4 = CreateWindowEx( WS_EX_CLIENTEDGE, "BUTTON", "LEVEL 4", WS_CHILD | WS_VISIBLE,1120, 330, 90, 30, hwnd,(HMENU) ID_BUTTON_5, hInstance, NULL );
+    radio = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 0", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 10, 160, 20, hwnd,(HMENU) ID_RADIO_1, hInstance, NULL );
+    radio_1 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 1", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 40, 160, 20, hwnd,(HMENU) ID_RADIO_2, hInstance, NULL );
+    radio_2 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 2", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 70, 160, 20, hwnd,(HMENU) ID_RADIO_3, hInstance, NULL );
+    radio_3 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 3", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 100, 160, 20, hwnd,(HMENU) ID_RADIO_4, hInstance, NULL );
+    radio_4 = CreateWindowEx( 0, "BUTTON", "DEST. LEVEL 4", WS_CHILD | WS_VISIBLE | BS_RADIOBUTTON,1120, 130, 160, 20, hwnd,(HMENU) ID_RADIO_5, hInstance, NULL );
+    hbmHuman[0] =( HBITMAP ) LoadImage( NULL, "0.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[1] =( HBITMAP ) LoadImage( NULL, "1.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[2] =( HBITMAP ) LoadImage( NULL, "2.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[3] =( HBITMAP ) LoadImage( NULL, "3.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    hbmHuman[4] =( HBITMAP ) LoadImage( NULL, "4.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
+    ShowWindow (hwnd, nCmdShow);
+    buttons_on_level.reserve(5);
+    buttons_on_level.resize(5,0);
+    main_loop(1);
+}
+
+ATOM RegisterClass(HINSTANCE hInstance)
+{
+    WNDCLASSEX wincl;        /* Data structure for the windowclass */
+    wincl.hInstance = hInstance;
+	wincl.lpszClassName = _T("WindowsApp");
+    wincl.lpfnWndProc = WindowProcedure;      /* This function is called by windows */
+    wincl.style = CS_DBLCLKS;                 /* Catch double-clicks */
+    wincl.cbSize = sizeof (WNDCLASSEX);
+    wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+    wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
+    wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
+    wincl.lpszMenuName = NULL;                 /* No menu */
+    wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
+    wincl.cbWndExtra = 0;                      /* structure or the window instance */
+    wincl.hbrBackground = (HBRUSH) CreateSolidBrush(RGB(255, 255, 255));;
+    return RegisterClassEx(&wincl);
+}
