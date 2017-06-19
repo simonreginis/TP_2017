@@ -18,43 +18,47 @@ CElevator::CElevator(int floors_number)
 	elev_pos = 0;
 	floor_amount = floors_number;
 
-	vector<int> new_raw;
-	vector<vector<int>>::iterator line_it = floor_array.begin();
-
 	elev_content.resize(floor_amount, 0);
-	floor_array.resize(floor_amount, vector<int>(floor_amount));
+
+	vector<int> new_raw;
+	vector<vector<int>>::iterator line_it = floor_array_next.begin();
+	floor_array_next.resize(floor_amount, vector<int>(floor_amount));
+
+	line_it = floor_array_prev.begin();
+	floor_array_prev.resize(floor_amount, vector<int>(floor_amount));
 }
+
 
 
 void CElevator::load_array(vector2D_t ext_array)
 {
-	floor_array = ext_array;
+	floor_array_next = ext_array;
 	new_array = true;
 }
 
 void CElevator::clear_order()
 {
-	while (!floor_order.empty())  floor_order.pop_front();
+	while (!floor_order.empty())  floor_order.pop();
 
 }
 
 
 void CElevator::make_order()
 {
-	vector<vector<int>>::iterator line_it = floor_array.begin();
+	vector<vector<int>>::iterator line_it = floor_array_next.begin();
 	vector<int>::iterator col_it;
 	/*
-	for (line_it = floor_array.begin() + elev_pos; line_it != floor_array.end(); line_it++)   // sumowanie pieter powyzej
+	for (line_it = floor_array_next.begin() + elev_pos; line_it != floor_array_next.end(); line_it++)   // sumowanie pieter powyzej
 	{
 		sum_in_people();
 	}
 	*/
 
 	clear_order();
-	floor_order.push_back(0);
+	floor_order.push(0);
 	for (int i = 0; i < 10; i++)
 	{
-		floor_order.push_back(i % 3);
+		floor_order.push(i % 3);
 	}
 
 
@@ -63,7 +67,7 @@ void CElevator::make_order()
 
 bool CElevator::check_array(vector2D_t ext_array)
 {
-	if (floor_array == ext_array) return true;
+	if (floor_array_next == ext_array) return true;
 	else return false;
 }
 
@@ -81,7 +85,7 @@ int CElevator::sum_in_people(int floor_number)
 {
 	int people_sum = 0;
 
-	vector<vector<int>>::iterator line_it = floor_array.begin() + floor_number;
+	vector<vector<int>>::iterator line_it = floor_array_next.begin() + floor_number;
 	vector<int>::iterator col_it;
 
 	for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
@@ -112,7 +116,7 @@ int CElevator::get_next_floor()
 
 void CElevator::load_people()
 {//																	ACTUAL FLOOR
-	vector<vector<int>>::iterator line_it = floor_array.begin() + get_next_floor();
+	vector<vector<int>>::iterator line_it = floor_array_next.begin() + get_next_floor();
 	vector<int>::iterator col_it;
 	vector<int>::iterator elev_it = elev_content.begin();
 
@@ -161,10 +165,12 @@ elev_out_t CElevator::make_elev_out()
 	buffer.people_out = sum_out_people();
 	buffer.load = get_load();
 	buffer.people_elev = sum_elev_people();
-	buffer.floor_array = floor_array;
+	buffer.floor_array_prev = floor_array_prev;
+	buffer.floor_array_next = floor_array_next;
 
+	floor_array_prev = floor_array_next;
 	elev_pos = get_next_floor();								   // aktualizacja poprzedniego piêtra
-	if (floor_order.size() > 0) floor_order.pop_front();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
+	if (floor_order.size() > 0) floor_order.pop();                                             //zabieranie elementu z kolejki po wykonaniu tury - musi byc tu bo po zapisaniu do struktury
 
 	return buffer;
 }

@@ -13,7 +13,8 @@ enum TFloor { ground = 416, first = 216, second = 16 };
 
 struct elev_out_t
 {
-	vector2D_t  floor_array;
+	vector2D_t  floor_array_next;
+	vector2D_t  floor_array_prev;
 	vector <int> elev_content;
 	TFloor		 prev_floor;
 	TFloor		 next_floor;
@@ -30,8 +31,9 @@ private:
 	int			floor_amount;
 	int			elev_pos;
 	vector<int> elev_content;
-	vector2D_t  floor_array;
-	deque <int> floor_order;
+	vector2D_t  floor_array_next;
+	vector2D_t  floor_array_prev;
+	queue <int> floor_order;
 
 public:
 

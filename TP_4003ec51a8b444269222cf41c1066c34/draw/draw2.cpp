@@ -532,7 +532,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				Sleep(1000);
 				elevatorStatus = elevator.make_turn();
-				floorMatrix = elevatorStatus.floor_array;
+				floorMatrix = elevatorStatus.floor_array_prev;
 				newFloor = elevatorStatus.prev_floor;
 				once = false;
 				
