@@ -52,6 +52,24 @@ private:
     //! bool waiting=false; ?????????????????????
 };
 
+void set_max_or_min(USI lvl)
+{
+    if(lvl<lift.current_level)
+            {
+                if(lvl<lift.min_level)
+                    lift.min_level=lvl;
+                if(lift.direction==0)
+                    lift.direction=1;
+            }
+            else if(lvl>lift.current_level)
+            {
+                if(lvl>lift.max_level)
+                    lift.max_level=lvl;
+                if(lift.direction==0)
+                    lift.direction=2;
+            }
+}
+
 human::human(USI level)
 {
     start_level=level;
@@ -70,7 +88,6 @@ human::human(USI level)
         buttons_on_level[start_level]=1;
     }
 }
-
 
 bool human::enter_lift()        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
@@ -205,42 +222,41 @@ void lift_open_door(HDC hdcBufor)
     //std::cout<<"lift dir: "<<lift.direction<<"     " <<lift.max_level<<std::endl;
 }
 
+void lift_change_state(USI dir, HDC hdcBufor)
+{
+    if(dir==2)
+        lift.current_level=4-(((lift.pos_y+lift.height-15)/lift.height));
+    else
+        lift.current_level=4-(((lift.pos_y-15)/lift.height));
+        if(buttons_on_level[lift.current_level]==dir || buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==4)
+            {
+            if(lift.current_state==0)
+                lift.door_y=lift.pos_y;
+            lift_open_door(hdcBufor);
+            }
+        else if(lift.current_state==4)
+            lift_open_door(hdcBufor);
+}
+
 void lift_move(HDC hdcBufor)
 {
-    std::cout<<"MIN: "<<lift.min_level<<" | MAX: "<<lift.max_level<< " | CURR: " <<lift.current_level<<std::endl;
-    std::cout<<"cur state: "<<lift.current_state<<std::endl;
-    draw_rect_object(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+    //std::cout<<"MIN: "<<lift.min_level<<" | MAX: "<<lift.max_level<< " | CURR: " <<lift.current_level<<std::endl;
+    //std::cout<<"cur state: "<<lift.current_state<<" | LIFT.DIR: " <<lift.direction<<std::endl;
+    std::stringstream WText;
+    WText.str(std::string());
+    WText << "Current lift weight: ";
+    WText << lift.curr_weight;
+    TextOut(hdcBufor, 10, 10, WText.str().c_str(), WText.str().length());
+    Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
    if(lift.direction==2)
    {
        if(lift.current_level!=lift.max_level)
-        {
-            lift.current_level=4-(((lift.pos_y+lift.height-25)/lift.height));
-            if(buttons_on_level[lift.current_level]==2 && lift.door_are_closed==true) //! ZMIENIC WARUNEK Z TRUE!
-                {
-                 //!
-                if(lift.current_state<1)
-                    lift.current_state++;
-                if(lift.current_state==1)
-                    lift.door_y=lift.pos_y;
-                //std::cout<<"OPEN PRZYSTANKOWY (IF)"<<std::endl;
-                lift_open_door(hdcBufor);
-                //!
-                }
-            else if(lift.current_state==7)
-                lift_open_door(hdcBufor);
-
-        }
+            lift_change_state(2,hdcBufor);
         else
         {
-            //if(lift.door_are_closed==true)!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //!
-            if(lift.current_state<1)
-                lift.current_state++;
-            if(lift.current_state==1)         //! stopped daje 0 gdy drzwi sie zamkna
+            if(lift.current_state==0)
                 lift.door_y=lift.pos_y;
-            //std::cout<<"OPEN KONCOWY (ELSE)"<<std::endl;
             lift_open_door(hdcBufor);
-            //!
             if(lift.current_state==0)
                 {
                 lift.max_level=0;
@@ -250,40 +266,18 @@ void lift_move(HDC hdcBufor)
                     lift.direction=0;
                 }
         }
-       if(lift.door_are_closed)
+        if(lift.current_state==0)
             lift.pos_y--;
    }
    else if(lift.direction==1)
    {
-       if(lift.current_level!=lift.min_level)
-        {
-            lift.current_level=4-(((lift.pos_y+lift.height-25)/lift.height));
-            if(buttons_on_level[lift.current_level]==1 && lift.door_are_closed==true) //! ZMIENIC WARUNEK Z TRUE!
-                {
-                 //!
-                if(lift.current_state<1)
-                    lift.current_state++;
-                if(lift.current_state==1)
-                    lift.door_y=lift.pos_y;
-                //std::cout<<"OPEN PRZYSTANKOWY (IF)"<<std::endl;
-                lift_open_door(hdcBufor);
-                //!
-                }
-            else if(lift.current_state==7)
-                lift_open_door(hdcBufor);
-
-        }
+        if(lift.current_level!=lift.min_level)
+            lift_change_state(1,hdcBufor);
         else
         {
-            //if(lift.door_are_closed==true)!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //!
-            if(lift.current_state<1)
-                lift.current_state++;
-            if(lift.current_state==1)         //! stopped daje 0 gdy drzwi sie zamkna
-                lift.door_y=lift.pos_y;
-            //std::cout<<"OPEN KONCOWY (ELSE)"<<std::endl;
+            if(lift.current_state==0)
+                    lift.door_y=lift.pos_y;
             lift_open_door(hdcBufor);
-            //!
             if(lift.current_state==0)
                 {
                 lift.min_level=999;
@@ -293,13 +287,10 @@ void lift_move(HDC hdcBufor)
                     lift.direction=0;
                 }
         }
-       if(lift.door_are_closed)
+        if(lift.current_state==0)
             lift.pos_y++;
    }
-   //if(lift.door_are_closed)
-       // draw_rect_object(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
 }
-
 
 void draw_main(USI init=0)
 {
