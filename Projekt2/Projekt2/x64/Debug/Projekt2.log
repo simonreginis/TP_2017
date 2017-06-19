@@ -1,3 +1,0 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: Katalog pośredni (x64\Debug\) zawiera pliki udostępnione z innego projektu (Projekt2.vcxproj). Może to spowodować niepoprawne zachowanie podczas oczyszczania i ponownej kompilacji.
-  MyForm1.cpp
-  Projekt2.vcxproj -> C:\Users\Piotrek\Downloads\TP_2017-master (7)\TP_2017-master\Projekt2\x64\Debug\WindaPietra.exe
