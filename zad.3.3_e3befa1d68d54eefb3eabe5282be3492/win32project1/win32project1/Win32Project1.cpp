@@ -135,7 +135,7 @@ void Draw(HWND hWnd)
 
 		}
 
-		else if ((poczatek - koniec) > 0) //winda jedzie w dó³
+		else if ((poczatek - koniec) > 0) //winda jedzie w dÃ³Â³
 		{
 			for (int i = 0; i < (odleglosc * 75); i++)
 			{
@@ -327,7 +327,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	HWND hWnd = CreateWindowW(szWindowClass, TEXT("Mój program"), WS_OVERLAPPEDWINDOW,
+	HWND hWnd = CreateWindowW(szWindowClass, TEXT("MÃ³j program"), WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
 	hText = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_CENTER, 700, 70, 100, 20, hWnd, NULL, hInstance, NULL);
@@ -374,7 +374,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,                            // the instance of your application
 		NULL);
 
-	//przyciski 1. piêtro
+	//przyciski 1. piÃªtro
 
 	hwndButton = CreateWindow(TEXT("button"),                      // The class name required is button
 		TEXT("2"),                  // the caption of the button
@@ -681,7 +681,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 		case ID_BUTTON3:
 		{
-			SetTimer(hWnd, TMR_1, 1, 0);
+			SetTimer(hWnd, TMR_1, 500, 0);
 		}
 		break;
 		case ID_BUTTON4:
