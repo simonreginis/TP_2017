@@ -9,8 +9,11 @@ HWND hwnd;
 POINT old_point;
 HWND button, button_1, button_2, button_3, button_4;
 HWND radio, radio_1, radio_2, radio_3, radio_4;
-
-USI human_destination=0;
+void draw_main(USI init);
+BOOL Init(HINSTANCE hInstance, int nCmdShow);
+ATOM RegisterClass(HINSTANCE hInstance);
+LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
+USI human_destination=0, number_of_people=0, g_time_value=50;
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
 
 struct elevator
@@ -24,32 +27,27 @@ struct elevator
 elevator lift;
 
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
-bool timer_on=false;
-
-void draw_main(USI init);
-BOOL Init(HINSTANCE hInstance, int nCmdShow);
-ATOM RegisterClass(HINSTANCE hInstance);
-LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
 class human
 {
 public:
-    human(USI level);
+    human(USI level, USI number);
     ~human(){;}
     void wait_for_lift();
     bool enter_lift();
     void exit_lift();
     USI get_pos_x() {return pos_x;}
     USI get_pos_y() {return pos_y;}
+    void set_pos_y(USI temp) {pos_y=temp;}
     USI get_side() {return side;}
     USI set_side(USI side_temp ) {side=side_temp;}
     USI get_dir() {return direction;}
     void set_dir(USI dir) {direction=dir;}
     USI get_level() {return start_level;}
-    //! bool is_waiting() {return waiting;} ???????????
+    USI get_dest() {return dest_level;}
+    USI get_id() {return id;}
 private:
-    USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70; // SIDE=1 - Lewa
-    //! bool waiting=false; ?????????????????????
+    USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70, id=0; // SIDE=1 - Lewa
 };
 
 void set_max_or_min(USI lvl)
@@ -70,8 +68,9 @@ void set_max_or_min(USI lvl)
             }
 }
 
-human::human(USI level)
+human::human(USI level, USI number)
 {
+    id=number;
     start_level=level;
     (level%2==0) ? set_side(1) : set_side(2);
     dest_level=human_destination;
@@ -80,32 +79,79 @@ human::human(USI level)
     if(dest_level>start_level)
     {
         set_dir(2); //UP
-        buttons_on_level[start_level]=2;
+        if(buttons_on_level[start_level]==0 || buttons_on_level[start_level]==2 || buttons_on_level[start_level]==4) //DO FUNCKJI????
+            buttons_on_level[start_level]=2;
+        else if(buttons_on_level[start_level]==1 || buttons_on_level[start_level]==3)
+            buttons_on_level[start_level]=3;
     }
     else
     {
         set_dir(1); //DOWN
-        buttons_on_level[start_level]=1;
+        if(buttons_on_level[start_level]==0 || buttons_on_level[start_level]==1 || buttons_on_level[start_level]==4) //DO FUNCKJI????
+            buttons_on_level[start_level]=1;
+        else if(buttons_on_level[start_level]==2 || buttons_on_level[start_level]==3)
+            buttons_on_level[start_level]=3;
     }
 }
 
-bool human::enter_lift()        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void human::wait_for_lift()
+{
+    HDC hdcTemp = GetDC( hwnd );
+    if(get_side()==1)
+    {
+        //if(pos_x<(SHAFT_X1-10))
+        if(GetPixel(hdcTemp, pos_x+32, pos_y)==RGB(255,255,255))
+            pos_x++;
+        else
+            {
+            set_max_or_min(start_level);
+            set_max_or_min(dest_level);
+            }
+    }
+    else if(get_side()==2)
+        {
+        //if(pos_x>(SHAFT_X2+10))
+        if(GetPixel(hdcTemp, pos_x-32, pos_y)==RGB(255,255,255))
+            pos_x--;
+        else
+            {
+            set_max_or_min(start_level);
+            set_max_or_min(dest_level);
+            }
+        }
+    DeleteDC( hdcTemp );
+}
+
+bool human::enter_lift()
 {
     if(lift.curr_weight+h_weight<lift.max_weight)
         {
             if(get_side()==1)
                 {
-                if(pos_x<=lift.last_place_x+34)
+                if(pos_x<=lift.last_place_x+32)
                     pos_x++;
+                else
+                    {
+                    lift.last_place_x+=32;
+                    lift.curr_weight+=h_weight;    
+                    set_side(0);
+                    if(buttons_on_level[dest_level]==0)
+                        buttons_on_level[dest_level]=4;
+                    }
                 }
             else if(get_side()==2)
                 {
-                if(pos_x>=lift.last_place_x+4)
+                if(pos_x>=lift.last_place_x+32)
                     pos_x--;
+                else
+                    {
+                    lift.last_place_x+=32;
+                    lift.curr_weight+=h_weight;
+                    set_side(0);
+                    if(buttons_on_level[dest_level]==0)
+                        buttons_on_level[dest_level]=4;
+                    }
                 }
-            lift.last_place_x+=34;
-            lift.curr_weight+=70;
-            //waiting=0;
             return true;
         }
     return  false;      //IF WEIGHT > LIMIT
@@ -113,41 +159,97 @@ bool human::enter_lift()        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 void human::exit_lift()
 {
-    if(get_side()==1){
-        if(pos_x>=10)
+    if(dest_level%2==0){
+        if(pos_x>=30)
             pos_x--;
+        else
+        {
+            set_side(5); //5- is going out
+            lift.last_place_x-=32;
+            lift.curr_weight-=70;
+        }
     }
-    else if(get_side()==2)
-        if(pos_x<=1014)
+    else if(dest_level%2==1)
+        if(pos_x<=994)
             pos_x++;
-    lift.last_place_x-=12;
-    lift.curr_weight-=70;
+        else
+        {
+            set_side(5); //5- is going out
+            lift.last_place_x-=32;
+            lift.curr_weight-=70;
+        }
 }
 
-void human::wait_for_lift()         
-{
-    if(get_side()==1)
-    {
-        if(pos_x<SHAFT_X1-10)
-            pos_x++;
-    }
-    else if(get_side()==2)
-        {
-        if(pos_x>SHAFT_X2+10)
-            pos_x--;
-        }
-    //waiting=1;
-}
 std::vector <human> people;
 
-void move_humans(HDC hdcBufor)
+void delete_human(USI id)
 {
-    //bitmap
+    people[id]=people.back();
+    people.back().~human(); //! ????
+    people.pop_back();
+}
+
+bool humans_exit_lift(HDC hdcBufor)            //TRUE WHEN ALL IN  / WEIGHT > LIMIT!, FALSE WHEN LIFT IS NOT MOVING
+{
+    bool everyone_out=true, delete_this_human=false;
+    USI delete_id=0;
     for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
         {
-            it->wait_for_lift();
-            Ellipse( hdcBufor, it->get_pos_x()-5, it->get_pos_y()+10, it->get_pos_x()+5, it->get_pos_y() );
+            if(it->get_dest()==lift.current_level && it->get_side()==0)
+            {
+                it->exit_lift();
+                if(it->get_side()!=5)
+                    everyone_out=false;
+                else
+                    {
+                    delete_this_human=true;
+                    delete_id=it->get_id();
+                    }
+            }
         }
+    if(delete_this_human)
+        delete_human(delete_id);
+    if(everyone_out==true)
+    {
+        lift.current_state=3;
+        return true;
+    }
+    else
+        return false;
+}
+
+bool humans_enter_lift(HDC hdcBufor)            //TRUE WHEN ALL IN  / WEIGHT > LIMIT!, FALSE WHEN LIFT IS NOT MOVING
+{
+    bool everyone_in=true;
+    for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
+        {
+            if(it->get_level()==lift.current_level && (it->get_dir()==lift.direction || lift.current_level==lift.max_level || lift.current_level==lift.min_level)) //! co gdy winda wjedzie na max floor i bedzie miala zjechac w dol
+            {
+                if(!it->enter_lift())
+                    {
+                        lift.current_state=4;
+                        return true;
+                    }
+                if(it->get_side()!=0)
+                    everyone_in=false;
+            }
+        }
+    if(everyone_in==true)
+    {
+        if(buttons_on_level[lift.current_level]==3)
+        {
+            if(lift.direction==2)
+                buttons_on_level[lift.current_level]=1;
+            else
+                buttons_on_level[lift.current_level]=2;
+        }
+        else
+            buttons_on_level[lift.current_level]=0;
+        lift.current_state=4;
+        return true;
+    }
+    else
+        return false;
 }
 
 
@@ -216,7 +318,7 @@ void lift_open_door(HDC hdcBufor)
     }
     else
     {
-        if(lift.current_state<4) //!!!!!!!!!!!!! musi byc ?
+        if(lift.current_state<4) 
         lift.current_state++;
     }
     //std::cout<<"lift dir: "<<lift.direction<<"     " <<lift.max_level<<std::endl;
@@ -290,6 +392,27 @@ void lift_move(HDC hdcBufor)
         if(lift.current_state==0)
             lift.pos_y++;
    }
+}
+
+void move_humans(HDC hdcBufor)
+{
+    BITMAP bmInfo;
+    HDC hdcOkno = GetDC( hwnd );
+    HDC hdcBitmap = CreateCompatibleDC( hdcOkno );
+    for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
+        {
+            if(it->get_side()!=0)   //! spr czy nie zmieniaja min max
+                it->wait_for_lift(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if(it->get_side()==0)
+                it->set_pos_y(lift.pos_y+lift.height-10);
+            if(it->get_side()!=5)
+            {
+                GetObject( hbmHuman[it->get_dest()], sizeof( bmInfo ), & bmInfo );
+                SelectObject( hdcBitmap, hbmHuman[it->get_dest()]);
+                BitBlt( hdcBufor, it->get_pos_x(), it->get_pos_y()-60, bmInfo.bmWidth, bmInfo.bmHeight, hdcBitmap, 0, 0, SRCCOPY );
+            }
+        }
+    DeleteDC( hdcBitmap );
 }
 
 void draw_main(USI init=0)
@@ -398,12 +521,18 @@ void turn_on_timer()
 
 void spawn_human(USI level)
 {
-   if(level!=human_destination)
+    if(level!=human_destination)
         {
-            //change_level(level);
-            turn_on_timer();
-            //add people
+            if(g_time_value>=50)
+                {
+                    SetTimer( hwnd, ID_TIMER, 1, NULL );
+                    people.push_back(human(level,number_of_people));
+                    people.back().wait_for_lift();
+                    number_of_people++;
+                    g_time_value=0;
+                }
         }
+}
 
 }
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
