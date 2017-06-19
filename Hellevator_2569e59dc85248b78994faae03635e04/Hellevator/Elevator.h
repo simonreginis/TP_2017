@@ -86,6 +86,7 @@ namespace Hellevator {
 		{
 			Passenger^ p = (Passenger^) passengers[i];
 			p->Left = i * 40;
+			p->Top = cabinPosition + cabinHeight - p->Height;
 			this->Controls->Add(p);
 		}
 	}
