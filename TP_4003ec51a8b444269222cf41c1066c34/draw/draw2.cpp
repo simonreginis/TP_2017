@@ -254,6 +254,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
+	AllocConsole();
+	AttachConsole(GetCurrentProcessId());
+	freopen("CON", "w", stdout);
+
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -421,6 +425,28 @@ void InsertNewMan(unsigned int startFloor, unsigned int endFloor)
 	floorMatrix[startFloor][endFloor]++;
 	floorMatrix2[startFloor][endFloor]++;
 }
+void DebugMatrix()
+{
+	system("cls");
+	cout << "Macierz do Ciebie:" << endl;
+	for (auto line : floorMatrix)
+	{
+		for (auto col : line)
+		{
+			cout << " " << col;
+		}
+		cout << endl;
+	}
+	cout << "Macierz do rysowania:" << endl;
+	for (auto line : floorMatrix2)
+	{
+		for (auto col : line)
+		{
+			cout << " " << col;
+		}
+		cout << endl;
+	}
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -445,6 +471,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(0, 1);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_GROUND_SECOND:
@@ -452,6 +479,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(0, 2);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_SECOND:
@@ -459,6 +487,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(1, 1);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_FIRST_GROUND:
@@ -466,6 +495,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(1, 0);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_FIRST:
@@ -473,6 +503,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(2, 1);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_SECOND_GROUND:
@@ -480,6 +511,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InsertNewMan(2, 0);
 			elevator.load_array(floorMatrix);
 			once = true;
+			DebugMatrix();
 			repaintWindow(hWnd, hdc, ps, &drawArea);
 			break;
 		case ID_ZOOM_OUT:
@@ -533,9 +565,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case TMR_2:
 			if (onFloor && once)
 			{
+				
+				DebugMatrix();
 				Sleep(1000);
-				floorMatrix = elevatorStatus.floor_array_prev;
-				floorMatrix2 = elevatorStatus.floor_array_next;
+				floorMatrix = elevatorStatus.floor_array_next;
+				floorMatrix2 = elevatorStatus.floor_array_prev;
 				elevatorStatus = elevator.make_turn();
 				
 				newFloor = elevatorStatus.next_floor;
