@@ -7,6 +7,7 @@ private:
 	int y;
 	int speed_x;
 	int speed_y;
+	int restriction;
 	Cargo *cargo;
 public:
 	Crane();
@@ -23,5 +24,6 @@ public:
 	void move();
 	void attach(Cargo *c);
 	void detach();
+	bool checkRestriction(Cargo cargo);
 };
 

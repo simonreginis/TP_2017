@@ -8,6 +8,7 @@ Crane::Crane()
 	y = AREA_Y1 + 30;
 	speed_x = 0;
 	speed_y = 0;
+	restriction = RESTRICTION;
 	cargo = NULL;
 }
 
@@ -74,8 +75,12 @@ void Crane::attach(Cargo *c)
 		int c_y = c[i].get_y();
 		int l = c[i].get_length();
 
-		if (x >= c_x && x <= c_x + l && y >= c_y && y <= c_y + l)
+		if (x >= c_x && x <= c_x + l && y >= c_y && y <= c_y + l && checkRestriction(c[i]))
+		{
 			cargo = &c[i];
+			cargo->setFalling(false);
+		}
+			
 	}
 }
 
@@ -93,4 +98,12 @@ void Crane::detach()
 		cargo = NULL;
 	}
 	
+}
+
+bool Crane::checkRestriction(Cargo cargo)
+{
+	if (cargo.getType() == this->restriction)
+		return true;
+	else
+		return false;
 }

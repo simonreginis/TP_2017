@@ -27,7 +27,9 @@ void Cargo::initialize(int x, int y, int type)
 	}
 	this->x = x;
 	this->y = y;
-	this->falling = false;
+	this->falling = false;		//starting in state of rest
+	this->lvl = 0;				//lvl 0 = floor
+	this->maxLvl = MAX_LVL;
 }
 
 void Cargo::move(Cargo *c)
@@ -39,6 +41,8 @@ void Cargo::move(Cargo *c)
 		{
 			speed_x = 0;
 			speed_y = 0;
+			if (y + length == AREA_Y2)
+				lvl = 0;
 		}
 }
 
@@ -72,6 +76,11 @@ int Cargo::getType()
 	return type;
 }
 
+int Cargo::getLvl()
+{
+	return lvl;
+}
+
 void Cargo::set_x(int x)
 {
 	this->x = x;
@@ -102,6 +111,11 @@ void Cargo::setFalling(bool f)
 	this->falling = f;
 }
 
+void Cargo::setLvl(int lvl)
+{
+	this->lvl = lvl;
+}
+
 bool Cargo::isFalling(Cargo *c)
 {
 	if (this->falling)
@@ -112,11 +126,12 @@ bool Cargo::isFalling(Cargo *c)
 			int x2 = c[i].get_x();
 			int y2 = c[i].get_y();
 			int l = c[i].get_length();
-			if (((x >= x2 && x <= x2 + l) || (x + length >= x2 && x + length <= x2 + l)) && (y + speed_y + length > y2) && (y + speed_y + length < y2 + l))
+			if (((x >= x2 && x <= x2 + l) || (x + length >= x2 && x + length <= x2 + l)) && (y + speed_y + length > y2) && (y + speed_y + length < y2 + l) && c[i].getLvl() + 1 < maxLvl)
 			{
 				y = y2 - length;
 				setFalling(false);
 				is = false;
+				this->setLvl(c[i].getLvl() + 1);
 			}
 		}
 		return is;

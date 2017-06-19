@@ -31,7 +31,9 @@ int const AREA_X1 = 75;		//>=65				default 75
 int const AREA_X2 = 915;	//>=AREA_X1			default 915
 int const AREA_Y1 = 80;		//>=50				default 80
 int const AREA_Y2 = 520;	//>=AREA_Y1			default 520
-int const BLOCKS = 12;
+int const BLOCKS = 12;			//number blocks that will spawn
+int const RESTRICTION = 0;		//type of block we can carry  // 0 -rect, 1 -triangle, 2 -circle
+int const MAX_LVL = 3;			//max tower height
 #endif
 // Next default values for new objects
 //

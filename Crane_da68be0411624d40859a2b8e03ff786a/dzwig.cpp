@@ -50,29 +50,32 @@ void repaintWindow(HWND hWnd, HDC &hdc, PAINTSTRUCT &ps, RECT *drawArea)
 	graphics.DrawLine(&pen, crane.get_x(), AREA_Y1, crane.get_x(), crane.get_y());
 	for (int i = 0; i < BLOCKS; i++)
 	{
-		int x = cargo[i].get_x();
-		int y = cargo[i].get_y();
-		int l = cargo[i].get_length();
-		graphics.FillRectangle(brush, x, y, l, l);
-		switch (cargo[i].getType())
-		{
-		case 0:				//rectangle
-			graphics.DrawRectangle(&pen, x + l / 4, y + l / 4, l / 2, l / 2);
-			break;
-		case 1:				//triangle
-		{
-			graphics.DrawLine(&pen,x + l / 4, y + 3 * l / 4, x + l / 2, y + l / 4);
-			graphics.DrawLine(&pen,x + l / 2, y + l / 4, x + 3 * l / 4, y + 3 * l / 4);
-			graphics.DrawLine(&pen, x + 3 * l / 4, y + 3 * l / 4, x + l / 4, y + 3 * l / 4);
-			break;
-		}
-		case 2:				//wheel
-		{
-			graphics.DrawEllipse(&pen, x + l / 4, y + l / 4, l / 2, l / 2);
-			break;
-		}
-			
-		}
+			int x = cargo[i].get_x();
+			int y = cargo[i].get_y();
+			int l = cargo[i].get_length();
+			graphics.FillRectangle(brush, x, y, l, l);
+
+
+			switch (cargo[i].getType())
+			{
+			case 0:				//rectangle
+				graphics.DrawRectangle(&pen, x + l / 4, y + l / 4, l / 2, l / 2);
+				break;
+			case 1:				//triangle
+			{
+				graphics.DrawLine(&pen, x + l / 4, y + 3 * l / 4, x + l / 2, y + l / 4);
+				graphics.DrawLine(&pen, x + l / 2, y + l / 4, x + 3 * l / 4, y + 3 * l / 4);
+				graphics.DrawLine(&pen, x + 3 * l / 4, y + 3 * l / 4, x + l / 4, y + 3 * l / 4);
+				break;
+			}
+			case 2:				//circle
+			{
+				graphics.DrawEllipse(&pen, x + l / 4, y + l / 4, l / 2, l / 2);
+				break;
+			}
+
+			}
+	
 	}
 	EndPaint(hWnd, &ps);
 
@@ -332,6 +335,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+		//////////////////////// handles steering from keyboard
+    case WM_KEYDOWN:
+        {
+		switch (wParam)
+		{
+		case VK_UP: {crane.setSpeed_y(-6); }break;
+
+		case VK_DOWN: {crane.setSpeed_y(6); }break;
+
+		case VK_LEFT: {crane.setSpeed_x(-4); }break;
+
+		case VK_RIGHT: {crane.setSpeed_x(4); }break;
+
+		case 0x41: {crane.attach(cargo); }break;
+
+		case 0x44: {crane.detach(); }break;
+
+		default:break; 
+		}
+            break;
+        }
+    case WM_KEYUP:
+        {
+		switch (wParam)
+		{
+		case VK_UP: {crane.setSpeed_y(0); }break;
+
+		case VK_DOWN: {crane.setSpeed_y(0); }break;
+
+		case VK_LEFT: {crane.setSpeed_x(0); }break;
+
+		case VK_RIGHT: {crane.setSpeed_x(0); }break;
+
+		default:break; 
+		}
+            break;
+        }
+
     case WM_PAINT:
         {
             hdc = BeginPaint(hWnd, &ps);
@@ -340,12 +381,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SolidBrush *grass_brush = new SolidBrush(Color(255, 0, 255, 0));	//zielony
 			SolidBrush *crane_brush = new SolidBrush(Color(255, 0, 0, 0));		//czarny
 
-			
+
 			graphics.FillRectangle(grass_brush, 0, AREA_Y2, AREA_X2 + 200, AREA_Y2);	//trawa	- poziom klockow
 			graphics.FillRectangle(crane_brush, AREA_X1 - 50, AREA_Y1 - 50, 50, AREA_Y2 - AREA_Y1 + 50);	//pion dzwigu
 			graphics.FillRectangle(crane_brush, AREA_X1 - 65, AREA_Y1 - 30, AREA_X2, 30);	//poziom dzwigu
-			
-			
+
+
             // TODO: Add any drawing code that uses hdc here...
             EndPaint(hWnd, &ps);
         }
@@ -370,10 +411,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 					cargo[i].move(cargo);
 				}
-					
+
 
 				repaintWindow(hWnd, hdc, ps, &drawArea);
-				SetTimer(hWnd, TMR_1, 250, 0);		///1 klatka na sekunde
+				SetTimer(hWnd, TMR_1, 250, 0);		///////////////////////////
 				break;
 			}
 			default:
