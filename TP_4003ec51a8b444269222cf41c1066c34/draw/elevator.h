@@ -43,6 +43,7 @@ public:
 	void		clear_order();
 	void		load_array(vector2D_t ext_array);
 	void		make_order();
+	void        make_queue(vector<int> buffer);
 	bool		check_array(vector2D_t ext_array);
 	bool		check_load();
 	int			get_load();

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <algorithm>
 #include <vector>
 #include <queue>
 #include "elevator.h"
@@ -43,24 +44,49 @@ void CElevator::clear_order()
 }
 
 
+void CElevator::make_queue(vector<int> buffer)
+{
+	vector<int>::iterator buffer_it;
+	int new_value = 0;
+
+	sort(buffer.begin(), buffer.end());
+
+	new_value = buffer[0];
+	floor_order.push(new_value);
+
+	for (buffer_it = buffer.begin(); buffer_it != buffer.end(); buffer_it++)
+	{
+		if (new_value != (*buffer_it))
+		{
+			new_value = (*buffer_it);
+			floor_order.push(new_value);
+		}
+	}
+	
+	
+}
+
 void CElevator::make_order()
 {
 	vector<vector<int>>::iterator line_it = floor_array_next.begin();
 	vector<int>::iterator col_it;
+
+	vector<int> buffer;
+
 	int i = 0;
 	int j = 0;
 
 	clear_order();
-
+	
 	for (line_it = floor_array_next.begin(); line_it != floor_array_next.end(); line_it++)   // sumowanie pieter powyzej
 	{
 		if (sum_in_people(i))
 		{
-			floor_order.push(i);
+			buffer.push_back(i);
 
 			for (col_it = (*line_it).begin(); col_it != (*line_it).end(); col_it++)
 			{
-				if ((*col_it)) floor_order.push(j);
+				if((*col_it)) buffer.push_back(j);
 				j++;
 			}
 		}
@@ -68,6 +94,8 @@ void CElevator::make_order()
 		i++;
 	}
 
+	if (!buffer.empty()) make_queue(buffer);
+		else    floor_order.push(0);
 }
 
 
@@ -152,10 +180,10 @@ elev_out_t CElevator::make_turn()
 		new_array = false;
 	}
 	else  floor_order.push(0);
+		
 
-
-	load_people();                                                              //wsiadaj¹cy ludzie
-	unload_people();                                                              // wysiadajacy ludzie
+	load_people();																//wsiadaj¹cy ludzie
+	unload_people();												              // wysiadajacy ludzie
 
 	return make_elev_out();
 }
