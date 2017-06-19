@@ -240,7 +240,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		NULL);
 
 
-	SendMessageW(hUpDown, UDM_SETBUDDY, (WPARAM)hText, 0);
+	
 	if (!hWnd)
 	{
 		return FALSE;
