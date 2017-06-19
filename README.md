@@ -14,6 +14,6 @@
 Symulator windy
 
 Potrzebne do poprawnego otworzenia pliku :
--VS 2015
+-VS 2015, vc140
 
 Kliknąć TonyStark.sln
