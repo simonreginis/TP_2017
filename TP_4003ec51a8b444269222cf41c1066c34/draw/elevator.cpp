@@ -70,14 +70,24 @@ void CElevator::make_order()
 {
 	vector<vector<int>>::iterator line_it = floor_array_next.begin();
 	vector<int>::iterator col_it;
+	//vector<int>::iterator elev_it;
 
 	//vector<int> buffer;
 
 	int i = 0;
 	int j = 0;
+	//int e = 0;
 
 	clear_order();
-	
+	/*
+	for (elev_it = elev_content.begin(); elev_it != elev_content.end(); elev_it++)
+	{
+		if (*elev_it) sum_in_people(e);
+		e++;
+	}
+	*/
+
+
 	for (line_it = floor_array_next.begin(); line_it != floor_array_next.end(); line_it++)   // sumowanie pieter powyzej
 	{
 		if (sum_in_people(i))
@@ -97,6 +107,7 @@ void CElevator::make_order()
 	/*if (!buffer.empty()) make_queue(buffer);
 		else    floor_order.push(0);
 		*/
+	if(floor_order.empty()) floor_order.push(0);
 }
 
 
