@@ -1,6 +1,6 @@
 ﻿  draw2.cpp
-c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(259): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(261): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h(242): note: zobacz deklarację „freopen”
-c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(601): warning C4101: "buffer": lokalna zmienna, do której nie istnieje odwołanie
+c:\users\bartek\tp_2017\tp_4003ec51a8b444269222cf41c1066c34\draw\draw2.cpp(603): warning C4101: "buffer": lokalna zmienna, do której nie istnieje odwołanie
   draw.vcxproj -> C:\Users\Bartek\TP_2017\TP_4003ec51a8b444269222cf41c1066c34\Debug\draw2.exe
   draw.vcxproj -> C:\Users\Bartek\TP_2017\TP_4003ec51a8b444269222cf41c1066c34\Debug\draw2.pdb (Partial PDB)

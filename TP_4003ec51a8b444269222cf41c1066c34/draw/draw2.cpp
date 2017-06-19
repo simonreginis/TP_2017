@@ -247,10 +247,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	}
 	InsertNewMan(0, 1);
 	//elevator.load_array(floorMatrix);
-//	elevator.make_turn();
+elevatorStatus=	elevator.make_turn();
 	//elevator.make_order();
+	floorMatrix = elevatorStatus.floor_array_next;
+	floorMatrix2 = elevatorStatus.floor_array_prev;
 	SetTimer(hWnd, TMR_1, 1, NULL);
-	SetTimer(hWnd, TMR_2, 1, NULL);
+	SetTimer(hWnd, TMR_2, 1000, NULL);
 
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
@@ -563,26 +565,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			else
 			{
 				onFloor = true;
-				once = true;
-			
+				//once = true;
+				if (onFloor && once)
+				{
+
+					DebugMatrix();
+					Sleep(1000);
+					floorMatrix = elevatorStatus.floor_array_next;
+					floorMatrix2 = elevatorStatus.floor_array_prev;
+					elevatorStatus = elevator.make_turn();
+
+					newFloor = elevatorStatus.next_floor;
+					once = false;
+
+
+				}
 			}
 				
 			break;
 		case TMR_2:
-			if (onFloor && once)
-			{
-
-				DebugMatrix();
-				Sleep(1000);
-				floorMatrix = elevatorStatus.floor_array_next;
-				floorMatrix2 = elevatorStatus.floor_array_prev;
-				elevatorStatus = elevator.make_turn();
-
-				newFloor = elevatorStatus.next_floor;
-				once = false;
-
-
-			}
+			if (!once) once = true;
 			
 			break;
 		}
