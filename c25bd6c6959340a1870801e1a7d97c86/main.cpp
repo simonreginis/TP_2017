@@ -3,8 +3,8 @@
 #include <windows.h>
 #include <vector>
 #include <sstream>
-#include <iostream>
 typedef unsigned short int USI;
+
 HWND hwnd;
 POINT old_point;
 HWND button, button_1, button_2, button_3, button_4;
@@ -13,8 +13,9 @@ HBITMAP hbmHuman[5];
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-USI human_destination=0, number_of_people=0, g_time_value=50; //spawn block do tego zeby co okreslony czas pojawialy sie ludki gdy ciagle kliamy. Pomaga tez przy zachowaniu odleglosci miedzy ludkami
+USI human_destination=0, number_of_people=0, g_time_value=50;
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
+
 struct elevator
 {
     USI current_level=0, max_weight=500, curr_weight=0, last_place_x=SHAFT_X1+4;
@@ -24,7 +25,7 @@ struct elevator
 };
 elevator lift;
 
-std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all 4 -stop only (someone wants to get out)
+std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 
 class human
 {
@@ -47,6 +48,7 @@ public:
 private:
     USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70, id=0; // SIDE=1 - Lewa
 };
+
 void set_max_or_min(USI lvl)
 {
     if(lvl<lift.current_level)
@@ -119,7 +121,7 @@ void human::wait_for_lift()
     DeleteDC( hdcTemp );
 }
 
-bool human::enter_lift()
+bool human::enter_lift()        //!!!!BUG OPEN DOOR (DIR SIE ZMIENIA)
 {
     if(lift.curr_weight+h_weight<lift.max_weight)
         {
@@ -130,7 +132,7 @@ bool human::enter_lift()
                 else
                     {
                     lift.last_place_x+=32;
-                    lift.curr_weight+=h_weight;    
+                    lift.curr_weight+=h_weight;             //!!!!!! FUNKCJAAAAAAAA
                     set_side(0);
                     if(buttons_on_level[dest_level]==0)
                         buttons_on_level[dest_level]=4;
@@ -192,7 +194,7 @@ bool humans_exit_lift(HDC hdcBufor)            //TRUE WHEN ALL IN  / WEIGHT > LI
     USI delete_id=0;
     for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
         {
-            if(it->get_dest()==lift.current_level && it->get_side()==0)
+            if(it->get_dest()==lift.current_level && it->get_side()==0)   //! co gdy winda wjedzie na max floor i bedzie miala zjechac w dol
             {
                 it->exit_lift();
                 if(it->get_side()!=5)
@@ -249,40 +251,73 @@ bool humans_enter_lift(HDC hdcBufor)            //TRUE WHEN ALL IN  / WEIGHT > L
         return false;
 }
 
-void lift_open_door(HDC hdcBufor)
+void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
-    if(lift.current_state==0)
-        lift.current_state=1;
-    if(lift.door_y==lift.pos_y+lift.height-5)
-        lift.current_state=2;
-    USI temp;
-    HPEN old,pen;
-    pen = CreatePen( PS_SOLID, 14,  RGB( 255, 255, 255 ) );
-    old =( HPEN ) SelectObject( hdcBufor, pen );
-    if(lift.current_level%2==0)
-        temp=lift.pos_x-5;
-    else
-        temp=lift.pos_x+lift.width+3;
-    MoveToEx( hdcBufor, temp, lift.pos_y+5, &old_point );
-    LineTo(hdcBufor, temp, lift.door_y );
-    SelectObject( hdcBufor, old );
-    DeleteObject( pen );
-    if(lift.current_state==1)
-        lift.door_y++;
+    Rectangle(hdcBufor, x1,y1,x2,y2);
+}
+
+  void draw_level(HDC hdcBufor, USI level)
+{
+    if(level%2==0)
+    {
+        MoveToEx( hdcBufor, 0,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, SHAFT_X1, (SHAFT_Y2-7 -((level)*lift.height)) );
+    }
     else
     {
-        if(lift.current_state==2)
-            humans_exit_lift(hdcBufor);
-        if(lift.current_state==3)
-            humans_enter_lift(hdcBufor);
-        if(lift.current_state==4)
-            {
-            if(lift.door_y!=lift.pos_y)
-                lift.door_y--;
-            else
-                lift.current_state=0;
-            }
+        MoveToEx( hdcBufor, lift.pos_x+lift.width+10,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
+        LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
     }
+}
+
+void lift_open_door(HDC hdcBufor)
+{
+    lift.door_are_closed=false;
+    if(lift.current_state<3)
+        lift.current_state++;
+    if(lift.door_y!=lift.pos_y+lift.height-5 || lift.current_state>3) //!!!!!!
+    {
+                //!
+                draw_rect_object(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+                //!
+                USI temp;
+                HPEN old,pen;
+                pen = CreatePen( PS_SOLID, 14,  RGB( 255, 255, 255 ) );
+                old =( HPEN ) SelectObject( hdcBufor, pen );
+                if(lift.current_level%2==0)
+                    temp=lift.pos_x-5;
+                else
+                    temp=lift.pos_x+lift.width+3;
+                MoveToEx( hdcBufor, temp, lift.pos_y+5, &old_point );
+                LineTo(hdcBufor, temp, lift.door_y );
+                SelectObject( hdcBufor, old );
+                DeleteObject( pen );
+                if(lift.current_state<4)
+                    lift.door_y++;
+                else
+                {
+                    humans_enter_lift(hdcBufor);
+                    if(lift.current_state==6)
+                        humans_exit_lift(hdcBufor);
+                    if(lift.current_state==7)       //CLOSE DOOORRRRRRRRRRRRRRRRRR
+                        {
+                        if(lift.door_y!=lift.pos_y)
+                            lift.door_y--;
+                        else
+                            {
+                            lift.door_are_closed=true;
+                            lift.current_state=0;
+                            }
+                        }
+                }
+                //ReleaseDC( hwnd, hdcBufor );
+    }
+    else
+    {
+        if(lift.current_state<4) 
+        lift.current_state++;
+    }
+    //std::cout<<"lift dir: "<<lift.direction<<"     " <<lift.max_level<<std::endl;
 }
 
 void lift_change_state(USI dir, HDC hdcBufor)
@@ -353,20 +388,6 @@ void lift_move(HDC hdcBufor)
         if(lift.current_state==0)
             lift.pos_y++;
    }
-}
-
-void draw_level(HDC hdcBufor, USI level)
-{
-    if(level%2==0)
-    {
-        MoveToEx( hdcBufor, 0,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
-        LineTo(hdcBufor, SHAFT_X1, (SHAFT_Y2-7 -((level)*lift.height)) );
-    }
-    else
-    {
-        MoveToEx( hdcBufor, lift.pos_x+lift.width+10,(SHAFT_Y2-7 -((level)*lift.height)), &old_point );
-        LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
-    }
 }
 
 void move_humans(HDC hdcBufor)
