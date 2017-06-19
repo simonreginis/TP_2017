@@ -1,6 +1,0 @@
-﻿  MyForm.cpp
-c:\studia\czerwiec\tp_2017\_664d3c195e224c03949ee362818c1ee9\tonystark\tonystark\MyForm.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\studia\czerwiec\tp_2017\_664d3c195e224c03949ee362818c1ee9\tonystark\tonystark\MyForm.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  MyForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
-  TonyStark.vcxproj -> C:\studia\czerwiec\TP_2017\_664d3c195e224c03949ee362818c1ee9\TonyStark\Debug\TonyStark.exe
-  TonyStark.vcxproj -> C:\studia\czerwiec\TP_2017\_664d3c195e224c03949ee362818c1ee9\TonyStark\Debug\TonyStark.pdb (Partial PDB)
