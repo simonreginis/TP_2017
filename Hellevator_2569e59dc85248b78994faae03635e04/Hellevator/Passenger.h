@@ -16,6 +16,7 @@ namespace Hellevator {
 	/// </summary>
 	public ref class Passenger : public System::Windows::Forms::PictureBox
 	{
+	public: static const int DEFAULT_SIZE = 90;
 	public: static const int RIGHT = 1;
 	public: static const int LEFT = -1;
 
@@ -32,7 +33,7 @@ namespace Hellevator {
 
 			InitializeComponent();
 			this->Location = Point(posX, posY);
-			this->Size = System::Drawing::Size(90, 90);
+			this->Size = System::Drawing::Size(DEFAULT_SIZE, DEFAULT_SIZE);
 			this->Load("Resources/deadpool.png");
 			this->BackColor = System::Drawing::Color::Transparent;
 			this->BringToFront();
@@ -41,7 +42,7 @@ namespace Hellevator {
 		{
 			InitializeComponent();
 			this->Location = Point(posX, posY);
-			this->Size = System::Drawing::Size(90, 90);
+			this->Size = System::Drawing::Size(DEFAULT_SIZE, DEFAULT_SIZE);
 			this->Load("Resources/deadpool.png");
 			this->BackColor = System::Drawing::Color::Transparent;
 			this->BringToFront();

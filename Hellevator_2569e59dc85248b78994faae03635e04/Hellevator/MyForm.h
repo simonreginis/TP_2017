@@ -7,6 +7,7 @@
 #include "Floor.h"
 #include "FloorEventArgs.h"
 #include "ElevatorCallButton.h"
+#include "CreateButton.h"
 
 #define FLOOR_1_HEIGHT 715
 #define FLOOR_2_HEIGHT 545
@@ -34,26 +35,26 @@ namespace Hellevator {
 	private: ArrayList^ picList = gcnew ArrayList();
 	private: ArrayList^ floorsWaiting = gcnew ArrayList();
 	private: int elevatorWaitLeft = 0;
-	private: System::Windows::Forms::Button^  P1_2;
-	private: System::Windows::Forms::Button^  P1_3;
-	private: System::Windows::Forms::Button^  P1_4;
-	private: System::Windows::Forms::Button^  P1_5;
-	private: System::Windows::Forms::Button^  P2_1;
-	private: System::Windows::Forms::Button^  P2_3;
-	private: System::Windows::Forms::Button^  P2_4;
-	private: System::Windows::Forms::Button^  P2_5;
-	private: System::Windows::Forms::Button^  P3_1;
-	private: System::Windows::Forms::Button^  P3_2;
-	private: System::Windows::Forms::Button^  P3_4;
-	private: System::Windows::Forms::Button^  P3_5;
-	private: System::Windows::Forms::Button^  P4_1;
-	private: System::Windows::Forms::Button^  P4_2;
-	private: System::Windows::Forms::Button^  P4_3;
-	private: System::Windows::Forms::Button^  P4_5;
-	private: System::Windows::Forms::Button^  P5_1;
-	private: System::Windows::Forms::Button^  P5_2;
-	private: System::Windows::Forms::Button^  P5_3;
-	private: System::Windows::Forms::Button^  P5_4;
+	private: CreateButton^  P1_2;
+	private: CreateButton^  P1_3;
+	private: CreateButton^  P1_4;
+	private: CreateButton^  P1_5;
+	private: CreateButton^  P2_1;
+	private: CreateButton^  P2_3;
+	private: CreateButton^  P2_4;
+	private: CreateButton^  P2_5;
+	private: CreateButton^  P3_1;
+	private: CreateButton^  P3_2;
+	private: CreateButton^  P3_4;
+	private: CreateButton^  P3_5;
+	private: CreateButton^  P4_1;
+	private: CreateButton^  P4_2;
+	private: CreateButton^  P4_3;
+	private: CreateButton^  P4_5;
+	private: CreateButton^  P5_1;
+	private: CreateButton^  P5_2;
+	private: CreateButton^  P5_3;
+	private: CreateButton^  P5_4;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
 	private: System::Windows::Forms::PictureBox^  pictureBox4;
@@ -88,10 +89,6 @@ namespace Hellevator {
 			this->elevator->floors->Add(floor3);
 			this->elevator->floors->Add(floor4);
 			this->elevator->floors->Add(floor5);
-
-			Passenger^ p = gcnew Passenger(10, 20, floor3, 1);
-			floor5->passengers->Add(p);
-			this->Controls->Add(p);
 		}
 
 	protected:
@@ -126,26 +123,26 @@ namespace Hellevator {
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->P1_2 = (gcnew System::Windows::Forms::Button());
-			this->P1_3 = (gcnew System::Windows::Forms::Button());
-			this->P1_4 = (gcnew System::Windows::Forms::Button());
-			this->P1_5 = (gcnew System::Windows::Forms::Button());
-			this->P2_1 = (gcnew System::Windows::Forms::Button());
-			this->P2_3 = (gcnew System::Windows::Forms::Button());
-			this->P2_4 = (gcnew System::Windows::Forms::Button());
-			this->P2_5 = (gcnew System::Windows::Forms::Button());
-			this->P3_1 = (gcnew System::Windows::Forms::Button());
-			this->P3_2 = (gcnew System::Windows::Forms::Button());
-			this->P3_4 = (gcnew System::Windows::Forms::Button());
-			this->P3_5 = (gcnew System::Windows::Forms::Button());
-			this->P4_1 = (gcnew System::Windows::Forms::Button());
-			this->P4_2 = (gcnew System::Windows::Forms::Button());
-			this->P4_3 = (gcnew System::Windows::Forms::Button());
-			this->P4_5 = (gcnew System::Windows::Forms::Button());
-			this->P5_1 = (gcnew System::Windows::Forms::Button());
-			this->P5_2 = (gcnew System::Windows::Forms::Button());
-			this->P5_3 = (gcnew System::Windows::Forms::Button());
-			this->P5_4 = (gcnew System::Windows::Forms::Button());
+			this->P1_2 = (gcnew CreateButton());
+			this->P1_3 = (gcnew CreateButton());
+			this->P1_4 = (gcnew CreateButton());
+			this->P1_5 = (gcnew CreateButton());
+			this->P2_1 = (gcnew CreateButton());
+			this->P2_3 = (gcnew CreateButton());
+			this->P2_4 = (gcnew CreateButton());
+			this->P2_5 = (gcnew CreateButton());
+			this->P3_1 = (gcnew CreateButton());
+			this->P3_2 = (gcnew CreateButton());
+			this->P3_4 = (gcnew CreateButton());
+			this->P3_5 = (gcnew CreateButton());
+			this->P4_1 = (gcnew CreateButton());
+			this->P4_2 = (gcnew CreateButton());
+			this->P4_3 = (gcnew CreateButton());
+			this->P4_5 = (gcnew CreateButton());
+			this->P5_1 = (gcnew CreateButton());
+			this->P5_2 = (gcnew CreateButton());
+			this->P5_3 = (gcnew CreateButton());
+			this->P5_4 = (gcnew CreateButton());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox4 = (gcnew System::Windows::Forms::PictureBox());
@@ -183,6 +180,9 @@ namespace Hellevator {
 			this->P1_2->TabIndex = 0;
 			this->P1_2->Text = L"2";
 			this->P1_2->UseVisualStyleBackColor = true;
+			this->P1_2->CurrentFloor = 1;
+			this->P1_2->DestinationFloor = 2;
+			this->P1_2->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P1_3
 			// 
@@ -192,6 +192,9 @@ namespace Hellevator {
 			this->P1_3->TabIndex = 1;
 			this->P1_3->Text = L"3";
 			this->P1_3->UseVisualStyleBackColor = true;
+			this->P1_3->CurrentFloor = 1;
+			this->P1_3->DestinationFloor = 3;
+			this->P1_3->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P1_4
 			// 
@@ -201,6 +204,9 @@ namespace Hellevator {
 			this->P1_4->TabIndex = 2;
 			this->P1_4->Text = L"4";
 			this->P1_4->UseVisualStyleBackColor = true;
+			this->P1_4->CurrentFloor = 1;
+			this->P1_4->DestinationFloor = 4;
+			this->P1_4->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P1_5
 			// 
@@ -210,6 +216,9 @@ namespace Hellevator {
 			this->P1_5->TabIndex = 3;
 			this->P1_5->Text = L"5";
 			this->P1_5->UseVisualStyleBackColor = true;
+			this->P1_5->CurrentFloor = 1;
+			this->P1_5->DestinationFloor = 5;
+			this->P1_5->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P2_1
 			// 
@@ -219,6 +228,9 @@ namespace Hellevator {
 			this->P2_1->TabIndex = 5;
 			this->P2_1->Text = L"1";
 			this->P2_1->UseVisualStyleBackColor = true;
+			this->P2_1->CurrentFloor = 2;
+			this->P2_1->DestinationFloor = 1;
+			this->P2_1->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P2_3
 			// 
@@ -228,6 +240,9 @@ namespace Hellevator {
 			this->P2_3->TabIndex = 7;
 			this->P2_3->Text = L"3";
 			this->P2_3->UseVisualStyleBackColor = true;
+			this->P2_3->CurrentFloor = 2;
+			this->P2_3->DestinationFloor = 3;
+			this->P2_3->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P2_4
 			// 
@@ -237,6 +252,9 @@ namespace Hellevator {
 			this->P2_4->TabIndex = 9;
 			this->P2_4->Text = L"4";
 			this->P2_4->UseVisualStyleBackColor = true;
+			this->P2_4->CurrentFloor = 2;
+			this->P2_4->DestinationFloor = 4;
+			this->P2_4->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P2_5
 			// 
@@ -246,6 +264,9 @@ namespace Hellevator {
 			this->P2_5->TabIndex = 11;
 			this->P2_5->Text = L"5";
 			this->P2_5->UseVisualStyleBackColor = true;
+			this->P2_5->CurrentFloor = 2;
+			this->P2_5->DestinationFloor = 5;
+			this->P2_5->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P3_1
 			// 
@@ -255,6 +276,9 @@ namespace Hellevator {
 			this->P3_1->TabIndex = 13;
 			this->P3_1->Text = L"1";
 			this->P3_1->UseVisualStyleBackColor = true;
+			this->P3_1->CurrentFloor = 3;
+			this->P3_1->DestinationFloor = 1;
+			this->P3_1->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P3_2
 			// 
@@ -264,6 +288,9 @@ namespace Hellevator {
 			this->P3_2->TabIndex = 15;
 			this->P3_2->Text = L"2";
 			this->P3_2->UseVisualStyleBackColor = true;
+			this->P3_2->CurrentFloor = 3;
+			this->P3_2->DestinationFloor = 2;
+			this->P3_2->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P3_4
 			// 
@@ -273,6 +300,9 @@ namespace Hellevator {
 			this->P3_4->TabIndex = 17;
 			this->P3_4->Text = L"4";
 			this->P3_4->UseVisualStyleBackColor = true;
+			this->P3_4->CurrentFloor = 3;
+			this->P3_4->DestinationFloor = 4;
+			this->P3_4->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P3_5
 			// 
@@ -282,6 +312,9 @@ namespace Hellevator {
 			this->P3_5->TabIndex = 19;
 			this->P3_5->Text = L"5";
 			this->P3_5->UseVisualStyleBackColor = true;
+			this->P3_5->CurrentFloor = 3;
+			this->P3_5->DestinationFloor = 5;
+			this->P3_5->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P4_1
 			// 
@@ -291,6 +324,9 @@ namespace Hellevator {
 			this->P4_1->TabIndex = 21;
 			this->P4_1->Text = L"1";
 			this->P4_1->UseVisualStyleBackColor = true;
+			this->P4_1->CurrentFloor = 4;
+			this->P4_1->DestinationFloor = 1;
+			this->P4_1->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P4_2
 			// 
@@ -300,6 +336,9 @@ namespace Hellevator {
 			this->P4_2->TabIndex = 23;
 			this->P4_2->Text = L"2";
 			this->P4_2->UseVisualStyleBackColor = true;
+			this->P4_2->CurrentFloor = 4;
+			this->P4_2->DestinationFloor = 2;
+			this->P4_2->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P4_3
 			// 
@@ -309,6 +348,9 @@ namespace Hellevator {
 			this->P4_3->TabIndex = 25;
 			this->P4_3->Text = L"3";
 			this->P4_3->UseVisualStyleBackColor = true;
+			this->P4_3->CurrentFloor = 4;
+			this->P4_3->DestinationFloor = 3;
+			this->P4_3->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P4_5
 			// 
@@ -318,6 +360,9 @@ namespace Hellevator {
 			this->P4_5->TabIndex = 27;
 			this->P4_5->Text = L"5";
 			this->P4_5->UseVisualStyleBackColor = true;
+			this->P4_5->CurrentFloor = 4;
+			this->P4_5->DestinationFloor = 5;
+			this->P4_5->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P5_1
 			// 
@@ -327,6 +372,9 @@ namespace Hellevator {
 			this->P5_1->TabIndex = 29;
 			this->P5_1->Text = L"1";
 			this->P5_1->UseVisualStyleBackColor = true;
+			this->P5_1->CurrentFloor = 5;
+			this->P5_1->DestinationFloor = 1;
+			this->P5_1->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P5_2
 			// 
@@ -336,6 +384,9 @@ namespace Hellevator {
 			this->P5_2->TabIndex = 31;
 			this->P5_2->Text = L"2";
 			this->P5_2->UseVisualStyleBackColor = true;
+			this->P5_2->CurrentFloor = 5;
+			this->P5_2->DestinationFloor = 2;
+			this->P5_2->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P5_3
 			// 
@@ -345,6 +396,9 @@ namespace Hellevator {
 			this->P5_3->TabIndex = 33;
 			this->P5_3->Text = L"3";
 			this->P5_3->UseVisualStyleBackColor = true;
+			this->P5_3->CurrentFloor = 5;
+			this->P5_3->DestinationFloor = 3;
+			this->P5_3->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// P5_4
 			// 
@@ -354,6 +408,9 @@ namespace Hellevator {
 			this->P5_4->TabIndex = 35;
 			this->P5_4->Text = L"4";
 			this->P5_4->UseVisualStyleBackColor = true;
+			this->P5_4->CurrentFloor = 5;
+			this->P5_4->DestinationFloor = 4;
+			this->P5_4->Click += gcnew System::EventHandler(this, &MyForm::create_button_Click);
 			// 
 			// pictureBox1
 			// 
@@ -596,6 +653,30 @@ namespace Hellevator {
 
 		int floorTag = Convert::ToInt32(b->Tag);
 		elevator->AddWaitingFloor(getFloorByTag(floorTag));
+	}
+
+	private: System::Void create_button_Click(System::Object^ sender, System::EventArgs^ e) {
+		CreateButton^ cb = (CreateButton^)sender;
+		
+		Floor^ currentFloor = getFloorByTag(cb->CurrentFloor);
+		Floor^ destinationFloor = getFloorByTag(cb->DestinationFloor);
+		Passenger^ p;
+
+		if (currentFloor->Location.X < elevator->Location.X) {
+			p = gcnew Passenger(currentFloor->Location.X,
+				currentFloor->Location.Y - Passenger::DEFAULT_SIZE,
+				destinationFloor,
+				Passenger::RIGHT);
+		}
+		else {
+			p = gcnew Passenger(currentFloor->Location.X + currentFloor->Width - Passenger::DEFAULT_SIZE,
+				currentFloor->Location.Y - Passenger::DEFAULT_SIZE,
+				destinationFloor,
+				Passenger::LEFT);
+		}
+
+		currentFloor->passengers->Add(p);
+		this->Controls->Add(p);
 	}
 
 	private: void movePassengers() {

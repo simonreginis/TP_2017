@@ -135,6 +135,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CreateButton.cpp" />
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="ElevatorCallButton.cpp" />
     <ClCompile Include="Floor.cpp" />
@@ -144,6 +145,9 @@
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CreateButton.h">
+      <FileType>CppControl</FileType>
+    </ClInclude>
     <ClInclude Include="Elevator.h">
       <FileType>CppControl</FileType>
     </ClInclude>
