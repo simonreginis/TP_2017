@@ -1,4 +1,3 @@
-
 #include "Resource.h"
 #include <tchar.h>
 #include <windows.h>
@@ -14,7 +13,7 @@ HBITMAP hbmHuman[5];
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-USI human_destination=0, number_of_people=0, g_time_value=50;
+USI human_destination=0, number_people_under_lim=0, number_of_people=0, g_time_value=50; //spawn block do tego zeby co okreslony czas pojawialy sie ludki gdy ciagle kliamy. Pomaga tez przy zachowaniu odleglosci miedzy ludkami
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
 
 struct elevator
@@ -22,7 +21,6 @@ struct elevator
     USI current_level=0, max_weight=500, curr_weight=0, last_place_x=SHAFT_X1+4;
     USI height=150, width=290, pos_x=SHAFT_X1+10,pos_y=SHAFT_Y2-((current_level+1)*height)-7;
     USI door_y=pos_y, direction=0, min_level=999, max_level=0, current_state=0; //states - 0 lift is moving / doing nothing, 3 - lift stopped to open door, 4 - door opening, 6 - people in, 7 - people out
-    bool door_are_closed=true;
 };
 elevator lift;
 
