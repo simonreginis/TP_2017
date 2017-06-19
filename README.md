@@ -9,3 +9,6 @@
 
 ## Uwaga 
 * Nie umieszczamy w repozyterium plikow binarnych! 
+
+Potrzebne do poprawnego otworzenia pliku :
+-VS 2015
