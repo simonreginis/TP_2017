@@ -247,6 +247,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	}
 	InsertNewMan(0, 1);
 	elevator.load_array(floorMatrix);
+	elevatorStatus = elevator.make_turn();
 //	elevator.make_order();
 	SetTimer(hWnd, TMR_1, 1, NULL);
 	SetTimer(hWnd, TMR_2, 1, NULL);
@@ -523,7 +524,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			else
 			{
 				onFloor = true;
-				once = true;
+				//once = true;
 			}
 				
 			break;
@@ -531,8 +532,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (onFloor && once)
 			{
 				Sleep(1000);
+				floorMatrix = elevatorStatus.floor_array_next;
 				elevatorStatus = elevator.make_turn();
-				floorMatrix = elevatorStatus.floor_array_prev;
+				
 				newFloor = elevatorStatus.prev_floor;
 				once = false;
 				
