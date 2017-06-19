@@ -9,7 +9,7 @@ HWND hwnd;
 POINT old_point;
 HWND button, button_1, button_2, button_3, button_4;
 HWND radio, radio_1, radio_2, radio_3, radio_4;
-void draw_main(USI init);
+HBITMAP hbmHuman[5];
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -24,8 +24,6 @@ struct elevator
     bool door_are_closed=true;
 };
 elevator lift;
-
-std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 
@@ -252,9 +250,6 @@ bool humans_enter_lift(HDC hdcBufor)            //TRUE WHEN ALL IN  / WEIGHT > L
         return false;
 }
 
-
-
-
 void draw_rect_object(HDC hdcBufor, USI x1, USI y1, USI x2, USI y2) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
     Rectangle(hdcBufor, x1,y1,x2,y2);
@@ -415,7 +410,7 @@ void move_humans(HDC hdcBufor)
     DeleteDC( hdcBitmap );
 }
 
-void draw_main(USI init=0)
+void main_loop(USI init=0)
 {
     HDC hdcOkno,hdcBufor;
     hdcOkno = GetDC( hwnd );
