@@ -171,7 +171,7 @@ namespace Hellevator {
 	}
 
 	public: void AddPassenger(Passenger^ passenger) {
-		if (!passengers->Contains(passenger)) {
+		if (!passengers->Contains(passenger) && ((passengers->Count * 70) / 600) == 0) {
 			passengers->Add(passenger);
 		}
 	}
