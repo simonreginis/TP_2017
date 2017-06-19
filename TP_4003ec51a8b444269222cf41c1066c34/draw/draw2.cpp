@@ -42,7 +42,7 @@ vector2D_t floorMatrix, floorMatrix2;
 static bool once = true;
 int elevatorPeople = 0;
 RECT drawArea = { 280, 0, 1100, 800 };
-
+wchar_t weightText, amountText;
 
 
 // Forward declarations of functions included in this code module:
@@ -242,6 +242,26 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		NULL);
 
 
+	hText = CreateWindowW(L"Static", L"Iloœæ osób:",
+		WS_CHILD | WS_VISIBLE | SS_LEFT,
+		70, 20, 70, 30,
+		hWnd, (HMENU)1, NULL, NULL);
+
+	 hText = CreateWindowW(L"Static", L"WAGA:", 
+                WS_CHILD | WS_VISIBLE | SS_LEFT,
+                85, 50, 70, 30, 
+                hWnd, (HMENU) 1, NULL, NULL);
+
+	 hText = CreateWindowW(L"Static", L"Iloœæ osób:",
+		 WS_CHILD | WS_VISIBLE | SS_LEFT,
+		 130, 20, 70, 30,
+		 hWnd, (HMENU)ID_AMOUNT, NULL, NULL);
+
+	 hText = CreateWindowW(L"Static", L"WAGA:",
+		 WS_CHILD | WS_VISIBLE | SS_LEFT,
+		 130, 50, 70, 30,
+		 hWnd, (HMENU)ID_WEIGHT, NULL, NULL);
+            
 
 	if (!hWnd)
 	{
@@ -254,7 +274,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	floorMatrix = elevatorStatus.floor_array_next;
 	floorMatrix2 = elevatorStatus.floor_array_prev;
 	SetTimer(hWnd, TMR_1, 1, NULL);
-	SetTimer(hWnd, TMR_2, 1, NULL);
+	SetTimer(hWnd, TMR_2, 500, NULL);
 
 	EnumChildWindows(hWnd, (WNDENUMPROC)SetFont, (LPARAM)GetStockObject(DEFAULT_GUI_FONT));
 
@@ -297,14 +317,19 @@ void DrawMenInElevator(HDC hdc, int xOffset)
 // 1 pietro: 587,416
 void DrawElevator(HDC hdc)
 {
+	Font font(&FontFamily(L"Arial"), 12);
+
+	LinearGradientBrush brush(Rect(0, 0, 100, 100), Color::Red, Color::Yellow, LinearGradientModeHorizontal);
+
 	Graphics graphics(hdc);
 	Pen pen2(Color(255, 0, 255, 0), 4.5f);
 	graphics.DrawRectangle(&pen2, 587, elevatorY, 198, 169);
+	graphics.DrawString(L"TEST", -1, &font, PointF(0, 0), &brush);
 	int people = elevatorStatus.elev_content[0] + elevatorStatus.elev_content[1] + elevatorStatus.elev_content[2];
 	switch (elevatorPeople)
 	{
 	case 0:
-
+		
 		break;
 	case 1:
 		DrawMenInElevator(hdc,0);
@@ -384,7 +409,7 @@ void DrawMen(HDC hdc)
 		}
 	}
 
-
+	
 	DeleteDC(menHdc);
 }
 
@@ -488,6 +513,7 @@ void DebugMatrix()
 	{
 		cout << " " << line;
 	}
+	
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -611,7 +637,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 
 					DebugMatrix();
-
+					SetDlgItemInt(hWnd, ID_WEIGHT, elevatorStatus.load, false);
+					SetDlgItemInt(hWnd, ID_AMOUNT, elevatorStatus.people_elev, false);
 					Sleep(1000);
 					
 					floorMatrix2 = floorMatrix;
@@ -622,13 +649,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					newFloor = elevatorStatus.next_floor;
 					once = false;
 
-
+					
+					
 				}
 			}
 
+			
+	
 			break;
 		case TMR_2:
 			if (!once && !onFloor) once = true;
+
+
+			
 
 			break;
 		}

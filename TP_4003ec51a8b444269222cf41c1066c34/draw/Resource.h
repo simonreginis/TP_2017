@@ -22,8 +22,8 @@
 #define ID_ZOOM_OUT                     203
 #define ID_ZOOM_X_IN                    204
 #define ID_ZOOM_X_OUT                   205
-#define ID_RBUTTON1                     210
-#define ID_RBUTTON2                     211
+#define ID_WEIGHT	                    210
+#define ID_AMOUNT	                     211
 #define ID_LABEL1                       300
 #define ID_GROUP1                       400
 #define IDM_FILE_OPEN                   500
