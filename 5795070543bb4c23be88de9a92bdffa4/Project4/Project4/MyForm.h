@@ -24,7 +24,6 @@ namespace Project4 {
 
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-		static int licznik_odleglosci = 0;
 		static int pozycja_windy = 510;
 		static int cel_windy = 510;
 		static int kierunek = 1;
@@ -34,6 +33,8 @@ namespace Project4 {
 		static int licznik_osob = 0;
 		bool zakonczony = false;
 		bool spr;
+		static int i_obciazenie = 0;
+		String^ s_obciazenie;
 
 		//i1na2 - int, znaczy ilość ludzi czekająch na piętrze 1 i chcących jechać na piętro 2
 		//s1na2 - string, odwzorowanie i1na2
@@ -51,8 +52,6 @@ namespace Project4 {
 		String^ s5na1; String^ s5na2; String^ s5na3; String^ s5na4;
 		static int w_na1 = 0, w_na2 = 0, w_na3 = 0, w_na4 = 0, w_na5 = 0;
 		String^ sw_na1; String^ sw_na2; String^ sw_na3; String^ sw_na4; String^ sw_na5;
-		static int i_obciazenie = 0;
-		String^ s_obciazenie;
 
 		//b1na2 - guzik który po wciśnięciu tworzy na 1 piętrze osobę która chce jechać na 2 piętro
 		//l1na2 - label pokazujacy ile razy dany guzik został wciśnięty, w tym przypadku guzik b1na2
@@ -123,7 +122,7 @@ namespace Project4 {
 			//
 		}
 
-		void Przesiadka(static int)		//Funkcja obsługująca wywołanie funkcji w której ludzie na danym piętrze wsiadają do windy i dodają do wektora "kolejnosc" kolejne piętra
+		void Przesiadka(static int)		//Funkcja obsługująca wywołanie funkcji w której ludzie na danym piętrze wysiadają z windy, a także do niej wsiadają dodając do wektora "kolejnosc" kolejne piętra
 		{
 			switch (cel_windy)
 			{
@@ -151,6 +150,7 @@ namespace Project4 {
 				break;
 			}
 
+			//Obsługa interfejsu pokazującego aktualną masę pasażerów w windzie
 			i_obciazenie = 70 * (w_na1 + w_na2 + w_na3 + w_na4 + w_na5);
 			s_obciazenie = Convert::ToString(i_obciazenie);
 			l_obciazenie->Text = "Obciążenie : " + s_obciazenie;
@@ -159,7 +159,9 @@ namespace Project4 {
 
 
 
-		//Funkcje Piętro_x obsługują wsiadanie i wysiadanie osób: zmianę labelów, zmiennych int, dodawanie do kolejności kolejne piętra
+		//Funkcje Piętro_x obsługują wsiadanie i wysiadanie osób: zmianę labelów, zmiennych int, dodawanie do kolejności kolejne piętra, funkcja zostaje wywołana na każde tiknięcie timera2 pod warunkiem spełnienia odpowienich warunków.
+		//Na każde ticknięcie timera2 swoje położenie względem windy może zmienić tylko 1 osoba (wsiadanie lub wysiadanie), to ograniczenie obsługuje zmienna boolowska "spr"
+		//W funkcji odbywa się także aktualizowanie stanów labeli pokazujących ilość osób na danym piętrze i w windzie
 		void Pietro_1(void)
 		{
 			spr = false;
@@ -231,7 +233,7 @@ namespace Project4 {
 			if (P1.empty() == true && w_na1 == 0)		//jesli na pietrze juz nikt nie czeka
 				zakonczony = true;
 
-			if (licznik_osob == 8 && w_na1 == 0 && P1.empty() == false)	//jesli ktos nie wsiadl to winda znowu przyjedzie na dane pietro
+			if (licznik_osob == 8 && w_na1 == 0 && P1.empty() == false)	//jesli ktos nie wsiadl to winda bo jest ona pełna to winda znowu przyjedzie na dane pietro
 			{
 				zakonczony = true;
 				kolejnosc.push_back(1);
@@ -1253,7 +1255,7 @@ namespace Project4 {
 		}
 #pragma endregion
 
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e)		//zegar działa cały czas i na każdy tick aktualizuje wekor kolejnosci jazdy dla windy i cel jazdy windy, a także obsługuje same poruszeni się windy. Zatrzymuje się tylko na symboliczny czas kiedy ludzie "wsiadają" do windy, potem jest ponownie odpalany przez timer2
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e)		//zegar działa cały czas i na każdy tick aktualizuje wekor kolejnosci jazdy dla windy i cel jazdy windy, a także obsługuje samo poruszanie się windy. Zatrzymuje się tylko na symboliczny czas kiedy ludzie "wsiadają" do windy, potem jest ponownie odpalany przez timer2
 	{
 		timer2->Stop();
 		//czyszczenie niepotrzebnych pieter w kolejce 
@@ -1279,7 +1281,7 @@ namespace Project4 {
 				kierunek = 1;
 			if (pozycja_windy < cel_windy)
 				kierunek = -1;
-
+			//poruszanie się windy
 			pozycja_windy -= 2 * kierunek;
 			this->pictureBox2->Location = System::Drawing::Point(288, pozycja_windy);
 		}
@@ -1302,8 +1304,9 @@ namespace Project4 {
 				b++;
 			}
 			timer1->Stop();
-			timer2->Start();
+			timer2->Start();	//podczas działania timer2 odbywa się wsiadanie i wysiadanie pasażerów
 		}
+
 		//timer odmierzający 5 sec bezczynności po których winda ma zjechać na parter
 		if (pozycja_windy == cel_windy && kolejnosc.size() == 0)
 		{
@@ -1481,7 +1484,7 @@ namespace Project4 {
 			 //timer sprawiajacy ze pasazerowie wsiadaja pojedynczo i po kolei
 	private: System::Void timer2_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
-		if (zakonczony == true)
+		if (zakonczony == true)		//wszyscy wysiedli, wsiedli albo nie ma już miejsca
 		{
 			zakonczony = false;
 			timer1->Start();
@@ -1489,7 +1492,7 @@ namespace Project4 {
 		}
 		else Przesiadka(cel_windy);	//Wsiadanie ludzi: zmienianie danych na labelach i dodawanie wybranych przez ludzi pięter do wektora
 	}
-	private: System::Void timer3_Tick(System::Object^  sender, System::EventArgs^  e)
+	private: System::Void timer3_Tick(System::Object^  sender, System::EventArgs^  e)		//naliczanie 5 sec bezczynności po których winda ma zjechać na najniższe piętro
 	{
 		bezczynnosc++;
 
