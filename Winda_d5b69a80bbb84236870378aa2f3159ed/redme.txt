@@ -1,0 +1,6 @@
+Projekt zawiera symulacje windy, gdzie po nacisnieciu przycisku na dowolnym pietrze odpowiednio dodaja sie one do kolejki.
+jezeli w windzie nie znajduja sie osoby to po 5 sekundach winda zjedzie na 1 pietro.
+
+wykonanie:
+Ewelina Kamyszek
+Olgierd Kowalczyk
