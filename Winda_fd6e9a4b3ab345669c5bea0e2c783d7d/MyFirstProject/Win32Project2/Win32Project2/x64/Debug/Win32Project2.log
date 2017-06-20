@@ -1,0 +1,4 @@
+﻿  Win32Project2.cpp
+c:\users\domi\source\repos\myfirstproject\win32project2\win32project2\win32project2.cpp(77): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+  Win32Project2.vcxproj -> C:\Users\Domi\Source\Repos\MyFirstProject\Win32Project2\x64\Debug\Win32Project2.exe
+  Win32Project2.vcxproj -> C:\Users\Domi\Source\Repos\MyFirstProject\Win32Project2\x64\Debug\Win32Project2.pdb (Partial PDB)
