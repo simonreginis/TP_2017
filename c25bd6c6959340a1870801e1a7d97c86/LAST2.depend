@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1496548766 source:c:\users\zm\desktop\stud\projekt\ost\last v2\main.cpp
+	"Resource.h"
+	<tchar.h>
+	<windows.h>
+	<fstream>
+	<vector>
+	<cmath>
+	<iostream>
+	<sstream>
+
+1496543440 c:\users\zm\desktop\stud\projekt\ost\last v2\resource.h
+
