@@ -3,11 +3,28 @@
 #include <cstdlib>
 #include <time.h>
 #include <conio.h>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
 LPSTR NazwaKlasy = "Klasa Okienka";
 MSG g_komunikat;
+
+bool czy_piszemy=false;
+HWND g_przycisk_wczytanie;
+HWND g_przycisk_nagranie;
+HWND g_przycisk_stop_nagranie;
+HWND g_przycisk_reset;
+HWND g_speed_p;
+HWND g_speed_m;
+const int ID_BUTTON1=1;
+const int ID_BUTTON2=2;
+const int ID_BUTTON3=3;
+const int ID_BUTTON4=4;
+const int ID_BUTTON5=5;
+const int ID_BUTTON6=6;
+int speed=50;
 
 struct klocek{
 	int szerokosc;
@@ -27,8 +44,6 @@ struct klocek{
 
 klocek Klocki[6];
 
-const int ID_BUTTON1=1;
-HWND g_przycisk_restart;
 const int stala_g=10;
 const int szerokosc=900;
 const int wysokosc=700;
@@ -75,6 +90,10 @@ int puszczenie_klocka(HDC hdcOkno, klocek Klocki[6]);
 int opadajacy_klocek(HDC hdcOkno, klocek Klocki[6], int numer_klocka);
 bool sprawdzenie_opadania(HDC hdcOkno, klocek Klocki[6], int &numer_klocka);
 bool opadajacy(klocek Klocki[6], int numer_klocka);
+int resetowanie_sytuacji(HDC hdcOkno, klocek Klocki[6]);
+int wczytanie_sekwencji(HDC hdcOkno, klocek Klocki[6]);
+int wlaczenie_zapisywania(HDC hdcOkno, klocek Klocki[6]);
+int zapisanie_ruchow(HDC hdcOkno, klocek Klocki[6], int ucz, int pusz);
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
@@ -153,8 +172,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	for(int i=0;i<6;i++)
 	{
 		PedzelKlockow = CreateSolidBrush(Klocki[i].kolor);
-		//PioroKlockow=CreatePen( PS_SOLID, 1, Klocki[i].kolor );
-		//SelectObject( hdcOkno, PioroKlockow );
 		SelectObject( hdcOkno, PedzelKlockow );
 		Rectangle( hdcOkno, Klocki[i].polozenie_x, Klocki[i].polozenie_y, Klocki[i].polozenie_x+szerokosc_klocka, wysokosc_podloza );
 	}
@@ -167,11 +184,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	DeleteObject( PedzelBrazowy );
 	DeleteObject( PedzelCzerwony );
 	DeleteObject( Pudelko_pedzel );
-	//g_przycisk_restart=CreateWindowEx( 0, "BUTTON", "Restart", WS_CHILD | WS_VISIBLE, 50, 50, 150, 80, hwnd, ( HMENU ) ID_BUTTON1, hInstance, NULL );
-	
-	
-	
-	
+	g_przycisk_wczytanie=CreateWindowEx( 0, "BUTTON", "Wczytaj dane", WS_CHILD | WS_VISIBLE, 50, wysokosc-100, 150, 80, hwnd, ( HMENU ) ID_BUTTON1, hInstance, NULL );
+	g_przycisk_nagranie=CreateWindowEx( 0, "BUTTON", "Zacznij zapisywac dane", WS_CHILD | WS_VISIBLE, 50+170, wysokosc-100, 200, 80, hwnd, ( HMENU ) ID_BUTTON2, hInstance, NULL );
+	g_przycisk_stop_nagranie=CreateWindowEx( 0, "BUTTON", "Skoncz zapisywac dane", WS_CHILD | WS_VISIBLE, 50+190+200, wysokosc-100, 200, 80, hwnd, ( HMENU ) ID_BUTTON3, hInstance, NULL );
+	g_przycisk_reset=CreateWindowEx( 0, "BUTTON", "Reset", WS_CHILD | WS_VISIBLE, 50+190+200+220, wysokosc-100, 100, 80, hwnd, ( HMENU ) ID_BUTTON4, hInstance, NULL );
+	g_speed_p=CreateWindowEx( 0, "BUTTON", "+", WS_CHILD | WS_VISIBLE, 50+190+200+220+120, wysokosc-80, 30, 30, hwnd, ( HMENU ) ID_BUTTON5, hInstance, NULL );
+	g_speed_m=CreateWindowEx( 0, "BUTTON", "-", WS_CHILD | WS_VISIBLE, 50+190+200+220+120+40, wysokosc-80, 30, 30, hwnd, ( HMENU ) ID_BUTTON6, hInstance, NULL );
 	
 	
 	ReleaseDC( hwnd, hdcOkno );
@@ -211,43 +229,45 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
     		 		if(fi1<90&&sprawdzenie_wspolrzednych_1(fi1+1, fi2))
     		 			fi1++;
     		 		rysowanie_arm_1(hdcOkno, Klocki);
+    		 		if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 0, 0);
     		 		break;
     		 	case VK_DOWN:
     		 		if(fi1>-90&&sprawdzenie_wspolrzednych_1(fi1-1, fi2))
     		 			fi1--;
     		 		rysowanie_arm_1(hdcOkno, Klocki);
+    		 		if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 0, 0);
     		 		break;
     		 	case VK_LEFT:
     		 		if(sprawdzenie_wspolrzednych_1(fi1, fi2+1))
     		 			fi2++;
     		 		rysowanie_arm_1(hdcOkno, Klocki);
+    		 		if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 0, 0);
     		 		break;
     		 	case VK_RIGHT:
     		 		if(sprawdzenie_wspolrzednych_1(fi1, fi2-1))
     		 			fi2--;
     		 		rysowanie_arm_1(hdcOkno, Klocki);
+    		 		if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 0, 0);
     		 		break;
     		 	case VK_BACK:
-    		 		//rysowanie_klockow(hdcOkno, Klocki);
+    		 		rysowanie_klockow(hdcOkno, Klocki);
     		 		break;
     		 	case VK_RETURN:
     		 		przyczepienie_klocka(Klocki);
+    		 		if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 1, 0);
 					break;
 				case VK_SPACE:
 					for(int i=0;i<6;i++)
-					{
 						if(Klocki[i].uziemiony==true)
 							puszczenie_klocka(hdcOkno, Klocki);
-					}
-					//puszczenie_klocka(hdcOkno, Klocki);
+					if(czy_piszemy)
+    		 			zapisanie_ruchow(hdcOkno, Klocki, 0, 1);
 					break;
-				/*case VK_DELETE:
-					{
-						HINSTANCE hInstance; HINSTANCE hPrevInstance; LPSTR lpCmdLine; int nCmdShow;
-					
-						WinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow );
-						break;
-					}*/
 			 }
 		}
 	case WM_COMMAND:
@@ -255,10 +275,49 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		{
 			case ID_BUTTON1:
 				{
-					HINSTANCE hInstance; HINSTANCE hPrevInstance; LPSTR lpCmdLine; int nCmdShow;
-					WinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow );
-					break;
+					wczytanie_sekwencji(hdcOkno, Klocki);
+					resetowanie_sytuacji(hdcOkno, Klocki);
 				}
+				break;
+			case ID_BUTTON2:
+				wlaczenie_zapisywania(hdcOkno, Klocki);
+				czy_piszemy=true;
+				break;
+			case ID_BUTTON3:
+				czy_piszemy=false;
+				break;
+			case ID_BUTTON4:
+				resetowanie_sytuacji(hdcOkno, Klocki);
+				{
+						klocek Nowe_Klocki[6];
+						int kolor_tym;
+						for(int i=0;i<6;i++)
+						{
+							Nowe_Klocki[i].szerokosc=szerokosc_klocka;
+							Nowe_Klocki[i].wysokosc=wysokosc_klocka;
+							Nowe_Klocki[i].polozenie_x=arm_s_x-(lenght_arm1+lenght_arm2)/1.4+i*szerokosc_klocka;
+							Nowe_Klocki[i].polozenie_y=wysokosc_podloza-wysokosc_klocka;
+							kolor_tym=losowanie_koloru();
+							Nowe_Klocki[i].kolor=kolor_tym;
+						}
+						HBRUSH PedzelKlockow;
+						HPEN PioroKlockow;
+						for(int i=0;i<6;i++)
+						{
+							PedzelKlockow = CreateSolidBrush(Nowe_Klocki[i].kolor);
+							SelectObject( hdcOkno, PedzelKlockow );
+							Rectangle( hdcOkno, Nowe_Klocki[i].polozenie_x, Nowe_Klocki[i].polozenie_y, Nowe_Klocki[i].polozenie_x+szerokosc_klocka, wysokosc_podloza );
+						}
+						DeleteObject( PedzelKlockow );
+						DeleteObject( PioroKlockow );
+				}
+				break;
+			case ID_BUTTON5:
+				speed=speed*0.9;
+				break;
+			case ID_BUTTON6:
+				speed=speed*1.1;
+				break;
 		}
 	} 
    
@@ -333,13 +392,8 @@ int wspolrzedne_arm_2()
 	double radian_psi;
 	radian_psi=(fi2*M_PI)/180.0f;
 	int prob_x,prob_y;
-	prob_x=arm1_x+lenght_arm2*cos(radian_psi);
-	prob_y=arm1_y+lenght_arm2*sin(radian_psi);
-	//if(prob_x>szerokosc||prob_x<0||prob_y<0||prob_y>wysokosc_podloza)
-		
 	arm2_x=arm1_x+lenght_arm2*cos(radian_psi);
 	arm2_y=arm1_y+lenght_arm2*sin(radian_psi);
-	//if(arm1_x+lenght_arm2*cos(radian_psi)||arm1_y+lenght_arm2*sin(radian_psi))
 }
 
 int rysowanie_arm_2(HDC hdcOkno)
@@ -462,7 +516,7 @@ int przyczepienie_klocka(klocek Klocki[6])
 int puszczenie_klocka(HDC hdcOkno, klocek Klocki[6])
 {
 	int numer_klocka;
-	int predkosc_opadania=10;
+	int predkosc_opadania=30;
 	if(sprawdzenie_opadania(hdcOkno, Klocki, numer_klocka)==true)
 	{
 		Klocki[numer_klocka].uziemiony=false;
@@ -472,7 +526,7 @@ int puszczenie_klocka(HDC hdcOkno, klocek Klocki[6])
 	{
 		opadajacy_klocek(hdcOkno, Klocki, numer_klocka);
 		predkosc_opadania+=stala_g;
-		Sleep(2000/predkosc_opadania*0.4);
+		Sleep(2000/predkosc_opadania);
 	}
 }
 
@@ -517,7 +571,7 @@ bool sprawdzenie_opadania(HDC hdcOkno, klocek Klocki[6], int &numer_klocka)
 				czy_mozna=0;
 			if(czy_mozna==1)
 				{
-					numer_klocka=i;
+					numer_klocka=i;					
 					return true;
 				}
 			else return false;
@@ -538,7 +592,147 @@ bool opadajacy(klocek Klocki[6], int numer_klocka)
 		if(czy_mozna==1)
 			return true;
 		else return false;
-}		
+}	
+
+int resetowanie_sytuacji(HDC hdcOkno, klocek Klocki[6])
+{
+	HPEN PioroCzarne, PioroBiale, Pudelko;
+	HBRUSH PedzelCzerwony, PedzelBialy, Pudelko_kolo;
+	POINT stary;
+	PioroCzarne = CreatePen( PS_SOLID, 1, 0x000000 );
+	PioroBiale = CreatePen( PS_SOLID, 1, 0xFFFFFF );
+	PedzelCzerwony = CreateSolidBrush(0x0000FF);
+	PedzelBialy = CreateSolidBrush(0xFFFFFF);
+	Pudelko =( HPEN ) SelectObject( hdcOkno, PioroBiale );
+	Pudelko_kolo =( HBRUSH ) SelectObject( hdcOkno, PedzelBialy );
+	Ellipse( hdcOkno, arm_s_x-promien_s, arm_s_y-promien_s, arm_s_x+promien_s, arm_s_y+promien_s );
+	Ellipse( hdcOkno, arm1_x-promien_s+2, arm1_y-promien_s+2, arm1_x+promien_s-2, arm1_y+promien_s-2 );
+	MoveToEx( hdcOkno, arm2_x, arm2_y, & stary );
+	LineTo( hdcOkno, arm1_x, arm1_y);
+	LineTo( hdcOkno, arm_s_x, arm_s_y);
+	
+	arm1_x=arm_s_x;
+	arm1_y=arm_s_y+lenght_arm1;
+	arm2_x=arm1_x+lenght_arm2;
+	arm2_y=arm1_y;
+	fi1=0;
+	fi2=0;
+	SelectObject( hdcOkno, PioroCzarne );
+	MoveToEx( hdcOkno, arm_s_x, arm_s_y, & stary );
+	LineTo( hdcOkno, arm1_x, arm1_y );
+	LineTo( hdcOkno, arm2_x, arm2_y );
+	DeleteObject( PioroCzarne );
+	DeleteObject( Pudelko );
+	DeleteObject( PedzelCzerwony );
+	DeleteObject( Pudelko_kolo );
+	
+	HBRUSH PedzelKlockow;
+	PedzelBialy = CreateSolidBrush(0xFFFFFF);
+	PioroBiale = CreatePen( PS_SOLID, 1, 0xFFFFFF );
+	
+	for(int i=0;i<6;i++)
+	{
+		if(Klocki[i].uziemiony==true)
+		{
+			HBRUSH Pedzel_nowy;
+			HPEN Pioro_nowe;
+			SelectObject( hdcOkno, PioroBiale );
+			SelectObject( hdcOkno, PedzelBialy );
+			Rectangle( hdcOkno, Klocki[i].polozenie_x, Klocki[i].polozenie_y, Klocki[i].polozenie_x+szerokosc_klocka, Klocki[i].polozenie_y+wysokosc_klocka );
+			
+			HBRUSH PedzelBrazowy;
+			PedzelBrazowy = CreateSolidBrush(0x004B96);
+			SelectObject( hdcOkno, PedzelBrazowy );
+			Rectangle( hdcOkno, 20, wysokosc_podloza, szerokosc-50, wysokosc-100 );
+			
+		} else 
+		{
+			HBRUSH Pedzel_nowszy;
+			HPEN Pioro_nowsze;
+			Pioro_nowsze=CreatePen( PS_SOLID, 1, 0xFFFFFF);
+			Pedzel_nowszy=CreateSolidBrush(0xFFFFFF);
+			SelectObject( hdcOkno, Pioro_nowsze );
+			SelectObject( hdcOkno, Pedzel_nowszy );
+			Rectangle( hdcOkno, Klocki[i].polozenie_x, Klocki[i].polozenie_y, Klocki[i].polozenie_x+szerokosc_klocka, Klocki[i].polozenie_y+wysokosc_klocka );
+			DeleteObject( Pedzel_nowszy );
+			DeleteObject( Pioro_nowsze );
+		}
+	}
+	DeleteObject( PedzelKlockow );
+	DeleteObject( PedzelBialy );
+	DeleteObject( PioroBiale );
+}
+
+wczytanie_sekwencji(HDC hdcOkno, klocek Klocki[6])
+{
+	resetowanie_sytuacji(hdcOkno, Klocki);
+	klocek Nowe_Klocki[6];
+	int kolor_tym;
+	for(int i=0;i<6;i++)
+	{
+		Nowe_Klocki[i].szerokosc=szerokosc_klocka;
+		Nowe_Klocki[i].wysokosc=wysokosc_klocka;
+		Nowe_Klocki[i].polozenie_x=arm_s_x-(lenght_arm1+lenght_arm2)/1.4+i*szerokosc_klocka;
+		Nowe_Klocki[i].polozenie_y=wysokosc_podloza-wysokosc_klocka;
+		kolor_tym=losowanie_koloru();
+		Nowe_Klocki[i].kolor=kolor_tym;
+	}
+	HBRUSH PedzelKlockow;
+	HPEN PioroKlockow;
+	for(int i=0;i<6;i++)
+	{
+		PedzelKlockow = CreateSolidBrush(Nowe_Klocki[i].kolor);
+		SelectObject( hdcOkno, PedzelKlockow );
+		Rectangle( hdcOkno, Nowe_Klocki[i].polozenie_x, Nowe_Klocki[i].polozenie_y, Nowe_Klocki[i].polozenie_x+szerokosc_klocka, wysokosc_podloza );
+	}
+	DeleteObject( PedzelKlockow );
+	DeleteObject( PioroKlockow );
+		
+	int beta_1, beta_2;
+	bool uczepiony, puszczony;
+	ifstream ifs;
+	string a_kat1, b_kat2, c_przyczepienie, d_puszczenie;
+	rysowanie_arm_1(hdcOkno, Nowe_Klocki);
+	ifs.open("dane_robota.txt", ios::in);
+	while(!ifs.eof())
+	{
+		Sleep(speed);
+		ifs>>a_kat1>>b_kat2>>c_przyczepienie>>d_puszczenie;
+		beta_1=atoi(a_kat1.c_str());
+		beta_2=atoi(b_kat2.c_str());
+		uczepiony=atoi(c_przyczepienie.c_str());
+		puszczony=atoi(d_puszczenie.c_str());
+		fi1=beta_1;
+		fi2=beta_2;
+		rysowanie_arm_1(hdcOkno, Nowe_Klocki);
+		if(uczepiony==true)
+			przyczepienie_klocka(Nowe_Klocki);
+		if(puszczony==true)
+			for(int i=0;i<6;i++)
+						if(Nowe_Klocki[i].uziemiony==true)
+						{
+							puszczenie_klocka(hdcOkno, Nowe_Klocki);
+						}
+	}
+}
+
+int wlaczenie_zapisywania(HDC hdcOkno, klocek Klocki[6])
+{
+	ofstream ofs;
+	ofs.open("dane_robota.txt", ios::out|ios::trunc);
+	ofs.close();
+	zapisanie_ruchow(hdcOkno, Klocki, 0, 0);
+}
+
+int zapisanie_ruchow(HDC hdcOkno, klocek Klocki[6], int ucz, int pusz)
+{
+	ofstream ofs;
+	ofs.open("dane_robota.txt", ios::out|ios::app);
+	ofs<<fi1<<" "<<fi2<<" "<<ucz<<" "<<pusz<<endl;
+	ofs.close();
+}
+
+
 
 
 
