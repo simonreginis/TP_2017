@@ -13,14 +13,14 @@ HBITMAP hbmHuman[5];
 BOOL Init(HINSTANCE hInstance, int nCmdShow);
 ATOM RegisterClass(HINSTANCE hInstance);
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-USI human_destination=0, number_people_under_lim=0, number_of_people=0, g_time_value=50; //spawn block do tego zeby co okreslony czas pojawialy sie ludki gdy ciagle kliamy. Pomaga tez przy zachowaniu odleglosci miedzy ludkami
+USI human_destination=0, number_people_above_lim=0, number_of_people=0, g_time_value=50; //spawn block do tego zeby co okreslony czas pojawialy sie ludki gdy ciagle kliamy. Pomaga tez przy zachowaniu odleglosci miedzy ludkami
 USI SHAFT_X1=357,SHAFT_X2=667,SHAFT_Y1=5,SHAFT_Y2=768; //const
 
 struct elevator
 {
-    USI current_level=0, max_weight=500, curr_weight=0, last_place_x=SHAFT_X1+4;
+    USI current_level=0, max_weight=600, curr_weight=0, last_place_x=SHAFT_X1+4;
     USI height=150, width=290, pos_x=SHAFT_X1+10,pos_y=SHAFT_Y2-((current_level+1)*height)-7;
-    USI door_y=pos_y, direction=0, min_level=999, max_level=0, current_state=0; //states - 0 lift is moving / doing nothing, 3 - lift stopped to open door, 4 - door opening, 6 - people in, 7 - people out
+    USI door_y=pos_y, direction=0, min_level=999, max_level=0, current_state=0,last_visited_level=5555;; //states - 0 lift is moving / doing nothing, 3 - lift stopped to open door, 4 - door opening, 6 - people in, 7 - people out
 };
 elevator lift;
 
@@ -287,31 +287,30 @@ void lift_open_door(HDC hdcBufor)
     if(lift.current_state==1)
     {
         lift.door_y++;
-        number_people_under_lim=check_limit();
+        number_people_above_lim=check_limit();
     }
     else
     {
         if(lift.current_state==2)
             humans_exit_lift(hdcBufor);
         if(lift.current_state==3)
-            humans_enter_lift(hdcBufor, number_people_under_lim);
+            humans_enter_lift(hdcBufor, number_people_above_lim);
         if(lift.current_state==4)
             {
             if(lift.door_y!=lift.pos_y)
                 lift.door_y--;
             else
+                {
                 lift.current_state=0;
+                lift.last_visited_level=lift.current_level;
+                }
             }
     }
 }
 
 void lift_change_state(USI dir, HDC hdcBufor)
 {
-    if(dir==2)
-        lift.current_level=4-(((lift.pos_y+lift.height-15)/lift.height));
-    else
-        lift.current_level=4-(((lift.pos_y-15)/lift.height));
-        if(buttons_on_level[lift.current_level]==dir || buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==4)
+        if(buttons_on_level[lift.current_level]==dir || buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==4 && lift.last_visited_level!=lift.current_level)
             {
             if(lift.current_state==0)
                 lift.door_y=lift.pos_y;
@@ -327,46 +326,68 @@ void lift_move(HDC hdcBufor)
     WText.str(std::string());
     WText << "Current lift weight: ";
     WText << lift.curr_weight;
+    if(lift.curr_weight+70>=lift.max_weight)
+		SetTextColor(hdcBufor, RGB(255,0,0));
     TextOut(hdcBufor, 10, 10, WText.str().c_str(), WText.str().length());
     Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
    if(lift.direction==2)
    {
+       lift.current_level=4-(((lift.pos_y+lift.height-15)/lift.height));
+        if(lift.current_level<0)
+            lift.current_level=0;
+        if(lift.current_level>4)
+            lift.current_level=4;
        if(lift.current_level!=lift.max_level)
             lift_change_state(2,hdcBufor);
         else
         {
+        if(lift.current_level!=lift.last_visited_level)
+            {
             if(lift.current_state==0)
                 lift.door_y=lift.pos_y;
             lift_open_door(hdcBufor);
             if(lift.current_state==0)
                 {
                 lift.max_level=0;
+                if(lift.curr_weight+70>=lift.max_weight &&( buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==1))
+                    lift.max_level=lift.current_level;
                 if(lift.min_level!=999)
                     lift.direction=1;
                 else
                     lift.direction=0;
                 }
+            }
         }
         if(lift.current_state==0)
             lift.pos_y--;
    }
    else if(lift.direction==1)
    {
+       lift.current_level=4-(((lift.pos_y-15)/lift.height));
+        if(lift.current_level<0)
+            lift.current_level=0;
+        if(lift.current_level>4)
+            lift.current_level=4;
         if(lift.current_level!=lift.min_level)
             lift_change_state(1,hdcBufor);
         else
         {
+        if(lift.current_level!=lift.last_visited_level)
+            {
             if(lift.current_state==0)
                     lift.door_y=lift.pos_y;
             lift_open_door(hdcBufor);
             if(lift.current_state==0)
                 {
                 lift.min_level=999;
+                if(lift.curr_weight+70>=lift.max_weight &&( buttons_on_level[lift.current_level]==3 || buttons_on_level[lift.current_level]==2))
+                    lift.max_level=lift.current_level;
                 if(lift.max_level!=0)
                     lift.direction=2;
                 else
                     lift.direction=0;
                 }
+            }
         }
         if(lift.current_state==0)
             lift.pos_y++;
@@ -386,7 +407,6 @@ void draw_level(HDC hdcBufor, USI level)
         LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
     }
 }
-
 void move_humans(HDC hdcBufor)
 {
     BITMAP bmInfo;
@@ -407,6 +427,18 @@ void move_humans(HDC hdcBufor)
         }
     DeleteDC( hdcBitmap );
 }
+
+void draw_buff_elem(HDC hdcBufor, HPEN pen2, HPEN old, USI init)
+{
+    Rectangle(hdcBufor, 0, 0, 1024, 768);
+    Rectangle(hdcBufor, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
+    for(int i=0;i<5;i++)
+        draw_level(hdcBufor, i);
+    old =( HPEN ) SelectObject( hdcBufor, pen2 );
+    if(init==1)
+        Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+}
+
 void main_loop(USI init=0)
 {
     HDC hdcOkno,hdcBufor;
@@ -416,15 +448,9 @@ void main_loop(USI init=0)
     hdcBufor = CreateCompatibleDC( hdcOkno );
 	SelectObject(hdcBufor, Membitmap);
     pen = CreatePen( PS_SOLID, 2,  RGB( 0, 0, 0 ) );
-    old =( HPEN ) SelectObject( hdcBufor, pen );
-    Rectangle(hdcBufor, 0, 0, 1024, 768);
-    Rectangle(hdcBufor, SHAFT_X1, SHAFT_Y1, SHAFT_X2, SHAFT_Y2);
-    for(int i=0;i<5;i++)
-        draw_level(hdcBufor, i);
     pen2 = CreatePen( PS_SOLID, 1,  RGB( 250, 10, 10 ) );
-    old =( HPEN ) SelectObject( hdcBufor, pen2 );
-    if(init==1)
-        Rectangle(hdcBufor, lift.pos_x, lift.pos_y, lift.pos_x+lift.width, lift.pos_y+lift.height);
+    old =( HPEN ) SelectObject( hdcBufor, pen );
+    draw_buff_elem(hdcBufor, pen2, old, init);
     lift_move(hdcBufor);
     SelectObject( hdcBufor, old );
     move_humans(hdcBufor);
@@ -436,7 +462,6 @@ void main_loop(USI init=0)
     DeleteObject(Membitmap);
     ReleaseDC( hwnd, hdcOkno );
     DeleteDC( hdcBufor );
-    // DELETE................. ???
 }
 
 BOOL Init(HINSTANCE hInstance, int nCmdShow)
