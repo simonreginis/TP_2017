@@ -26,7 +26,6 @@ elevator lift;
 
 std::vector <USI> buttons_on_level;  //// 0-0 1-down 2-up 3-all
 
-
 class human
 {
 public:
@@ -36,20 +35,23 @@ public:
     void wait_for_lift();
     bool enter_lift();
     void exit_lift();
+    void set_pos_x(USI x) {pos_x=x;}
+    void set_pos_y(USI temp) {pos_y=temp;}
+    void set_dir(USI dir) {direction=dir;}
     USI get_pos_x() {return pos_x;}
     USI get_pos_y() {return pos_y;}
-    void set_pos_y(USI temp) {pos_y=temp;}
     USI get_side() {return side;}
     USI set_side(USI side_temp ) {side=side_temp;}
     USI set_id(USI id_temp ) {id=id_temp;}
     USI get_dir() {return direction;}
-    void set_dir(USI dir) {direction=dir;}
     USI get_level() {return start_level;}
     USI get_dest() {return dest_level;}
     USI get_id() {return id;}
     USI get_weight() {return h_weight;}
+    bool waiting_near_shaft() {return reached_shaft;}
 private:
     USI start_level=0,dest_level=0, pos_x=0,pos_y=0, side=2, direction=0, h_weight=70, id=0; // SIDE=1 - Lewa
+    bool reached_shaft=false;
 };
 
 void set_max_or_min(USI lvl)
@@ -101,20 +103,22 @@ void human::wait_for_lift()
     HDC hdcTemp = GetDC( hwnd );
     if(get_side()==1)
     {
-        if(GetPixel(hdcTemp, pos_x+32, pos_y)==RGB(255,255,255))
+        if(GetPixel(hdcTemp, pos_x+40, pos_y-8)==RGB(255,255,255))
             pos_x++;
         else
             {
+            reached_shaft=true;
             set_max_or_min(start_level);
             set_max_or_min(dest_level);
             }
     }
     else if(get_side()==2)
         {
-        if(GetPixel(hdcTemp, pos_x-32, pos_y)==RGB(255,255,255))
+        if(GetPixel(hdcTemp, pos_x-10, pos_y)==RGB(255,255,255))
             pos_x--;
         else
             {
+            reached_shaft=true;
             set_max_or_min(start_level);
             set_max_or_min(dest_level);
             }
@@ -130,6 +134,8 @@ void human::add_values_to_lift()
     if(buttons_on_level[dest_level]==0)
         buttons_on_level[dest_level]=4;
     set_side(0);
+    set_max_or_min(start_level);
+	set_max_or_min(dest_level);
 }
 
 bool human::enter_lift()
@@ -166,6 +172,8 @@ void human::exit_lift()
         {
             set_side(5);
             lift.last_place_x-=32;
+            if(lift.last_place_x<SHAFT_X1+4)
+				lift.last_place_x=SHAFT_X1+4;
             lift.curr_weight-=70;
         }
     }
@@ -176,6 +184,8 @@ void human::exit_lift()
         {
             set_side(5);
             lift.last_place_x-=32;
+            if(lift.last_place_x<SHAFT_X1+4)
+				lift.last_place_x=SHAFT_X1+4;
             lift.curr_weight-=70;
         }
 }
@@ -184,11 +194,14 @@ std::vector <human> people;
 
 void delete_human(USI id)
 {
-    people[id]=people.back();
-    people[id].set_id(id);
-    //people.back().~human(); //! ????
-    people.pop_back();
-    number_of_people--;
+    if(number_of_people>0)
+        {
+            people[id]=people.back();
+            people[id].set_id(id);
+            //people.back().~human(); //! ????
+            people.pop_back();
+            number_of_people--;
+        }
 }
 
 bool humans_exit_lift(HDC hdcBufor)
@@ -222,43 +235,56 @@ bool humans_exit_lift(HDC hdcBufor)
 
 USI check_limit()
 {
-    USI number=0,temp=0;
+    USI number=0;
     for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
-        {
-            if(it->get_level()==lift.current_level && (it->get_dir()==lift.direction || lift.current_level==lift.max_level || lift.current_level==lift.min_level)) //! co gdy winda wjedzie na max floor i bedzie miala zjechac w dol
-               {
-                  temp+=it->get_weight();
-                  if(lift.curr_weight+temp<lift.max_weight)
-                    number++;
-               }
-        }
+        if(it->get_side()==0 && it->get_dest()!=lift.current_level)
+            number++;
     return number;
 }
 
 bool humans_enter_lift(HDC hdcBufor, USI number)            //TRUE WHEN ALL IN  / WEIGHT > LIMIT!, FALSE WHEN LIFT IS NOT MOVING
 {
+    USI j=0;
     bool everyone_in=true;
     for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
         {
             if(it->get_level()==lift.current_level && (it->get_dir()==lift.direction || lift.current_level==lift.max_level || lift.current_level==lift.min_level)) //! co gdy winda wjedzie na max floor i bedzie miala zjechac w dol
             {
+            if(j>=number)
+                {
                 it->enter_lift();
                 if(it->get_side()!=0)
                     everyone_in=false;
+                }
+            j++;
             }
         }
 
     if(everyone_in==true)
     {
-        if(buttons_on_level[lift.current_level]==3)
+    if(number==0)
         {
-            if(lift.direction==2)
-                buttons_on_level[lift.current_level]=1;
+            if(buttons_on_level[lift.current_level]==3)
+            {
+                if(lift.direction==2)
+                    buttons_on_level[lift.current_level]=1;
+                else
+                    buttons_on_level[lift.current_level]=2;
+            }
             else
-                buttons_on_level[lift.current_level]=2;
+                buttons_on_level[lift.current_level]=0;
         }
         else
-            buttons_on_level[lift.current_level]=0;
+        {
+            if(lift.direction==2)
+                {
+                if(lift.current_level<lift.min_level)
+                    lift.min_level=lift.current_level;
+                }
+            else if(lift.direction==1)
+                if(lift.current_level>lift.max_level)
+                    lift.max_level=lift.current_level;
+        }
         lift.current_state=4;
         return true;
     }
@@ -407,26 +433,40 @@ void draw_level(HDC hdcBufor, USI level)
         LineTo(hdcBufor, 1024, (SHAFT_Y2-7 -((level)*lift.height)) );
     }
 }
+
 void move_humans(HDC hdcBufor)
 {
     BITMAP bmInfo;
+    HDC hdcBitmap = CreateCompatibleDC( hdcBufor );
     HDC hdcOkno = GetDC( hwnd );
-    HDC hdcBitmap = CreateCompatibleDC( hdcOkno );
+    Rectangle(hdcBitmap, 0, 0, 1024, 768);
+    HBITMAP hbmOld,hbmMask =( HBITMAP ) LoadImage( NULL, "mask.bmp", IMAGE_BITMAP, 30, 65, LR_LOADFROMFILE );
     for (std::vector<human>::iterator it = people.begin() ; it != people.end(); ++it)
         {
-            if(it->get_side()!=0)   //!
+            if(it->get_side()!=0 && !it->waiting_near_shaft())   //!
                 it->wait_for_lift(); //!
-            if(it->get_side()==0)
+            else if(it->get_side()==0)
+            {
                 it->set_pos_y(lift.pos_y+lift.height-10);
+            if(it->get_pos_x()-5>SHAFT_X1+24 && it->get_dest()!=lift.current_level && lift.current_state>0)
+				if(GetPixel(hdcOkno, it->get_pos_x()-10, it->get_pos_y())==RGB(255,255,255))
+                    it->set_pos_x(it->get_pos_x()-1);
+			}
             if(it->get_side()!=5)
             {
                 GetObject( hbmHuman[it->get_dest()], sizeof( bmInfo ), & bmInfo );
+                hbmOld =( HBITMAP ) SelectObject( hdcBitmap, hbmMask );
+                BitBlt( hdcBufor, it->get_pos_x(), it->get_pos_y()-60, bmInfo.bmWidth, bmInfo.bmHeight, hdcBitmap, 0, 0, SRCAND );
                 SelectObject( hdcBitmap, hbmHuman[it->get_dest()]);
-                BitBlt( hdcBufor, it->get_pos_x(), it->get_pos_y()-60, bmInfo.bmWidth, bmInfo.bmHeight, hdcBitmap, 0, 0, SRCCOPY );
+                BitBlt( hdcBufor, it->get_pos_x(), it->get_pos_y()-60, bmInfo.bmWidth, bmInfo.bmHeight, hdcBitmap, 0, 0, SRCPAINT);
             }
         }
+    SelectObject( hdcBitmap, hbmOld );
     DeleteDC( hdcBitmap );
+    DeleteObject( hbmMask );
+    ReleaseDC( hwnd, hdcOkno); //!!!!!!!
 }
+
 
 void draw_buff_elem(HDC hdcBufor, HPEN pen2, HPEN old, USI init)
 {
@@ -538,7 +578,7 @@ void spawn_human(USI level)
 {
     if(level!=human_destination)
         {
-            if(g_time_value>=50)
+            if(g_time_value>=40)
                 {
                     SetTimer( hwnd, ID_TIMER, 1, NULL );
                     people.push_back(human(level,number_of_people));
@@ -553,23 +593,15 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 {
     switch (message)
     {
-        case WM_PAINT:
-        {
-            PAINTSTRUCT ps; // deklaracja struktury
-            HDC hdc = BeginPaint( hwnd, & ps );
-            main_loop();
-            EndPaint( hwnd, & ps ); // zwalniamy hdc
-        }
-        break;
         case WM_DESTROY:
             KillTimer( hwnd, ID_TIMER );
             for(int i=0;i<5;i++)
-            DeleteObject( hbmHuman[i]);
+                DeleteObject( hbmHuman[i]);
             PostQuitMessage (0);
             break;
         case WM_TIMER:
             main_loop();
-            if(g_time_value!=51)
+            if(g_time_value!=41)
                 g_time_value++;
             break;
         case WM_COMMAND:
